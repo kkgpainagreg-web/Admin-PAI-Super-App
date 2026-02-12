@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin PAI Super App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        accent: '#10b981',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        arabic: ['Amiri', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 bg-primary flex items-center justify-center z-50">
+        <div class="text-center text-white">
+            <i class="fas fa-mosque text-6xl mb-4 animate-pulse"></i>
+            <h1 class="text-2xl font-bold">Admin PAI Super App</h1>
+            <p class="mt-2">Memuat aplikasi...</p>
+            <div class="mt-4">
+                <div class="w-48 h-2 bg-blue-300 rounded-full mx-auto overflow-hidden">
+                    <div class="h-full bg-white rounded-full animate-loading"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="hidden min-h-screen bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <i class="fas fa-mosque text-5xl text-primary mb-4"></i>
+                <h1 class="text-2xl font-bold text-gray-800">Admin PAI Super App</h1>
+                <p class="text-gray-500 mt-2">Silakan masuk untuk melanjutkan</p>
+            </div>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="email" id="loginEmail" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="email@contoh.com">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" id="loginPassword" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="••••••••">
+                    </div>
+                </div>
+                <button type="submit" id="btnLogin"
+                    class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Masuk</span>
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <p class="text-gray-500">Belum punya akun?</p>
+                <button onclick="showRegister()" class="text-primary font-semibold hover:underline">
+                    Daftar Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="registerPage" class="hidden min-h-screen bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <i class="fas fa-user-plus text-5xl text-primary mb-4"></i>
+                <h1 class="text-2xl font-bold text-gray-800">Daftar Akun Baru</h1>
+            </div>
+            <form id="registerForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                    <div class="relative">
+                        <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="regName" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Nama lengkap Anda">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="email" id="regEmail" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="email@contoh.com">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" id="regPassword" required minlength="6"
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Minimal 6 karakter">
+                    </div>
+                </div>
+                <button type="submit" id="btnRegister"
+                    class="w-full bg-accent text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Daftar</span>
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <button onclick="showLogin()" class="text-primary font-semibold hover:underline">
+                    <i class="fas fa-arrow-left mr-1"></i>Kembali ke Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="hidden">
+        <!-- Mobile Header -->
+        <header class="lg:hidden bg-primary text-white p-4 flex items-center justify-between sticky top-0 z-40 shadow-lg">
+            <button onclick="toggleSidebar()" class="text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="font-bold">Admin PAI</h1>
+            <button onclick="logout()" class="text-xl" title="Keluar">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </header>
+
+        <!-- Sidebar Overlay -->
+        <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onclick="toggleSidebar()"></div>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-dark text-white transform -translate-x-full lg:translate-x-0 transition-transform z-50 overflow-y-auto">
+            <div class="p-6 border-b border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-xl flex items-center justify-center">
+                        <i class="fas fa-mosque text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg">Admin PAI</h1>
+                        <p class="text-xs text-gray-400">Super App v1.0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="p-4 space-y-1">
+                <p class="text-xs text-gray-500 uppercase mb-2 px-4">Menu Utama</p>
+                
+                <button onclick="showPage('dashboard')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition" data-page="dashboard">
+                    <i class="fas fa-home w-5 text-center"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="showPage('profil')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition" data-page="profil">
+                    <i class="fas fa-user-cog w-5 text-center"></i>
+                    <span>Profil</span>
+                </button>
+                <button onclick="showPage('siswa')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition" data-page="siswa">
+                    <i class="fas fa-users w-5 text-center"></i>
+                    <span>Data Siswa</span>
+                </button>
+                
+                <p class="text-xs text-gray-500 uppercase mb-2 mt-4 px-4">Akademik</p>
+                
+                <button onclick="showPage('kalender')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition" data-page="kalender">
+                    <i class="fas fa-calendar-alt w-5 text-center"></i>
+                    <span>Kalender</span>
+                </button>
+                <button onclick="showPage('jadwal')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition" data-page="jadwal">
+                    <i class="fas fa-clock w-5 text-center"></i>
+                    <span>Jadwal</span>
+                </button>
+                <button onclick="showPage('absensi')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition" data-page="absensi">
+                    <i class="fas fa-clipboard-check w-5 text-center"></i>
+                    <span>Absensi</span>
+                </button>
+                <button onclick="showPage('nilai')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition" data-page="nilai">
+                    <i class="fas fa-star w-5 text-center"></i>
+                    <span>Daftar Nilai</span>
+                </button>
+                <button onclick="showPage('jurnal')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition" data-page="jurnal">
+                    <i class="fas fa-book w-5 text-center"></i>
+                    <span>Jurnal</span>
+                </button>
+                
+                <p class="text-xs text-gray-500 uppercase mb-2 mt-4 px-4">Materi</p>
+                
+                <button onclick="showPage('banksoal')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition" data-page="banksoal">
+                    <i class="fas fa-question-circle w-5 text-center"></i>
+                    <span>Bank Soal</span>
+                </button>
+                <button onclick="showPage('lkpd')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition" data-page="lkpd">
+                    <i class="fas fa-file-alt w-5 text-center"></i>
+                    <span>LKPD</span>
+                </button>
+                
+                <div class="border-t border-gray-700 my-4"></div>
+                
+                <button onclick="showPage('generator')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:opacity-90 transition bg-gradient-to-r from-purple-600 to-pink-600" data-page="generator">
+                    <i class="fas fa-magic w-5 text-center"></i>
+                    <span class="font-semibold">Generator Dokumen</span>
+                </button>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700 bg-dark">
+                <div class="flex items-center space-x-3 mb-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-secondary to-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p id="sidebarUserName" class="text-sm font-medium truncate">User</p>
+                        <p id="sidebarUserEmail" class="text-xs text-gray-400 truncate">email@contoh.com</p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition text-sm flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Keluar</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 min-h-screen pb-8">
+            
+            <!-- ==================== DASHBOARD PAGE ==================== -->
+            <section id="page-dashboard" class="page p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Dashboard</h1>
+                    <p class="text-gray-500" id="welcomeText">Selamat datang di Admin PAI Super App</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-white rounded-xl p-4 lg:p-6 shadow-sm border-l-4 border-blue-500 hover:shadow-md transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-xs lg:text-sm">Total Siswa</p>
+                                <p id="statSiswa" class="text-xl lg:text-2xl font-bold text-gray-800">0</p>
+                            </div>
+                            <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-users text-lg lg:text-xl text-blue-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 lg:p-6 shadow-sm border-l-4 border-green-500 hover:shadow-md transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-xs lg:text-sm">Kelas Aktif</p>
+                                <p id="statKelas" class="text-xl lg:text-2xl font-bold text-gray-800">0</p>
+                            </div>
+                            <div class="w-10 h-10 lg:w-12 lg:h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-chalkboard text-lg lg:text-xl text-green-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 lg:p-6 shadow-sm border-l-4 border-yellow-500 hover:shadow-md transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-xs lg:text-sm">Bank Soal</p>
+                                <p id="statSoal" class="text-xl lg:text-2xl font-bold text-gray-800">0</p>
+                            </div>
+                            <div class="w-10 h-10 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-question-circle text-lg lg:text-xl text-yellow-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 lg:p-6 shadow-sm border-l-4 border-purple-500 hover:shadow-md transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-xs lg:text-sm">Modul Ajar</p>
+                                <p id="statModul" class="text-xl lg:text-2xl font-bold text-gray-800">0</p>
+                            </div>
+                            <div class="w-10 h-10 lg:w-12 lg:h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-book-open text-lg lg:text-xl text-purple-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+                    <h2 class="text-lg font-bold text-gray-800 mb-4">
+                        <i class="fas fa-bolt text-yellow-500 mr-2"></i>Aksi Cepat
+                    </h2>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <button onclick="showPage('absensi')" class="flex flex-col items-center p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition group">
+                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-clipboard-check text-xl text-white"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 font-medium">Absen Hari Ini</span>
+                        </button>
+                        <button onclick="showPage('jurnal')" class="flex flex-col items-center p-4 bg-green-50 rounded-xl hover:bg-green-100 transition group">
+                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-book text-xl text-white"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 font-medium">Isi Jurnal</span>
+                        </button>
+                        <button onclick="showPage('generator')" class="flex flex-col items-center p-4 bg-purple-50 rounded-xl hover:bg-purple-100 transition group">
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-magic text-xl text-white"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 font-medium">Buat Dokumen</span>
+                        </button>
+                        <button onclick="showPage('nilai')" class="flex flex-col items-center p-4 bg-yellow-50 rounded-xl hover:bg-yellow-100 transition group">
+                            <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-star text-xl text-white"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 font-medium">Input Nilai</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 8 Dimensi Profil Lulusan -->
+                <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+                    <h2 class="text-lg font-bold text-gray-800 mb-2">
+                        <i class="fas fa-award text-yellow-500 mr-2"></i>
+                        8 Dimensi Profil Lulusan
+                    </h2>
+                    <p class="text-sm text-gray-500 mb-4">Klik untuk melihat detail dan indikator setiap dimensi</p>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div onclick="showDimensiDetail('keimanan')" class="p-4 bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl text-center hover:shadow-md transition cursor-pointer group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-pray text-xl text-white"></i>
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700">Keimanan & Ketakwaan</p>
+                        </div>
+                        <div onclick="showDimensiDetail('kewargaan')" class="p-4 bg-gradient-to-br from-red-50 to-rose-100 rounded-xl text-center hover:shadow-md transition cursor-pointer group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-rose-600 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-flag text-xl text-white"></i>
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700">Kewargaan</p>
+                        </div>
+                        <div onclick="showDimensiDetail('penalaran')" class="p-4 bg-gradient-to-br from-purple-50 to-violet-100 rounded-xl text-center hover:shadow-md transition cursor-pointer group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-brain text-xl text-white"></i>
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700">Penalaran Kritis</p>
+                        </div>
+                        <div onclick="showDimensiDetail('kreativitas')" class="p-4 bg-gradient-to-br from-yellow-50 to-amber-100 rounded-xl text-center hover:shadow-md transition cursor-pointer group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-lightbulb text-xl text-white"></i>
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700">Kreativitas</p>
+                        </div>
+                        <div onclick="showDimensiDetail('kolaborasi')" class="p-4 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl text-center hover:shadow-md transition cursor-pointer group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-users text-xl text-white"></i>
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700">Kolaborasi</p>
+                        </div>
+                        <div onclick="showDimensiDetail('kemandirian')" class="p-4 bg-gradient-to-br from-teal-50 to-cyan-100 rounded-xl text-center hover:shadow-md transition cursor-pointer group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-user-check text-xl text-white"></i>
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700">Kemandirian</p>
+                        </div>
+                        <div onclick="showDimensiDetail('kesehatan')" class="p-4 bg-gradient-to-br from-pink-50 to-rose-100 rounded-xl text-center hover:shadow-md transition cursor-pointer group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-600 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-heart text-xl text-white"></i>
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700">Kesehatan</p>
+                        </div>
+                        <div onclick="showDimensiDetail('komunikasi')" class="p-4 bg-gradient-to-br from-orange-50 to-amber-100 rounded-xl text-center hover:shadow-md transition cursor-pointer group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition">
+                                <i class="fas fa-comments text-xl text-white"></i>
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700">Komunikasi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-history text-blue-500 mr-2"></i>Jurnal Terbaru
+                        </h2>
+                        <div id="recentJurnal" class="space-y-3">
+                            <p class="text-center text-gray-500 py-4">Memuat...</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-calendar-check text-green-500 mr-2"></i>Agenda Mendatang
+                        </h2>
+                        <div id="upcomingAgenda" class="space-y-3">
+                            <p class="text-center text-gray-500 py-4">Memuat...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== PROFIL PAGE ==================== -->
+            <section id="page-profil" class="page hidden p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Profil</h1>
+                    <p class="text-gray-500">Kelola data profil pengguna dan satuan pendidikan</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <!-- Profil Pengguna -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-2">
+                                <i class="fas fa-user text-blue-600"></i>
+                            </div>
+                            Profil Pengguna (Guru PAI)
+                        </h2>
+                        <form id="formProfilUser" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                                <input type="text" id="profilNama" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">NIP</label>
+                                <input type="text" id="profilNIP" placeholder="Kosongkan jika tidak ada"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" id="profilEmail" readonly
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 cursor-not-allowed">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">No. HP/WhatsApp</label>
+                                <input type="tel" id="profilHP" placeholder="08xxxxxxxxxx"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">
+                                <i class="fas fa-save mr-2"></i>Simpan Profil
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Profil Satuan Pendidikan -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-2">
+                                <i class="fas fa-school text-green-600"></i>
+                            </div>
+                            Satuan Pendidikan
+                        </h2>
+                        <form id="formSatdik" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Sekolah</label>
+                                <input type="text" id="satdikNama" required placeholder="SD/MI ..."
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">NPSN</label>
+                                <input type="text" id="satdikNPSN" placeholder="8 digit angka"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
+                                <textarea id="satdikAlamat" rows="2" placeholder="Jalan, Desa/Kelurahan"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kecamatan</label>
+                                    <input type="text" id="satdikKec"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kab/Kota</label>
+                                    <input type="text" id="satdikKab"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
+                                <input type="text" id="satdikProv"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <button type="submit" class="w-full bg-green-600 text-white py-2.5 rounded-lg hover:bg-green-700 transition font-medium">
+                                <i class="fas fa-save mr-2"></i>Simpan Data Sekolah
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Profil Kepala Sekolah -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm lg:col-span-2">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                            <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-2">
+                                <i class="fas fa-user-tie text-purple-600"></i>
+                            </div>
+                            Data Kepala Sekolah
+                        </h2>
+                        <form id="formKepsek" class="grid lg:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kepala Sekolah</label>
+                                <input type="text" id="kepsekNama" required placeholder="Nama lengkap dengan gelar"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">NIP Kepala Sekolah</label>
+                                <input type="text" id="kepsekNIP" placeholder="Kosongkan jika tidak ada"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div class="lg:col-span-2">
+                                <button type="submit" class="w-full bg-purple-600 text-white py-2.5 rounded-lg hover:bg-purple-700 transition font-medium">
+                                    <i class="fas fa-save mr-2"></i>Simpan Data Kepala Sekolah
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== DATA SISWA PAGE ==================== -->
+            <section id="page-siswa" class="page hidden p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Data Siswa</h1>
+                    <p class="text-gray-500">Kelola data peserta didik</p>
+                </div>
+
+                <!-- Import CSV -->
+                <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+                    <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-2">
+                            <i class="fas fa-file-csv text-green-600"></i>
+                        </div>
+                        Import dari Google Spreadsheet
+                    </h2>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <p class="text-sm text-blue-800 font-medium mb-2">
+                            <i class="fas fa-info-circle mr-2"></i>Format Kolom (urutan wajib):
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">1. NIS</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">2. Nama Peserta Didik</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">3. Jenis Kelamin (L/P)</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">4. Kelas</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">5. Rombel</span>
+                        </div>
+                        <p class="text-xs text-blue-600 mt-3">
+                            <i class="fas fa-lightbulb mr-1"></i>
+                            Cara: File → Share → Publish to web → Pilih CSV → Copy link
+                        </p>
+                    </div>
+                    <div class="flex flex-col lg:flex-row gap-4">
+                        <input type="url" id="csvUrl" placeholder="Paste URL CSV dari Google Spreadsheet"
+                            class="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <button onclick="importCSV()" class="bg-green-600 text-white px-6 py-2.5 rounded-lg hover:bg-green-700 transition font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-download"></i>
+                            <span>Import Data</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter & Search -->
+                <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+                    <div class="flex flex-col lg:flex-row gap-4">
+                        <div class="flex-1 relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="searchSiswa" placeholder="Cari nama atau NIS..."
+                                class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                onkeyup="filterSiswa()">
+                        </div>
+                        <select id="filterKelas" onchange="filterSiswa()"
+                            class="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="">Semua Kelas</option>
+                            <option value="1">Kelas 1</option>
+                            <option value="2">Kelas 2</option>
+                            <option value="3">Kelas 3</option>
+                            <option value="4">Kelas 4</option>
+                            <option value="5">Kelas 5</option>
+                            <option value="6">Kelas 6</option>
+                        </select>
+                        <button onclick="showAddSiswaModal()" class="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-blue-800 transition font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-plus"></i>
+                            <span>Tambah Siswa</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabel Siswa -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 border-b">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No</th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">NIS</th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama</th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">JK</th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kelas</th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Rombel</th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelSiswa" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="7" class="px-4 py-12 text-center text-gray-500">
+                                        <i class="fas fa-users text-4xl mb-3 text-gray-300"></i>
+                                        <p>Belum ada data siswa</p>
+                                        <p class="text-sm">Import dari Google Spreadsheet atau tambah manual</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== KALENDER PAGE ==================== -->
+            <section id="page-kalender" class="page hidden p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Kalender Akademik</h1>
+                    <p class="text-gray-500">Kelola agenda dan kegiatan akademik</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <!-- Form Tambah Agenda -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-plus-circle text-primary mr-2"></i>Tambah Agenda
+                        </h2>
+                        <form id="formAgenda" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Judul Agenda</label>
+                                <input type="text" id="agendaJudul" required placeholder="Nama kegiatan"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Mulai</label>
+                                <input type="date" id="agendaTglMulai" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Selesai</label>
+                                <input type="date" id="agendaTglSelesai"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Agenda</label>
+                                <select id="agendaJenis" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="kegiatan">📚 Kegiatan</option>
+                                    <option value="libur">🏖️ Libur</option>
+                                    <option value="ujian">📝 Ujian</option>
+                                    <option value="rapat">👥 Rapat</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Keterangan</label>
+                                <textarea id="agendaKeterangan" rows="2" placeholder="Detail tambahan"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">
+                                <i class="fas fa-plus mr-2"></i>Tambah Agenda
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Daftar Agenda -->
+                    <div class="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-bold text-gray-800">
+                                <i class="fas fa-list text-secondary mr-2"></i>Daftar Agenda
+                            </h2>
+                            <select id="filterAgendaBulan" onchange="loadAgenda()"
+                                class="px-4 py-2 border border-gray-300 rounded-lg text-sm">
+                                <option value="">Semua Bulan</option>
+                                <option value="01">Januari</option>
+                                <option value="02">Februari</option>
+                                <option value="03">Maret</option>
+                                <option value="04">April</option>
+                                <option value="05">Mei</option>
+                                <option value="06">Juni</option>
+                                <option value="07">Juli</option>
+                                <option value="08">Agustus</option>
+                                <option value="09">September</option>
+                                <option value="10">Oktober</option>
+                                <option value="11">November</option>
+                                <option value="12">Desember</option>
+                            </select>
+                        </div>
+                        <div id="listAgenda" class="space-y-3 max-h-[500px] overflow-y-auto">
+                            <p class="text-center text-gray-500 py-8">Belum ada agenda</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== JADWAL PAGE ==================== -->
+            <section id="page-jadwal" class="page hidden p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Jadwal Mengajar</h1>
+                    <p class="text-gray-500">Kelola jadwal mengajar PAI</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <!-- Form Tambah Jadwal -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-plus-circle text-primary mr-2"></i>Tambah Jadwal
+                        </h2>
+                        <form id="formJadwal" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Hari</label>
+                                <select id="jadwalHari" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="Senin">Senin</option>
+                                    <option value="Selasa">Selasa</option>
+                                    <option value="Rabu">Rabu</option>
+                                    <option value="Kamis">Kamis</option>
+                                    <option value="Jumat">Jumat</option>
+                                    <option value="Sabtu">Sabtu</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                                <select id="jadwalKelas" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="1">Kelas 1</option>
+                                    <option value="2">Kelas 2</option>
+                                    <option value="3">Kelas 3</option>
+                                    <option value="4">Kelas 4</option>
+                                    <option value="5">Kelas 5</option>
+                                    <option value="6">Kelas 6</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Rombel</label>
+                                <input type="text" id="jadwalRombel" placeholder="Contoh: A, B, C"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jam Mulai</label>
+                                    <input type="time" id="jadwalMulai" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jam Selesai</label>
+                                    <input type="time" id="jadwalSelesai" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">
+                                <i class="fas fa-plus mr-2"></i>Tambah Jadwal
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Tabel Jadwal -->
+                    <div class="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-table text-secondary mr-2"></i>Jadwal Mengajar
+                        </h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Hari</th>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Kelas</th>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Rombel</th>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Jam</th>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabelJadwal" class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td colspan="5" class="px-4 py-8 text-center text-gray-500">Belum ada jadwal</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== ABSENSI PAGE ==================== -->
+            <section id="page-absensi" class="page hidden p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Absensi Peserta Didik</h1>
+                    <p class="text-gray-500">Kelola kehadiran siswa (terintegrasi dengan Jurnal Pembelajaran)</p>
+                </div>
+
+                <!-- Filter Absensi -->
+                <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal</label>
+                            <input type="date" id="absenTanggal"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                            <select id="absenKelas"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Pilih Kelas</option>
+                                <option value="1">Kelas 1</option>
+                                <option value="2">Kelas 2</option>
+                                <option value="3">Kelas 3</option>
+                                <option value="4">Kelas 4</option>
+                                <option value="5">Kelas 5</option>
+                                <option value="6">Kelas 6</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Rombel</label>
+                            <select id="absenRombel"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Semua Rombel</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="loadAbsensi()" class="w-full bg-primary text-white py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">
+                                <i class="fas fa-search mr-2"></i>Tampilkan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Absensi -->
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-4 gap-3">
+                        <h2 class="text-lg font-bold text-gray-800">
+                            <i class="fas fa-clipboard-list text-secondary mr-2"></i>Daftar Hadir
+                        </h2>
+                        <div class="flex gap-2">
+                            <button onclick="setAllHadir()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition font-medium">
+                                <i class="fas fa-check-double mr-1"></i>Semua Hadir
+                            </button>
+                            <button onclick="simpanAbsensi()" class="bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-800 transition font-medium">
+                                <i class="fas fa-save mr-1"></i>Simpan Absensi
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-3 py-3 text-left font-semibold text-gray-600">No</th>
+                                    <th class="px-3 py-3 text-left font-semibold text-gray-600">NIS</th>
+                                    <th class="px-3 py-3 text-left font-semibold text-gray-600">Nama Siswa</th>
+                                    <th class="px-3 py-3 text-center font-semibold text-gray-600">
+                                        <span class="inline-flex items-center justify-center w-8 h-8 bg-green-100 text-green-700 rounded-full">H</span>
+                                    </th>
+                                    <th class="px-3 py-3 text-center font-semibold text-gray-600">
+                                        <span class="inline-flex items-center justify-center w-8 h-8 bg-yellow-100 text-yellow-700 rounded-full">I</span>
+                                    </th>
+                                    <th class="px-3 py-3 text-center font-semibold text-gray-600">
+                                        <span class="inline-flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-700 rounded-full">S</span>
+                                    </th>
+                                    <th class="px-3 py-3 text-center font-semibold text-gray-600">
+                                        <span class="inline-flex items-center justify-center w-8 h-8 bg-red-100 text-red-700 rounded-full">A</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelAbsensi" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="7" class="px-3 py-8 text-center text-gray-500">
+                                        <i class="fas fa-clipboard-check text-4xl text-gray-300 mb-2"></i>
+                                        <p>Pilih kelas dan tanggal untuk menampilkan daftar siswa</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== NILAI PAGE ==================== -->
+            <section id="page-nilai" class="page hidden p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Daftar Nilai</h1>
+                    <p class="text-gray-500">Kelola penilaian peserta didik</p>
+                </div>
+
+                <!-- Filter Nilai -->
+                <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+                    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                            <select id="nilaiKelas"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Pilih Kelas</option>
+                                <option value="1">Kelas 1</option>
+                                <option value="2">Kelas 2</option>
+                                <option value="3">Kelas 3</option>
+                                <option value="4">Kelas 4</option>
+                                <option value="5">Kelas 5</option>
+                                <option value="6">Kelas 6</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Rombel</label>
+                            <select id="nilaiRombel"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Semua</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+                            <select id="nilaiSemester"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="1">Semester 1</option>
+                                <option value="2">Semester 2</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Penilaian</label>
+                            <select id="nilaiJenis"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="harian">Penilaian Harian</option>
+                                <option value="pts">PTS</option>
+                                <option value="pas">PAS</option>
+                                <option value="sikap">Sikap</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="loadNilai()" class="w-full bg-primary text-white py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">
+                                <i class="fas fa-search mr-2"></i>Tampilkan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Nilai -->
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-4 gap-3">
+                        <h2 class="text-lg font-bold text-gray-800">
+                            <i class="fas fa-star text-yellow-500 mr-2"></i>Input Nilai
+                        </h2>
+                        <button onclick="simpanNilai()" class="bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-800 transition font-medium">
+                            <i class="fas fa-save mr-1"></i>Simpan Nilai
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-3 py-3 text-left font-semibold text-gray-600">No</th>
+                                    <th class="px-3 py-3 text-left font-semibold text-gray-600">NIS</th>
+                                    <th class="px-3 py-3 text-left font-semibold text-gray-600">Nama Siswa</th>
+                                    <th class="px-3 py-3 text-center font-semibold text-gray-600">Nilai</th>
+                                    <th class="px-3 py-3 text-left font-semibold text-gray-600">Catatan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelNilai" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="5" class="px-3 py-8 text-center text-gray-500">
+                                        Pilih kelas dan jenis penilaian
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== JURNAL PAGE ==================== -->
+            <section id="page-jurnal" class="page hidden p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Jurnal Pembelajaran</h1>
+                    <p class="text-gray-500">Dokumentasi kegiatan pembelajaran harian</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <!-- Form Jurnal -->
+                    <div class="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-edit text-primary mr-2"></i>Input Jurnal
+                        </h2>
+                        <form id="formJurnal" class="space-y-4">
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal</label>
+                                    <input type="date" id="jurnalTanggal" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                                    <select id="jurnalKelas" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="">Pilih</option>
+                                        <option value="1">Kelas 1</option>
+                                        <option value="2">Kelas 2</option>
+                                        <option value="3">Kelas 3</option>
+                                        <option value="4">Kelas 4</option>
+                                        <option value="5">Kelas 5</option>
+                                        <option value="6">Kelas 6</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Rombel</label>
+                                    <input type="text" id="jurnalRombel" placeholder="A/B/C"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jam Ke</label>
+                                    <input type="text" id="jurnalJam" placeholder="1-2"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Materi Pembelajaran</label>
+                                <input type="text" id="jurnalMateri" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    placeholder="Contoh: Surah Al-Fatihah">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tujuan Pembelajaran</label>
+                                <textarea id="jurnalTujuan" rows="2" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    placeholder="Peserta didik mampu..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Kegiatan Pembelajaran</label>
+                                <textarea id="jurnalKegiatan" rows="3" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    placeholder="Deskripsi kegiatan yang dilakukan..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Catatan/Refleksi</label>
+                                <textarea id="jurnalCatatan" rows="2"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    placeholder="Hambatan, solusi, atau catatan lainnya..."></textarea>
+                            </div>
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <p class="text-sm text-blue-800 font-medium mb-2">
+                                    <i class="fas fa-link mr-2"></i>Data Absensi Terintegrasi
+                                </p>
+                                <div id="jurnalAbsenInfo" class="text-sm text-blue-600">
+                                    Pilih tanggal dan kelas untuk melihat ringkasan absensi
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">
+                                <i class="fas fa-save mr-2"></i>Simpan Jurnal
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Daftar Jurnal -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-history text-secondary mr-2"></i>Riwayat Jurnal
+                        </h2>
+                        <div id="listJurnal" class="space-y-3 max-h-[600px] overflow-y-auto">
+                            <p class="text-center text-gray-500 py-8">Belum ada jurnal</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== BANK SOAL PAGE ==================== -->
+            <section id="page-banksoal" class="page hidden p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Bank Soal</h1>
+                    <p class="text-gray-500">Kelola kumpulan soal PAI (mendukung teks Arab)</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <!-- Form Soal -->
+                    <div class="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-plus-circle text-primary mr-2"></i>Tambah Soal
+                        </h2>
+                        <form id="formSoal" class="space-y-4">
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Fase</label>
+                                    <select id="soalFase" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="A">Fase A (Kelas 1-2)</option>
+                                        <option value="B">Fase B (Kelas 3-4)</option>
+                                        <option value="C">Fase C (Kelas 5-6)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                                    <select id="soalKelas" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="1">Kelas 1</option>
+                                        <option value="2">Kelas 2</option>
+                                        <option value="3">Kelas 3</option>
+                                        <option value="4">Kelas 4</option>
+                                        <option value="5">Kelas 5</option>
+                                        <option value="6">Kelas 6</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Soal</label>
+                                    <select id="soalJenis" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="pg">Pilihan Ganda</option>
+                                        <option value="isian">Isian</option>
+                                        <option value="uraian">Uraian</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tingkat</label>
+                                    <select id="soalTingkat" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="mudah">🟢 Mudah</option>
+                                        <option value="sedang">🟡 Sedang</option>
+                                        <option value="sulit">🔴 Sulit</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Materi/Topik</label>
+                                <input type="text" id="soalMateri" required placeholder="Contoh: Surah Al-Fatihah"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    Teks Soal
+                                    <span class="text-xs text-gray-500 ml-1">(mendukung teks Arab)</span>
+                                </label>
+                                <textarea id="soalTeks" rows="3" required dir="auto"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-arabic text-lg leading-relaxed"></textarea>
+                            </div>
+                            <div id="opsiPG" class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">Pilihan Jawaban</label>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center font-semibold text-sm">A</span>
+                                        <input type="text" id="soalOpsiA" placeholder="Pilihan A" dir="auto"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg font-arabic">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center font-semibold text-sm">B</span>
+                                        <input type="text" id="soalOpsiB" placeholder="Pilihan B" dir="auto"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg font-arabic">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center font-semibold text-sm">C</span>
+                                        <input type="text" id="soalOpsiC" placeholder="Pilihan C" dir="auto"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg font-arabic">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center font-semibold text-sm">D</span>
+                                        <input type="text" id="soalOpsiD" placeholder="Pilihan D" dir="auto"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg font-arabic">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Kunci Jawaban</label>
+                                <input type="text" id="soalKunci" required dir="auto" placeholder="A / B / C / D atau jawaban isian"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-arabic">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Pembahasan</label>
+                                <textarea id="soalPembahasan" rows="2" dir="auto" placeholder="Penjelasan jawaban yang benar..."
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-arabic"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">
+                                <i class="fas fa-plus mr-2"></i>Simpan Soal
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Daftar Soal -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-bold text-gray-800">
+                                <i class="fas fa-list text-secondary mr-2"></i>Daftar Soal
+                            </h2>
+                            <select id="filterSoalKelas" onchange="loadBankSoal()"
+                                class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm">
+                                <option value="">Semua</option>
+                                <option value="1">Kelas 1</option>
+                                <option value="2">Kelas 2</option>
+                                <option value="3">Kelas 3</option>
+                                <option value="4">Kelas 4</option>
+                                <option value="5">Kelas 5</option>
+                                <option value="6">Kelas 6</option>
+                            </select>
+                        </div>
+                        <div id="listSoal" class="space-y-3 max-h-[600px] overflow-y-auto">
+                            <p class="text-center text-gray-500 py-8">Belum ada soal</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== LKPD PAGE ==================== -->
+            <section id="page-lkpd" class="page hidden p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">LKPD</h1>
+                    <p class="text-gray-500">Lembar Kerja Peserta Didik dengan langkah pengerjaan dan uraian materi</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <!-- Form LKPD -->
+                    <div class="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-plus-circle text-primary mr-2"></i>Buat LKPD
+                        </h2>
+                        <form id="formLKPD" class="space-y-4">
+                            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Fase</label>
+                                    <select id="lkpdFase" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="A">Fase A</option>
+                                        <option value="B">Fase B</option>
+                                        <option value="C">Fase C</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                                    <select id="lkpdKelas" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="1">Kelas 1</option>
+                                        <option value="2">Kelas 2</option>
+                                        <option value="3">Kelas 3</option>
+                                        <option value="4">Kelas 4</option>
+                                        <option value="5">Kelas 5</option>
+                                        <option value="6">Kelas 6</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Alokasi Waktu</label>
+                                    <input type="text" id="lkpdWaktu" placeholder="45 menit"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Judul LKPD</label>
+                                <input type="text" id="lkpdJudul" required placeholder="Contoh: Mengenal Surah Al-Fatihah"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tujuan Pembelajaran</label>
+                                <textarea id="lkpdTujuan" rows="2" required placeholder="Peserta didik mampu..."
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    Uraian Materi
+                                    <span class="text-xs text-gray-500 ml-1">(mendukung teks Arab)</span>
+                                </label>
+                                <textarea id="lkpdMateri" rows="4" required dir="auto"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-arabic text-lg leading-relaxed"
+                                    placeholder="Materi pembelajaran..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Langkah-langkah Pengerjaan</label>
+                                <div id="langkahContainer" class="space-y-2">
+                                    <div class="flex gap-2 items-center">
+                                        <span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">1</span>
+                                        <input type="text" name="langkah[]" required placeholder="Langkah pertama..."
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    </div>
+                                </div>
+                                <button type="button" onclick="tambahLangkah()" class="mt-3 text-primary text-sm hover:underline font-medium">
+                                    <i class="fas fa-plus mr-1"></i>Tambah Langkah
+                                </button>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    Kegiatan/Soal LKPD
+                                    <span class="text-xs text-gray-500 ml-1">(mendukung teks Arab)</span>
+                                </label>
+                                <textarea id="lkpdKegiatan" rows="4" required dir="auto"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-arabic text-lg leading-relaxed"
+                                    placeholder="Soal atau kegiatan yang harus dikerjakan peserta didik..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Rubrik Penilaian</label>
+                                <textarea id="lkpdRubrik" rows="2" placeholder="Kriteria penilaian..."
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">
+                                <i class="fas fa-save mr-2"></i>Simpan LKPD
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Daftar LKPD -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-list text-secondary mr-2"></i>Daftar LKPD
+                        </h2>
+                        <div id="listLKPD" class="space-y-3 max-h-[600px] overflow-y-auto">
+                            <p class="text-center text-gray-500 py-8">Belum ada LKPD</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== GENERATOR PAGE ==================== -->
+            <section id="page-generator" class="page hidden p-4 lg:p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-magic text-white"></i>
+                        </div>
+                        Generator Dokumen
+                    </h1>
+                    <p class="text-gray-500">Single Input Multi Output - Input sekali, hasilkan ATP, Prota, Promes, dan Modul Ajar</p>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-6 mb-6">
+                    <h3 class="font-bold text-purple-800 mb-3 flex items-center gap-2">
+                        <i class="fas fa-info-circle"></i>
+                        Cara Penggunaan
+                    </h3>
+                    <div class="grid lg:grid-cols-4 gap-4">
+                        <div class="flex items-start gap-3">
+                            <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                            <p class="text-sm text-purple-700">Pilih Fase dan Kelas yang akan dibuatkan dokumen</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                            <p class="text-sm text-purple-700">Isi informasi dasar (Tahun Ajaran, Semester)</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+                            <p class="text-sm text-purple-700">Pilih CP dan tentukan Tujuan Pembelajaran</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
+                            <p class="text-sm text-purple-700">Klik Generate untuk membuat semua dokumen</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="formGenerator" class="space-y-6">
+                    <!-- Informasi Dasar -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <i class="fas fa-info-circle text-primary"></i>
+                            Informasi Dasar
+                        </h2>
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Fase</label>
+                                <select id="genFase" required onchange="loadCPByFase()"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">Pilih Fase</option>
+                                    <option value="A">Fase A (Kelas 1-2)</option>
+                                    <option value="B">Fase B (Kelas 3-4)</option>
+                                    <option value="C">Fase C (Kelas 5-6)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                                <select id="genKelas" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">Pilih Kelas</option>
+                                    <option value="1">Kelas 1</option>
+                                    <option value="2">Kelas 2</option>
+                                    <option value="3">Kelas 3</option>
+                                    <option value="4">Kelas 4</option>
+                                    <option value="5">Kelas 5</option>
+                                    <option value="6">Kelas 6</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tahun Ajaran</label>
+                                <input type="text" id="genTahun" required placeholder="2024/2025"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+                                <select id="genSemester" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="1">Semester 1 (Ganjil)</option>
+                                    <option value="2">Semester 2 (Genap)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Capaian Pembelajaran -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
+                            <i class="fas fa-bullseye text-green-600"></i>
+                            Capaian Pembelajaran (CP)
+                        </h2>
+                        <p class="text-sm text-gray-500 mb-4">Berdasarkan Kepka BSKAP No. 046/H/KR/2025</p>
+                        <div id="listCP" class="space-y-4">
+                            <div class="text-center text-gray-500 py-8">
+                                <i class="fas fa-hand-pointer text-4xl text-gray-300 mb-2"></i>
+                                <p>Pilih Fase terlebih dahulu untuk menampilkan Capaian Pembelajaran</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tujuan Pembelajaran -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <i class="fas fa-tasks text-yellow-600"></i>
+                            Tujuan Pembelajaran (TP)
+                        </h2>
+                        <div id="containerTP" class="space-y-4">
+                            <div class="bg-gray-50 rounded-lg p-4 tp-item">
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="text-sm font-semibold text-gray-600 bg-white px-3 py-1 rounded-full">TP 1</span>
+                                </div>
+                                <div class="grid lg:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Tujuan Pembelajaran</label>
+                                        <textarea name="tp[]" rows="2" required placeholder="Peserta didik mampu..."
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Alokasi Waktu</label>
+                                            <input type="text" name="tpWaktu[]" placeholder="4 JP" required
+                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Dimensi Profil</label>
+                                            <select name="tpDimensi[]" required
+                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                                <option value="keimanan">Keimanan & Ketakwaan</option>
+                                                <option value="kewargaan">Kewargaan</option>
+                                                <option value="penalaran">Penalaran Kritis</option>
+                                                <option value="kreativitas">Kreativitas</option>
+                                                <option value="kolaborasi">Kolaborasi</option>
+                                                <option value="kemandirian">Kemandirian</option>
+                                                <option value="kesehatan">Kesehatan</option>
+                                                <option value="komunikasi">Komunikasi</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="tambahTP()" class="mt-4 text-primary hover:underline text-sm font-medium">
+                            <i class="fas fa-plus mr-1"></i>Tambah Tujuan Pembelajaran
+                        </button>
+                    </div>
+
+                    <!-- Detail Modul Ajar -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <i class="fas fa-book-open text-purple-600"></i>
+                            Detail Modul Ajar
+                        </h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Judul Modul</label>
+                                <input type="text" id="genJudulModul" required placeholder="Contoh: Mengenal Surah Al-Fatihah"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    Materi Pembelajaran
+                                    <span class="text-xs text-gray-500 ml-1">(mendukung teks Arab)</span>
+                                </label>
+                                <textarea id="genMateri" rows="3" required dir="auto"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-arabic text-lg leading-relaxed"
+                                    placeholder="Isi materi pembelajaran..."></textarea>
+                            </div>
+                            <div class="grid lg:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kegiatan Pendahuluan</label>
+                                    <textarea id="genPendahuluan" rows="3" placeholder="Salam, doa, apersepsi..."
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kegiatan Inti</label>
+                                    <textarea id="genInti" rows="3" placeholder="Eksplorasi, diskusi, praktik..."
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kegiatan Penutup</label>
+                                    <textarea id="genPenutup" rows="3" placeholder="Refleksi, kesimpulan, doa..."
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Asesmen</label>
+                                <textarea id="genAsesmen" rows="2" placeholder="Jenis asesmen: formatif/sumatif, teknik penilaian..."
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Generate -->
+                    <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-pink-700 transition shadow-lg flex items-center justify-center gap-3">
+                        <i class="fas fa-magic text-xl"></i>
+                        Generate Semua Dokumen (ATP, Prota, Promes, Modul Ajar)
+                    </button>
+                </form>
+
+                <!-- Hasil Generate -->
+                <div id="hasilGenerator" class="hidden mt-8 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            Hasil Generate
+                        </h2>
+                        <button onclick="downloadAllDocs()" class="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-900 transition font-medium">
+                            <i class="fas fa-download mr-2"></i>Download Semua
+                        </button>
+                    </div>
+                    <div class="grid lg:grid-cols-2 gap-4">
+                        <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-blue-500 hover:shadow-md transition">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                                        <i class="fas fa-file-alt text-blue-500"></i>
+                                        ATP (Alur Tujuan Pembelajaran)
+                                    </h3>
+                                    <p class="text-sm text-gray-500 mt-1">Dokumen alur capaian pembelajaran</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="previewDoc('atp')" class="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-200 transition font-medium">
+                                    <i class="fas fa-eye mr-1"></i>Preview
+                                </button>
+                                <button onclick="downloadDoc('atp')" class="flex-1 bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600 transition font-medium">
+                                    <i class="fas fa-download mr-1"></i>Download
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-green-500 hover:shadow-md transition">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                                        <i class="fas fa-calendar text-green-500"></i>
+                                        Prota (Program Tahunan)
+                                    </h3>
+                                    <p class="text-sm text-gray-500 mt-1">Rencana pembelajaran satu tahun</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="previewDoc('prota')" class="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-200 transition font-medium">
+                                    <i class="fas fa-eye mr-1"></i>Preview
+                                </button>
+                                <button onclick="downloadDoc('prota')" class="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-600 transition font-medium">
+                                    <i class="fas fa-download mr-1"></i>Download
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-yellow-500 hover:shadow-md transition">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                                        <i class="fas fa-calendar-alt text-yellow-500"></i>
+                                        Promes (Program Semester)
+                                    </h3>
+                                    <p class="text-sm text-gray-500 mt-1">Rencana pembelajaran per semester</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="previewDoc('promes')" class="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-200 transition font-medium">
+                                    <i class="fas fa-eye mr-1"></i>Preview
+                                </button>
+                                <button onclick="downloadDoc('promes')" class="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-600 transition font-medium">
+                                    <i class="fas fa-download mr-1"></i>Download
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-purple-500 hover:shadow-md transition">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                                        <i class="fas fa-book-open text-purple-500"></i>
+                                        Modul Ajar
+                                    </h3>
+                                    <p class="text-sm text-gray-500 mt-1">Dokumen pembelajaran lengkap</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="previewDoc('modul')" class="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-200 transition font-medium">
+                                    <i class="fas fa-eye mr-1"></i>Preview
+                                </button>
+                                <button onclick="downloadDoc('modul')" class="flex-1 bg-purple-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-600 transition font-medium">
+                                    <i class="fas fa-download mr-1"></i>Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+    
+    <!-- Modal Tambah Siswa -->
+    <div id="modalSiswa" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b sticky top-0 bg-white">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-gray-800">Tambah Siswa</h3>
+                    <button onclick="closeModal('modalSiswa')" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <form id="formTambahSiswa" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">NIS</label>
+                    <input type="text" id="siswanis" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                    <input type="text" id="siswaNama" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
+                    <select id="siswaJK" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="L">Laki-laki</option>
+                        <option value="P">Perempuan</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                        <select id="siswaKelas" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="1">Kelas 1</option>
+                            <option value="2">Kelas 2</option>
+                            <option value="3">Kelas 3</option>
+                            <option value="4">Kelas 4</option>
+                            <option value="5">Kelas 5</option>
+                            <option value="6">Kelas 6</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Rombel</label>
+                        <input type="text" id="siswaRombel" placeholder="A/B/C"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">
+                    <i class="fas fa-save mr-2"></i>Simpan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Preview Dokumen -->
+    <div id="modalPreview" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b bg-gray-50">
+                <h3 id="previewTitle" class="text-lg font-bold text-gray-800">Preview Dokumen</h3>
+                <div class="flex items-center gap-2">
+                    <button onclick="printPreview()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-300 transition">
+                        <i class="fas fa-print mr-1"></i>Print
+                    </button>
+                    <button onclick="closeModal('modalPreview')" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="previewContent" class="p-6 overflow-y-auto flex-1 bg-white">
+                <!-- Content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detail Dimensi -->
+    <div id="modalDimensi" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
+            <div id="modalDimensiHeader" class="p-4 text-white bg-gradient-to-r from-green-500 to-emerald-600">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i id="modalDimensiIcon" class="fas fa-star text-xl"></i>
+                        </div>
+                        <h3 id="modalDimensiTitle" class="text-lg font-bold">Dimensi</h3>
+                    </div>
+                    <button onclick="closeModal('modalDimensi')" class="text-white hover:text-gray-200">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1">
+                <p id="modalDimensiDesc" class="text-gray-600 mb-6"></p>
+                
+                <h4 class="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-list-check text-primary"></i>
+                    Indikator
+                </h4>
+                <ul id="modalDimensiIndikator" class="space-y-2 mb-6">
+                </ul>
+                
+                <h4 class="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-layer-group text-primary"></i>
+                    Penerapan per Fase
+                </h4>
+                <div id="modalDimensiFase" class="space-y-3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-full opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i id="toastIcon" class="fas fa-info-circle"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="data-cp.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
