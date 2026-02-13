@@ -662,10 +662,11 @@ async function deleteSiswa(id) {
     }
 }
 
+// ===== IMPORT CSV FROM GOOGLE SPREADSHEET =====
 async function importCSV() {
-    const url = document.getElementById('csvUrl').value.trim();
+    const urlInput = document.getElementById('csvUrl').value.trim();
     
-    if (!url) {
+    if (!urlInput) {
         showToast('Masukkan URL Google Spreadsheet', 'warning');
         return;
     }
@@ -673,77 +674,155 @@ async function importCSV() {
     try {
         showToast('Mengambil data dari Google Spreadsheet...', 'info');
         
-        // Convert Google Sheets URL to CSV export URL
-        let csvUrl = url;
-        if (url.includes('docs.google.com/spreadsheets')) {
-            const matches = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-            if (matches) {
-                csvUrl = `https://docs.google.com/spreadsheets/d/${matches[1]}/export?format=csv`;
+        let csvUrl = urlInput;
+        
+        // Convert various Google Sheets URL formats to CSV export URL
+        if (urlInput.includes('docs.google.com/spreadsheets')) {
+            
+            // Format 1: Published CSV URL (already correct)
+            // https://docs.google.com/spreadsheets/d/e/xxxxx/pub?output=csv
+            if (urlInput.includes('/pub?') && urlInput.includes('output=csv')) {
+                csvUrl = urlInput;
+            }
+            // Format 2: Published URL without output=csv
+            // https://docs.google.com/spreadsheets/d/e/xxxxx/pub
+            else if (urlInput.includes('/pub')) {
+                csvUrl = urlInput.includes('?') 
+                    ? urlInput + '&output=csv' 
+                    : urlInput + '?output=csv';
+            }
+            // Format 3: Regular spreadsheet URL
+            // https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
+            else if (urlInput.includes('/d/')) {
+                const matches = urlInput.match(/\/d\/([a-zA-Z0-9-_]+)/);
+                if (matches && matches[1]) {
+                    const spreadsheetId = matches[1];
+                    // Try to get gid (sheet id) if present
+                    const gidMatch = urlInput.match(/gid=(\d+)/);
+                    const gid = gidMatch ? gidMatch[1] : '0';
+                    csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=${gid}`;
+                }
             }
         }
         
+        console.log('📥 Fetching CSV from:', csvUrl);
+        
+        // Fetch the CSV data
         const response = await fetch(csvUrl);
-        if (!response.ok) throw new Error('Gagal mengambil data. Pastikan spreadsheet sudah dipublish.');
+        
+        if (!response.ok) {
+            if (response.status === 404) {
+                throw new Error('Spreadsheet tidak ditemukan. Pastikan sudah di-publish ke web.');
+            } else if (response.status === 403) {
+                throw new Error('Akses ditolak. Pastikan spreadsheet bersifat publik.');
+            } else {
+                throw new Error(`Gagal mengambil data (HTTP ${response.status})`);
+            }
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+            throw new Error('URL tidak valid atau spreadsheet belum di-publish sebagai CSV');
+        }
         
         const text = await response.text();
+        
+        if (!text || text.trim().length === 0) {
+            throw new Error('Spreadsheet kosong atau format tidak valid');
+        }
+        
+        // Parse CSV
         const rows = text.split('\n').filter(row => row.trim());
         
-        // Skip header row
-        const dataRows = rows.slice(1);
-        
-        if (dataRows.length === 0) {
-            showToast('Tidak ada data untuk diimport', 'warning');
+        if (rows.length < 2) {
+            showToast('Spreadsheet harus memiliki minimal 1 baris data (selain header)', 'warning');
             return;
         }
         
+        // Skip header row (row 0)
+        const dataRows = rows.slice(1);
+        
+        console.log(`📊 Found ${dataRows.length} data rows`);
+        
+        // Prepare batch write
         const batch = db.batch();
         const siswaRef = db.collection('users').doc(currentUser.uid).collection('siswa');
         
-        let count = 0;
-        let errors = 0;
+        let successCount = 0;
+        let errorCount = 0;
+        const errors = [];
         
-        for (const row of dataRows) {
-            // Parse CSV with support for quoted fields
+        for (let i = 0; i < dataRows.length; i++) {
+            const row = dataRows[i];
             const cols = parseCSVRow(row);
             
-            if (cols.length >= 5 && cols[0] && cols[1]) {
+            // Validate row has enough columns and required data
+            if (cols.length >= 4 && cols[0]?.trim() && cols[1]?.trim()) {
+                const nis = cols[0].trim();
+                const nama = cols[1].trim();
+                const jk = (cols[2] || '').trim().toUpperCase();
+                const kelas = (cols[3] || '').trim();
+                const rombel = (cols[4] || '').trim().toUpperCase();
+                
+                // Validate jenis kelamin
+                const validJK = (jk === 'L' || jk === 'P') ? jk : 'L';
+                
+                // Validate kelas (1-6)
+                const validKelas = ['1', '2', '3', '4', '5', '6'].includes(kelas) ? kelas : '1';
+                
                 const docRef = siswaRef.doc();
                 batch.set(docRef, {
-                    nis: cols[0].trim(),
-                    nama: cols[1].trim(),
-                    jk: cols[2].trim().toUpperCase() === 'L' ? 'L' : 'P',
-                    kelas: cols[3].trim(),
-                    rombel: (cols[4] || '').trim().toUpperCase(),
+                    nis: nis,
+                    nama: nama,
+                    jk: validJK,
+                    kelas: validKelas,
+                    rombel: rombel,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                count++;
+                successCount++;
             } else {
-                errors++;
+                errorCount++;
+                if (errorCount <= 5) {
+                    errors.push(`Baris ${i + 2}: Data tidak lengkap`);
+                }
             }
         }
         
-        if (count === 0) {
-            showToast('Tidak ada data valid untuk diimport. Periksa format kolom.', 'warning');
+        if (successCount === 0) {
+            showToast('Tidak ada data valid untuk diimport. Periksa format spreadsheet.', 'error');
+            console.error('Format errors:', errors);
             return;
         }
         
+        // Commit batch
         await batch.commit();
-        loadSiswa();
+        
+        // Reload data
+        await loadSiswa();
         updateStats();
         
-        let message = `Berhasil import ${count} data siswa!`;
-        if (errors > 0) {
-            message += ` (${errors} baris dilewati karena format tidak sesuai)`;
-        }
-        showToast(message, 'success');
+        // Clear input
         document.getElementById('csvUrl').value = '';
         
+        // Show result
+        let message = `✅ Berhasil import ${successCount} siswa!`;
+        if (errorCount > 0) {
+            message += ` (${errorCount} baris dilewati)`;
+        }
+        showToast(message, 'success');
+        
+        console.log(`✅ Import complete: ${successCount} success, ${errorCount} skipped`);
+        if (errors.length > 0) {
+            console.warn('Skipped rows:', errors);
+        }
+        
     } catch (error) {
-        console.error('Import error:', error);
+        console.error('❌ Import error:', error);
         showToast('Gagal import: ' + error.message, 'error');
     }
 }
 
+// Helper function to parse CSV row (handles quoted fields)
 function parseCSVRow(row) {
     const result = [];
     let current = '';
@@ -755,17 +834,18 @@ function parseCSVRow(row) {
         if (char === '"') {
             inQuotes = !inQuotes;
         } else if (char === ',' && !inQuotes) {
-            result.push(current.trim());
+            result.push(current.replace(/^"|"$/g, '').trim());
             current = '';
-        } else {
+        } else if (char !== '\r') { // Skip carriage return
             current += char;
         }
     }
-    result.push(current.trim());
+    
+    // Don't forget the last field
+    result.push(current.replace(/^"|"$/g, '').trim());
     
     return result;
 }
-
 function updateRombelOptions() {
     const rombels = [...new Set(siswaData.map(s => s.rombel).filter(r => r))].sort();
     
@@ -2614,4 +2694,5 @@ console.log('✅ ADMIN PAI SUPER APP');
 console.log('📚 Version: 1.0.0');
 console.log('👨‍🏫 For PAI Teachers');
 console.log('🕌 Single Input - Multi Output');
+
 console.log('==========================================');
