@@ -416,12 +416,11 @@ const CP_PAI = {
     }
 };
 
-// Get CP by Phase
+// Helper Functions
 function getCPByPhase(phase) {
     return CP_PAI.fase[phase] || null;
 }
 
-// Get TP by Phase and Element
 function getTPByPhaseAndElement(phase, element) {
     const cp = CP_PAI.fase[phase];
     if (!cp) return [];
@@ -430,14 +429,22 @@ function getTPByPhaseAndElement(phase, element) {
     return elemen ? elemen.tujuanPembelajaran : [];
 }
 
-// Get All Elements
 function getAllElements() {
     return CP_PAI.elemen;
 }
 
-// Get All Phases
 function getAllPhases() {
     return Object.keys(CP_PAI.fase);
 }
 
-console.log('CP PAI data loaded successfully');
+function getPhaseByGrade(grade) {
+    grade = parseInt(grade);
+    if (grade <= 2) return 'A';
+    if (grade <= 4) return 'B';
+    if (grade <= 6) return 'C';
+    if (grade <= 9) return 'D';
+    if (grade === 10) return 'E';
+    return 'F';
+}
+
+console.log('✅ CP PAI data loaded successfully');
