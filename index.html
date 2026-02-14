@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Guru Super App - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857', 800: '#065f46', 900: '#064e3b' },
+                        secondary: { 50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 800: '#075985', 900: '#0c4a6e' },
+                        accent: { 50: '#fdf4ff', 100: '#fae8ff', 200: '#f5d0fe', 300: '#f0abfc', 400: '#e879f9', 500: '#d946ef', 600: '#c026d3', 700: '#a21caf', 800: '#86198f', 900: '#701a75' }
+                    },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #059669 0%, #0ea5e9 50%, #d946ef 100%); }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-delayed { animation: float 6s ease-in-out infinite; animation-delay: 2s; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        .feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .btn-primary { background: linear-gradient(135deg, #059669 0%, #10b981 100%); transition: all 0.3s ease; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(5, 150, 105, 0.4); }
+        .input-field:focus { border-color: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
+                        <i class="fas fa-chalkboard-teacher text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                        Admin Guru Super App
+                    </span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-600 hover:text-primary-600 transition font-medium">Fitur</a>
+                    <a href="#pricing" class="text-gray-600 hover:text-primary-600 transition font-medium">Harga</a>
+                    <a href="#about" class="text-gray-600 hover:text-primary-600 transition font-medium">Tentang</a>
+                    <button onclick="showLoginModal()" class="btn-primary text-white px-6 py-2.5 rounded-xl font-semibold">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Masuk
+                    </button>
+                </div>
+                <button class="md:hidden text-gray-600" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#features" class="block text-gray-600 hover:text-primary-600 py-2">Fitur</a>
+                <a href="#pricing" class="block text-gray-600 hover:text-primary-600 py-2">Harga</a>
+                <a href="#about" class="block text-gray-600 hover:text-primary-600 py-2">Tentang</a>
+                <button onclick="showLoginModal()" class="w-full btn-primary text-white px-6 py-3 rounded-xl font-semibold">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Masuk
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="inline-flex items-center bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold">
+                        <i class="fas fa-star mr-2"></i>
+                        Single Input – Multi Output
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+                        Administrasi Guru
+                        <span class="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                            Jadi Super Mudah
+                        </span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+                        Input data sekali, hasilkan ATP, Prota, Promes, Modul Ajar, dan Jurnal secara otomatis. 
+                        Dirancang khusus untuk Guru PAI & Budi Pekerti berdasarkan Kurikulum Merdeka.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="showRegisterModal()" class="btn-primary text-white px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center">
+                            <i class="fas fa-rocket mr-3"></i>Mulai Gratis
+                        </button>
+                        <button onclick="showDemoVideo()" class="bg-white border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-xl font-bold text-lg hover:border-primary-500 transition flex items-center justify-center">
+                            <i class="fas fa-play-circle mr-3 text-primary-500"></i>Lihat Demo
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-6 text-sm text-gray-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                            Gratis selamanya
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                            Tanpa kartu kredit
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="animate-float">
+                        <div class="bg-white rounded-3xl shadow-2xl p-6 border border-gray-100">
+                            <div class="flex items-center space-x-2 mb-4">
+                                <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                            </div>
+                            <img src="https://placehold.co/500x350/e0f2fe/0284c7?text=Dashboard+Preview" alt="Dashboard Preview" class="w-full rounded-xl">
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-8 -left-8 animate-float-delayed">
+                        <div class="bg-gradient-to-br from-primary-500 to-primary-600 text-white p-4 rounded-2xl shadow-xl">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-file-alt text-2xl"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold">ATP Generated</p>
+                                    <p class="text-primary-100 text-sm">Otomatis Tersinkron</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-4 -right-4 animate-float">
+                        <div class="bg-gradient-to-br from-secondary-500 to-secondary-600 text-white p-4 rounded-2xl shadow-xl">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-calendar-check text-2xl"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold">Prota & Promes</p>
+                                    <p class="text-secondary-100 text-sm">Sinkron Kalender</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Satu Aplikasi untuk Semua Administrasi
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Tidak perlu lagi membuat dokumen terpisah. Sistem kami mengintegrasikan semua administrasi pembelajaran.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature Cards -->
+                <div class="feature-card bg-gradient-to-br from-primary-50 to-primary-100 p-8 rounded-2xl transition duration-300 border border-primary-200">
+                    <div class="w-14 h-14 bg-primary-500 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-calendar-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Kalender Pendidikan</h3>
+                    <p class="text-gray-600">Input hari efektif, libur nasional, dan pekan ujian. Otomatis sinkron ke Prota dan Promes.</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-secondary-50 to-secondary-100 p-8 rounded-2xl transition duration-300 border border-secondary-200">
+                    <div class="w-14 h-14 bg-secondary-500 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-clock text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Jadwal Pelajaran</h3>
+                    <p class="text-gray-600">Atur jadwal per kelas dengan validasi anti-bentrok otomatis untuk guru dan rombel.</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-accent-50 to-accent-100 p-8 rounded-2xl transition duration-300 border border-accent-200">
+                    <div class="w-14 h-14 bg-accent-500 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-route text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">ATP (Alur TP)</h3>
+                    <p class="text-gray-600">Susun Alur Tujuan Pembelajaran berdasarkan CP PAI terbaru (Kepka BSKAP 046/2025).</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl transition duration-300 border border-orange-200">
+                    <div class="w-14 h-14 bg-orange-500 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-book-open text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Prota & Promes</h3>
+                    <p class="text-gray-600">Program Tahunan dan Semester otomatis digenerate berdasarkan Kalender dan ATP.</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-rose-50 to-rose-100 p-8 rounded-2xl transition duration-300 border border-rose-200">
+                    <div class="w-14 h-14 bg-rose-500 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-chalkboard text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Modul Ajar</h3>
+                    <p class="text-gray-600">Buat Modul Ajar lengkap dengan dukungan teks Arab (RTL) dan integrasi LKPD.</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-indigo-50 to-indigo-100 p-8 rounded-2xl transition duration-300 border border-indigo-200">
+                    <div class="w-14 h-14 bg-indigo-500 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-robot text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">AI Assistant</h3>
+                    <p class="text-gray-600">Generate TP dan langkah pembelajaran dengan bantuan AI berdasarkan materi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flow Diagram Section -->
+    <section class="py-20 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Alur Kerja Single Input – Multi Output</h2>
+                <p class="text-xl text-gray-400">Lihat bagaimana satu input menghasilkan banyak dokumen</p>
+            </div>
+            <div class="relative">
+                <div class="grid md:grid-cols-5 gap-4 items-center">
+                    <!-- Input -->
+                    <div class="text-center">
+                        <div class="bg-gradient-to-br from-primary-500 to-primary-600 p-6 rounded-2xl mb-4">
+                            <i class="fas fa-edit text-4xl mb-3"></i>
+                            <h4 class="font-bold">INPUT</h4>
+                        </div>
+                        <div class="space-y-2 text-sm text-gray-400">
+                            <p>• Kalender</p>
+                            <p>• Jadwal</p>
+                            <p>• CP/TP</p>
+                        </div>
+                    </div>
+                    <!-- Arrow -->
+                    <div class="hidden md:flex items-center justify-center">
+                        <i class="fas fa-arrow-right text-4xl text-primary-500"></i>
+                    </div>
+                    <!-- Process -->
+                    <div class="text-center">
+                        <div class="bg-gradient-to-br from-secondary-500 to-secondary-600 p-6 rounded-2xl mb-4">
+                            <i class="fas fa-cogs text-4xl mb-3"></i>
+                            <h4 class="font-bold">PROSES</h4>
+                        </div>
+                        <div class="space-y-2 text-sm text-gray-400">
+                            <p>• Sinkronisasi Data</p>
+                            <p>• Kalkulasi Otomatis</p>
+                            <p>• Validasi</p>
+                        </div>
+                    </div>
+                    <!-- Arrow -->
+                    <div class="hidden md:flex items-center justify-center">
+                        <i class="fas fa-arrow-right text-4xl text-secondary-500"></i>
+                    </div>
+                    <!-- Output -->
+                    <div class="text-center">
+                        <div class="bg-gradient-to-br from-accent-500 to-accent-600 p-6 rounded-2xl mb-4">
+                            <i class="fas fa-file-export text-4xl mb-3"></i>
+                            <h4 class="font-bold">OUTPUT</h4>
+                        </div>
+                        <div class="space-y-2 text-sm text-gray-400">
+                            <p>• ATP</p>
+                            <p>• Prota & Promes</p>
+                            <p>• Modul Ajar</p>
+                            <p>• Jurnal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Pilih Paket yang Sesuai</h2>
+                <p class="text-xl text-gray-600">Mulai gratis, upgrade kapan saja</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Free Plan -->
+                <div class="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-primary-300 transition">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Free</h3>
+                        <p class="text-gray-500 mb-4">Untuk memulai</p>
+                        <div class="text-4xl font-bold text-gray-900">Rp 0<span class="text-lg text-gray-500 font-normal">/bulan</span></div>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center"><i class="fas fa-check text-primary-500 mr-3"></i>Kalender Pendidikan</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary-500 mr-3"></i>Jadwal Pelajaran</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary-500 mr-3"></i>ATP Generator</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary-500 mr-3"></i>Prota Generator</li>
+                        <li class="flex items-center text-gray-400"><i class="fas fa-times text-gray-300 mr-3"></i>Promes Generator</li>
+                        <li class="flex items-center text-gray-400"><i class="fas fa-times text-gray-300 mr-3"></i>Modul Ajar</li>
+                        <li class="flex items-center text-gray-400"><i class="fas fa-times text-gray-300 mr-3"></i>Bank Soal</li>
+                    </ul>
+                    <button onclick="showRegisterModal()" class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
+                        Mulai Gratis
+                    </button>
+                </div>
+                <!-- Premium Plan -->
+                <div class="bg-gradient-to-br from-primary-600 to-primary-700 rounded-3xl p-8 text-white transform scale-105 shadow-2xl">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-accent-500 text-white px-4 py-1 rounded-full text-sm font-semibold">POPULER</span>
+                    </div>
+                    <div class="text-center mb-8 pt-4">
+                        <h3 class="text-2xl font-bold mb-2">Premium</h3>
+                        <p class="text-primary-200 mb-4">Untuk guru profesional</p>
+                        <div class="text-4xl font-bold">Rp 49.000<span class="text-lg text-primary-200 font-normal">/bulan</span></div>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center"><i class="fas fa-check text-primary-200 mr-3"></i>Semua fitur Free</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary-200 mr-3"></i>Promes Generator</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary-200 mr-3"></i>Modul Ajar + LKPD</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary-200 mr-3"></i>Bank Soal</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary-200 mr-3"></i>Jurnal Pembelajaran</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary-200 mr-3"></i>AI Assistant</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary-200 mr-3"></i>Export PDF/Excel</li>
+                    </ul>
+                    <button onclick="showRegisterModal('premium')" class="w-full bg-white text-primary-600 py-3 rounded-xl font-semibold hover:bg-primary-50 transition">
+                        Langganan Sekarang
+                    </button>
+                </div>
+                <!-- School Package -->
+                <div class="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-secondary-300 transition">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Paket Sekolah</h3>
+                        <p class="text-gray-500 mb-4">Untuk seluruh guru</p>
+                        <div class="text-4xl font-bold text-gray-900">Rp 299.000<span class="text-lg text-gray-500 font-normal">/bulan</span></div>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center"><i class="fas fa-check text-secondary-500 mr-3"></i>Hingga 50 Guru</li>
+                        <li class="flex items-center"><i class="fas fa-check text-secondary-500 mr-3"></i>Semua fitur Premium</li>
+                        <li class="flex items-center"><i class="fas fa-check text-secondary-500 mr-3"></i>Dashboard Admin</li>
+                        <li class="flex items-center"><i class="fas fa-check text-secondary-500 mr-3"></i>Manajemen Pengguna</li>
+                        <li class="flex items-center"><i class="fas fa-check text-secondary-500 mr-3"></i>Laporan Sekolah</li>
+                        <li class="flex items-center"><i class="fas fa-check text-secondary-500 mr-3"></i>Support Prioritas</li>
+                        <li class="flex items-center"><i class="fas fa-check text-secondary-500 mr-3"></i>Training Online</li>
+                    </ul>
+                    <button onclick="showContactModal()" class="w-full bg-secondary-100 text-secondary-700 py-3 rounded-xl font-semibold hover:bg-secondary-200 transition">
+                        Hubungi Kami
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                        Dibuat oleh Guru, untuk Guru
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                        Admin Guru Super App dikembangkan berdasarkan kebutuhan nyata guru PAI di lapangan. 
+                        Kami memahami betapa rumitnya administrasi mengajar, dan kami hadir untuk menyederhanakannya.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-shield-alt text-primary-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 mb-1">Sesuai Regulasi</h4>
+                                <p class="text-gray-600">Mengacu pada Kepka BSKAP No. 046/H/KR/2025 dan Kurikulum Merdeka terbaru.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-mobile-alt text-secondary-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 mb-1">Mobile Friendly</h4>
+                                <p class="text-gray-600">Akses dari mana saja, kapan saja. Desain responsif untuk semua perangkat.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-accent-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-language text-accent-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 mb-1">Support Teks Arab</h4>
+                                <p class="text-gray-600">Dukungan penulisan teks Arab (Right-to-Left) untuk materi PAI.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-primary-500 to-secondary-500 rounded-3xl p-8 text-white">
+                    <div class="text-center mb-8">
+                        <i class="fas fa-quote-left text-5xl opacity-30 mb-4"></i>
+                        <p class="text-xl leading-relaxed mb-6">
+                            "Dulu saya butuh 2 minggu untuk menyelesaikan administrasi semester. 
+                            Dengan aplikasi ini, hanya butuh 2 hari!"
+                        </p>
+                        <div class="flex items-center justify-center space-x-4">
+                            <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-2xl"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="font-bold">Ustadz Ahmad Fauzi</p>
+                                <p class="text-primary-200 text-sm">Guru PAI, SDN Sukamaju</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-white/20">
+                        <div class="text-center">
+                            <p class="text-3xl font-bold">5000+</p>
+                            <p class="text-primary-200 text-sm">Guru Aktif</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-3xl font-bold">500+</p>
+                            <p class="text-primary-200 text-sm">Sekolah</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-3xl font-bold">4.9</p>
+                            <p class="text-primary-200 text-sm">Rating</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
+                            <i class="fas fa-chalkboard-teacher text-white text-lg"></i>
+                        </div>
+                        <span class="text-xl font-bold">Admin Guru</span>
+                    </div>
+                    <p class="text-gray-400">
+                        Solusi administrasi guru PAI yang cerdas dan efisien.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Produk</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Fitur</a></li>
+                        <li><a href="#" class="hover:text-white transition">Harga</a></li>
+                        <li><a href="#" class="hover:text-white transition">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Perusahaan</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-white transition">Kontak</a></li>
+                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-white transition">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">© 2025 Admin Guru Super App. All rights reserved.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-youtube text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-whatsapp text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl w-full max-w-md p-8 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Masuk ke Akun</h2>
+                <button onclick="closeLoginModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="loginForm" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="loginEmail" required class="input-field w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none transition" placeholder="guru@sekolah.sch.id">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <input type="password" id="loginPassword" required class="input-field w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none transition" placeholder="••••••••">
+                        <button type="button" onclick="togglePassword('loginPassword')" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded text-primary-500">
+                        Ingat saya
+                    </label>
+                    <a href="#" class="text-primary-600 hover:underline">Lupa password?</a>
+                </div>
+                <button type="submit" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Masuk
+                </button>
+            </form>
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+                    <div class="relative flex justify-center text-sm"><span class="px-4 bg-white text-gray-500">Atau masuk dengan</span></div>
+                </div>
+                <button onclick="signInWithGoogle()" class="w-full mt-4 flex items-center justify-center gap-3 bg-white border-2 border-gray-200 py-3 rounded-xl hover:bg-gray-50 transition font-medium">
+                    <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5">
+                    Google
+                </button>
+            </div>
+            <p class="text-center mt-6 text-gray-600">
+                Belum punya akun? <a href="#" onclick="switchToRegister()" class="text-primary-600 font-semibold hover:underline">Daftar</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl w-full max-w-md p-8 shadow-2xl transform transition-all max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Buat Akun Baru</h2>
+                <button onclick="closeRegisterModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="registerForm" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+                    <input type="text" id="registerName" required class="input-field w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none transition" placeholder="Ustadz/Ustadzah">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="registerEmail" required class="input-field w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none transition" placeholder="guru@sekolah.sch.id">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <input type="password" id="registerPassword" required minlength="6" class="input-field w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none transition" placeholder="Min. 6 karakter">
+                        <button type="button" onclick="togglePassword('registerPassword')" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenjang Pendidikan</label>
+                    <select id="registerJenjang" required class="input-field w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none transition bg-white">
+                        <option value="">Pilih Jenjang</option>
+                        <option value="sd">SD/MI (Fase A-C)</option>
+                        <option value="smp">SMP/MTs (Fase D)</option>
+                        <option value="sma">SMA/MA (Fase E-F)</option>
+                    </select>
+                </div>
+                <div class="flex items-start">
+                    <input type="checkbox" id="agreeTerms" required class="mt-1 mr-3 rounded text-primary-500">
+                    <label for="agreeTerms" class="text-sm text-gray-600">
+                        Saya setuju dengan <a href="#" class="text-primary-600 hover:underline">Syarat & Ketentuan</a> dan <a href="#" class="text-primary-600 hover:underline">Kebijakan Privasi</a>
+                    </label>
+                </div>
+                <button type="submit" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
+                    <i class="fas fa-user-plus mr-2"></i>Daftar Sekarang
+                </button>
+            </form>
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+                    <div class="relative flex justify-center text-sm"><span class="px-4 bg-white text-gray-500">Atau daftar dengan</span></div>
+                </div>
+                <button onclick="signInWithGoogle()" class="w-full mt-4 flex items-center justify-center gap-3 bg-white border-2 border-gray-200 py-3 rounded-xl hover:bg-gray-50 transition font-medium">
+                    <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5">
+                    Google
+                </button>
+            </div>
+            <p class="text-center mt-6 text-gray-600">
+                Sudah punya akun? <a href="#" onclick="switchToLogin()" class="text-primary-600 font-semibold hover:underline">Masuk</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 z-[100] hidden items-center justify-center bg-white">
+        <div class="text-center">
+            <div class="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-600 font-medium">Memuat...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-[100] hidden transform transition-all duration-300">
+        <div class="bg-gray-900 text-white px-6 py-4 rounded-xl shadow-lg flex items-center space-x-3">
+            <i id="toastIcon" class="fas fa-check-circle text-xl"></i>
+            <span id="toastMessage">Notification message</span>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+    <script>
+        // Firebase Configuration - GANTI DENGAN CONFIG ANDA
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Check Auth State
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'app.html';
+            }
+        });
+
+        // Modal Functions
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('loginModal').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showRegisterModal(plan = 'free') {
+            document.getElementById('registerModal').classList.remove('hidden');
+            document.getElementById('registerModal').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.add('hidden');
+            document.getElementById('registerModal').classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        function switchToRegister() {
+            closeLoginModal();
+            setTimeout(showRegisterModal, 200);
+        }
+
+        function switchToLogin() {
+            closeRegisterModal();
+            setTimeout(showLoginModal, 200);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            document.getElementById('loadingOverlay').classList.add('flex');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+            document.getElementById('loadingOverlay').classList.remove('flex');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMessage');
+            
+            msg.textContent = message;
+            icon.className = type === 'success' ? 'fas fa-check-circle text-xl text-green-400' : 
+                            type === 'error' ? 'fas fa-exclamation-circle text-xl text-red-400' : 
+                            'fas fa-info-circle text-xl text-blue-400';
+            
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        // Login Form Handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            showLoading();
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showToast('Login berhasil! Mengalihkan...');
+                window.location.href = 'app.html';
+            } catch (error) {
+                hideLoading();
+                let errorMsg = 'Terjadi kesalahan';
+                if (error.code === 'auth/user-not-found') errorMsg = 'Email tidak terdaftar';
+                else if (error.code === 'auth/wrong-password') errorMsg = 'Password salah';
+                else if (error.code === 'auth/invalid-email') errorMsg = 'Format email tidak valid';
+                showToast(errorMsg, 'error');
+            }
+        });
+
+        // Register Form Handler
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const jenjang = document.getElementById('registerJenjang').value;
+
+            showLoading();
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Update profile
+                await userCredential.user.updateProfile({ displayName: name });
+                
+                // Create user document in Firestore
+                await db.collection('users').doc(userCredential.user.uid).set({
+                    name: name,
+                    email: email,
+                    jenjang: jenjang,
+                    role: 'guru',
+                    plan: 'free',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showToast('Pendaftaran berhasil!');
+                window.location.href = 'app.html';
+            } catch (error) {
+                hideLoading();
+                let errorMsg = 'Terjadi kesalahan';
+                if (error.code === 'auth/email-already-in-use') errorMsg = 'Email sudah terdaftar';
+                else if (error.code === 'auth/weak-password') errorMsg = 'Password terlalu lemah';
+                showToast(errorMsg, 'error');
+            }
+        });
+
+        // Google Sign In
+        async function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            showLoading();
+            try {
+                const result = await auth.signInWithPopup(provider);
+                
+                // Check if user exists
+                const userDoc = await db.collection('users').doc(result.user.uid).get();
+                
+                if (!userDoc.exists) {
+                    // Create new user document
+                    await db.collection('users').doc(result.user.uid).set({
+                        name: result.user.displayName,
+                        email: result.user.email,
+                        photoURL: result.user.photoURL,
+                        jenjang: '',
+                        role: 'guru',
+                        plan: 'free',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
+                showToast('Login berhasil!');
+                window.location.href = 'app.html';
+            } catch (error) {
+                hideLoading();
+                showToast('Login dengan Google gagal', 'error');
+            }
+        }
+
+        function showDemoVideo() {
+            showToast('Video demo akan segera tersedia', 'info');
+        }
+
+        function showContactModal() {
+            showToast('Hubungi: admin@adminguru.app', 'info');
+        }
+    </script>
+</body>
+</html>
