@@ -24,6 +24,1915 @@
                 }
             }
         }
+                // ==========================================
+        // LKPD (LEMBAR KERJA PESERTA DIDIK) - COMPLETE
+        // ==========================================
+        function getLKPDHTML() {
+            return checkPremiumAccess('LKPD') || `
+                <div class="space-y-6 animate-slide-in">
+                    <div class="bg-gradient-to-r from-teal-500 to-cyan-500 rounded-xl p-6 text-white">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-file-alt text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Lembar Kerja Peserta Didik (LKPD)</h3>
+                                <p class="text-teal-100 text-sm">LKPD menggunakan bahasa yang mudah dipahami siswa, berbeda dengan Modul Ajar yang untuk guru.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                            <h3 class="text-lg font-bold text-gray-900 mb-4 md:mb-0">Daftar LKPD</h3>
+                            <button onclick="showCreateLKPDModal()" class="btn-primary text-white px-4 py-2 rounded-lg">
+                                <i class="fas fa-plus mr-2"></i>Buat LKPD Baru
+                            </button>
+                        </div>
+
+                        <div id="lkpdList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="col-span-full text-center py-12 text-gray-500">
+                                <i class="fas fa-file-alt text-5xl mb-4 text-gray-300"></i>
+                                <p>Belum ada LKPD. Buat LKPD baru untuk siswa Anda.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LKPD dari Modul Ajar -->
+                    <div class="card p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">LKPD dari Modul Ajar</h3>
+                        <p class="text-gray-600 text-sm mb-4">LKPD yang otomatis dibuat dari Modul Ajar yang memiliki opsi LKPD aktif.</p>
+                        <div id="lkpdFromModul" class="space-y-3">
+                            <!-- Will be populated -->
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function initLKPD() {
+            if (userData?.plan !== 'premium') return;
+            await loadLKPDList();
+            await loadLKPDFromModul();
+        }
+
+        async function loadLKPDList() {
+            try {
+                const snapshot = await db.collection('users').doc(currentUser.uid)
+                    .collection('lkpd').orderBy('createdAt', 'desc').get();
+
+                const container = document.getElementById('lkpdList');
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="col-span-full text-center py-12 text-gray-500">
+                            <i class="fas fa-file-alt text-5xl mb-4 text-gray-300"></i>
+                            <p>Belum ada LKPD. Buat LKPD baru untuk siswa Anda.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const lkpd = doc.data();
+                    return `
+                        <div class="bg-gray-50 hover:bg-gray-100 p-4 rounded-xl transition">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="flex space-x-1">
+                                    <button onclick="previewLKPD('${doc.id}')" class="text-gray-400 hover:text-blue-600 p-1" title="Preview">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button onclick="printLKPD('${doc.id}')" class="text-gray-400 hover:text-primary-600 p-1" title="Cetak">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                    <button onclick="deleteLKPD('${doc.id}')" class="text-gray-400 hover:text-red-600 p-1" title="Hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <h4 class="font-bold text-gray-900 mb-1">${lkpd.judul}</h4>
+                            <p class="text-sm text-gray-500 mb-2">${lkpd.kelas} • ${lkpd.materi}</p>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <span class="bg-teal-100 text-teal-700 px-2 py-1 rounded-full">${lkpd.jenisTugas || 'Individu'}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading LKPD:', error);
+            }
+        }
+
+        async function loadLKPDFromModul() {
+            try {
+                const snapshot = await db.collection('users').doc(currentUser.uid)
+                    .collection('modul_ajar').where('hasLKPD', '==', true).get();
+
+                const container = document.getElementById('lkpdFromModul');
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <p class="text-gray-500 text-sm">Belum ada Modul Ajar dengan LKPD aktif.</p>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const modul = doc.data();
+                    return `
+                        <div class="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-rose-100 text-rose-600 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-book-open"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">${modul.judul}</h4>
+                                    <p class="text-sm text-gray-500">${modul.kelas}</p>
+                                </div>
+                            </div>
+                            <button onclick="generateLKPDFromModul('${doc.id}')" class="text-primary-600 hover:text-primary-700 font-medium text-sm">
+                                <i class="fas fa-magic mr-1"></i>Generate LKPD
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading modul:', error);
+            }
+        }
+
+        function showCreateLKPDModal() {
+            const modal = document.getElementById('modalContainer');
+            modal.innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+                    <div class="bg-white rounded-2xl w-full max-w-2xl my-8">
+                        <div class="sticky top-0 bg-white border-b px-6 py-4 rounded-t-2xl flex items-center justify-between">
+                            <h3 class="text-xl font-bold text-gray-900">Buat LKPD Baru</h3>
+                            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        <form id="createLKPDForm" class="p-6 space-y-5">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Judul LKPD</label>
+                                    <input type="text" id="lkpdJudul" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Contoh: Ayo Belajar Shalat!">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                                    <select id="lkpdKelas" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white">
+                                        <option value="">Pilih Kelas</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Materi Pembelajaran</label>
+                                <input type="text" id="lkpdMateri" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Contoh: Tata Cara Shalat Fardhu">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tujuan Pembelajaran (Bahasa Siswa)</label>
+                                <textarea id="lkpdTujuan" rows="2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Contoh: Setelah mengerjakan LKPD ini, kamu akan bisa mempraktikkan shalat dengan benar."></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Petunjuk Pengerjaan</label>
+                                <textarea id="lkpdPetunjuk" rows="3" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="1. Baca dengan teliti setiap pertanyaan&#10;2. Kerjakan dengan jujur&#10;3. Tanyakan kepada guru jika ada yang tidak dipahami"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-quran mr-1"></i>Teks Arab (opsional)
+                                </label>
+                                <textarea id="lkpdArabic" rows="2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl arabic-text" dir="rtl" placeholder="أدخل النص العربي هنا..."></textarea>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <label class="block text-sm font-medium text-gray-700">Soal/Tugas</label>
+                                    <button type="button" onclick="addLKPDSoal()" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                                        <i class="fas fa-plus mr-1"></i>Tambah Soal
+                                    </button>
+                                </div>
+                                <div id="lkpdSoalContainer" class="space-y-3">
+                                    <div class="bg-gray-50 p-4 rounded-xl" data-soal="1">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="font-medium text-gray-700">Soal 1</span>
+                                            <select class="text-sm px-2 py-1 border rounded-lg" data-field="tipe">
+                                                <option value="essay">Essay</option>
+                                                <option value="pilgan">Pilihan Ganda</option>
+                                                <option value="isian">Isian Singkat</option>
+                                                <option value="praktik">Praktik</option>
+                                            </select>
+                                        </div>
+                                        <textarea class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg" rows="2" data-field="pertanyaan" placeholder="Tuliskan soal..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Tugas</label>
+                                    <select id="lkpdJenis" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white">
+                                        <option value="individu">Individu</option>
+                                        <option value="kelompok">Kelompok</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Waktu Pengerjaan</label>
+                                    <input type="text" id="lkpdWaktu" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Contoh: 30 menit">
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end space-x-3 pt-4 border-t">
+                                <button type="button" onclick="closeModal()" class="px-4 py-2 border-2 border-gray-200 rounded-xl text-gray-700 hover:bg-gray-50">
+                                    Batal
+                                </button>
+                                <button type="submit" class="btn-primary text-white px-6 py-2 rounded-xl">
+                                    <i class="fas fa-save mr-2"></i>Simpan LKPD
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            // Load kelas
+            db.collection('users').doc(currentUser.uid)
+                .collection('kelas').orderBy('nama').get()
+                .then(snapshot => {
+                    const select = document.getElementById('lkpdKelas');
+                    snapshot.forEach(doc => {
+                        const kelas = doc.data();
+                        select.innerHTML += `<option value="${kelas.nama}">${kelas.nama}</option>`;
+                    });
+                });
+
+            // Form submit
+            document.getElementById('createLKPDForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await saveLKPD();
+            });
+        }
+
+        let lkpdSoalCount = 1;
+
+        function addLKPDSoal() {
+            lkpdSoalCount++;
+            const container = document.getElementById('lkpdSoalContainer');
+            const div = document.createElement('div');
+            div.className = 'bg-gray-50 p-4 rounded-xl';
+            div.dataset.soal = lkpdSoalCount;
+            div.innerHTML = `
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-medium text-gray-700">Soal ${lkpdSoalCount}</span>
+                    <div class="flex items-center space-x-2">
+                        <select class="text-sm px-2 py-1 border rounded-lg" data-field="tipe">
+                            <option value="essay">Essay</option>
+                            <option value="pilgan">Pilihan Ganda</option>
+                            <option value="isian">Isian Singkat</option>
+                            <option value="praktik">Praktik</option>
+                        </select>
+                        <button type="button" onclick="this.closest('[data-soal]').remove()" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <textarea class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg" rows="2" data-field="pertanyaan" placeholder="Tuliskan soal..."></textarea>
+            `;
+            container.appendChild(div);
+        }
+
+        async function saveLKPD() {
+            showLoading();
+
+            // Collect soal
+            const soalList = [];
+            document.querySelectorAll('#lkpdSoalContainer > div').forEach((div, idx) => {
+                soalList.push({
+                    nomor: idx + 1,
+                    tipe: div.querySelector('[data-field="tipe"]').value,
+                    pertanyaan: div.querySelector('[data-field="pertanyaan"]').value
+                });
+            });
+
+            try {
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('lkpd').add({
+                        judul: document.getElementById('lkpdJudul').value,
+                        kelas: document.getElementById('lkpdKelas').value,
+                        materi: document.getElementById('lkpdMateri').value,
+                        tujuan: document.getElementById('lkpdTujuan').value,
+                        petunjuk: document.getElementById('lkpdPetunjuk').value,
+                        teksArab: document.getElementById('lkpdArabic').value,
+                        soal: soalList,
+                        jenisTugas: document.getElementById('lkpdJenis').value,
+                        waktu: document.getElementById('lkpdWaktu').value,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                hideLoading();
+                closeModal();
+                showToast('LKPD berhasil disimpan!');
+                loadLKPDList();
+                lkpdSoalCount = 1;
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal menyimpan: ' + error.message, 'error');
+            }
+        }
+
+        async function previewLKPD(id) {
+            showLoading();
+            try {
+                const doc = await db.collection('users').doc(currentUser.uid)
+                    .collection('lkpd').doc(id).get();
+                
+                if (!doc.exists) {
+                    hideLoading();
+                    showToast('LKPD tidak ditemukan', 'error');
+                    return;
+                }
+
+                const lkpd = doc.data();
+                hideLoading();
+
+                const modal = document.getElementById('modalContainer');
+                modal.innerHTML = `
+                    <div class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+                        <div class="bg-white rounded-2xl w-full max-w-3xl my-8 print-full">
+                            <div class="sticky top-0 bg-white border-b px-6 py-4 rounded-t-2xl flex items-center justify-between no-print">
+                                <h3 class="text-xl font-bold text-gray-900">Preview LKPD</h3>
+                                <div class="flex items-center space-x-2">
+                                    <button onclick="window.print()" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200">
+                                        <i class="fas fa-print mr-2"></i>Cetak
+                                    </button>
+                                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-times text-xl"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-8" id="lkpdPrintArea">
+                                <!-- Header -->
+                                <div class="text-center mb-6 pb-4 border-b-2 border-gray-300">
+                                    <h1 class="text-2xl font-bold text-gray-900 mb-1">LEMBAR KERJA PESERTA DIDIK</h1>
+                                    <h2 class="text-xl font-semibold text-primary-600">${lkpd.judul}</h2>
+                                </div>
+
+                                <!-- Info -->
+                                <div class="grid grid-cols-2 gap-4 mb-6 text-sm">
+                                    <div class="flex">
+                                        <span class="w-32 text-gray-600">Mata Pelajaran</span>
+                                        <span class="font-medium">: PAI & Budi Pekerti</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="w-32 text-gray-600">Kelas</span>
+                                        <span class="font-medium">: ${lkpd.kelas}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="w-32 text-gray-600">Materi</span>
+                                        <span class="font-medium">: ${lkpd.materi}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="w-32 text-gray-600">Waktu</span>
+                                        <span class="font-medium">: ${lkpd.waktu || '-'}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Identitas Siswa -->
+                                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="flex items-center">
+                                            <span class="w-20 text-gray-600">Nama</span>
+                                            <span>: ________________________________</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="w-20 text-gray-600">No. Absen</span>
+                                            <span>: __________</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tujuan -->
+                                ${lkpd.tujuan ? `
+                                <div class="mb-6">
+                                    <h3 class="font-bold text-gray-900 mb-2"><i class="fas fa-bullseye text-primary-500 mr-2"></i>Tujuan Pembelajaran</h3>
+                                    <p class="text-gray-700 bg-primary-50 p-3 rounded-lg">${lkpd.tujuan}</p>
+                                </div>
+                                ` : ''}
+
+                                <!-- Teks Arab -->
+                                ${lkpd.teksArab ? `
+                                <div class="mb-6">
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <p class="arabic-text text-2xl leading-loose">${lkpd.teksArab}</p>
+                                    </div>
+                                </div>
+                                ` : ''}
+
+                                <!-- Petunjuk -->
+                                ${lkpd.petunjuk ? `
+                                <div class="mb-6">
+                                    <h3 class="font-bold text-gray-900 mb-2"><i class="fas fa-info-circle text-blue-500 mr-2"></i>Petunjuk Pengerjaan</h3>
+                                    <div class="bg-blue-50 p-3 rounded-lg text-gray-700 whitespace-pre-line">${lkpd.petunjuk}</div>
+                                </div>
+                                ` : ''}
+
+                                <!-- Soal -->
+                                <div class="mb-6">
+                                    <h3 class="font-bold text-gray-900 mb-4"><i class="fas fa-tasks text-green-500 mr-2"></i>Soal / Tugas</h3>
+                                    <div class="space-y-6">
+                                        ${(lkpd.soal || []).map((s, idx) => `
+                                            <div class="border-l-4 border-primary-500 pl-4">
+                                                <p class="font-medium text-gray-900 mb-2">${idx + 1}. ${s.pertanyaan}</p>
+                                                ${s.tipe === 'essay' ? `
+                                                    <div class="border-2 border-gray-200 rounded-lg p-4 min-h-[100px] bg-white">
+                                                        <p class="text-gray-400 text-sm">Jawaban:</p>
+                                                    </div>
+                                                ` : s.tipe === 'isian' ? `
+                                                    <div class="border-b-2 border-gray-300 w-full h-8"></div>
+                                                ` : `
+                                                    <div class="border-2 border-gray-200 rounded-lg p-4 min-h-[60px] bg-white"></div>
+                                                `}
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+
+                                <!-- Footer -->
+                                <div class="mt-8 pt-4 border-t text-center text-sm text-gray-500">
+                                    <p>Selamat mengerjakan! Semoga berhasil! 🌟</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal memuat LKPD: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteLKPD(id) {
+            if (!confirm('Hapus LKPD ini?')) return;
+            
+            showLoading();
+            try {
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('lkpd').doc(id).delete();
+                hideLoading();
+                showToast('LKPD berhasil dihapus!');
+                loadLKPDList();
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal menghapus: ' + error.message, 'error');
+            }
+        }
+
+        // ==========================================
+        // BANK SOAL - COMPLETE
+        // ==========================================
+        function getBankSoalHTML() {
+            return checkPremiumAccess('Bank Soal') || `
+                <div class="space-y-6 animate-slide-in">
+                    <div class="bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl p-6 text-white">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-question-circle text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Bank Soal PAI</h3>
+                                <p class="text-orange-100 text-sm">Kelola koleksi soal berdasarkan ATP dengan dukungan teks Arab.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter & Stats -->
+                    <div class="grid md:grid-cols-4 gap-4">
+                        <div class="bg-white p-4 rounded-xl border">
+                            <p class="text-2xl font-bold text-gray-900" id="totalSoal">0</p>
+                            <p class="text-sm text-gray-500">Total Soal</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border">
+                            <p class="text-2xl font-bold text-blue-600" id="soalPG">0</p>
+                            <p class="text-sm text-gray-500">Pilihan Ganda</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border">
+                            <p class="text-2xl font-bold text-green-600" id="soalEssay">0</p>
+                            <p class="text-sm text-gray-500">Essay</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border">
+                            <p class="text-2xl font-bold text-purple-600" id="soalIsian">0</p>
+                            <p class="text-sm text-gray-500">Isian</p>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                            <div class="flex flex-wrap gap-3">
+                                <select id="filterElemen" class="px-4 py-2 border-2 border-gray-200 rounded-xl bg-white" onchange="filterSoal()">
+                                    <option value="">Semua Elemen</option>
+                                    <option value="Al-Qur'an dan Hadis">Al-Qur'an dan Hadis</option>
+                                    <option value="Akidah">Akidah</option>
+                                    <option value="Akhlak">Akhlak</option>
+                                    <option value="Fikih">Fikih</option>
+                                    <option value="Sejarah">Sejarah Peradaban Islam</option>
+                                </select>
+                                <select id="filterTipe" class="px-4 py-2 border-2 border-gray-200 rounded-xl bg-white" onchange="filterSoal()">
+                                    <option value="">Semua Tipe</option>
+                                    <option value="pilgan">Pilihan Ganda</option>
+                                    <option value="essay">Essay</option>
+                                    <option value="isian">Isian Singkat</option>
+                                </select>
+                                <select id="filterKesulitan" class="px-4 py-2 border-2 border-gray-200 rounded-xl bg-white" onchange="filterSoal()">
+                                    <option value="">Semua Level</option>
+                                    <option value="mudah">Mudah (C1-C2)</option>
+                                    <option value="sedang">Sedang (C3-C4)</option>
+                                    <option value="sulit">Sulit (C5-C6)</option>
+                                </select>
+                            </div>
+                            <button onclick="showAddSoalModal()" class="btn-primary text-white px-4 py-2 rounded-lg whitespace-nowrap">
+                                <i class="fas fa-plus mr-2"></i>Tambah Soal
+                            </button>
+                        </div>
+
+                        <div id="soalList" class="space-y-4">
+                            <div class="text-center py-12 text-gray-500">
+                                <i class="fas fa-question-circle text-5xl mb-4 text-gray-300"></i>
+                                <p>Belum ada soal. Tambahkan soal untuk membangun bank soal.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generate Soal dari ATP -->
+                    <div class="card p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">
+                            <i class="fas fa-magic text-purple-500 mr-2"></i>Generate Soal dari ATP
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4">Pilih ATP yang sudah dibuat untuk generate soal otomatis.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <select id="atpForSoal" class="flex-1 px-4 py-2 border-2 border-gray-200 rounded-xl bg-white">
+                                <option value="">Pilih ATP</option>
+                            </select>
+                            <input type="number" id="jumlahSoalGenerate" min="1" max="20" value="5" class="w-24 px-4 py-2 border-2 border-gray-200 rounded-xl" placeholder="Jumlah">
+                            <button onclick="generateSoalFromATP()" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-xl transition">
+                                <i class="fas fa-bolt mr-2"></i>Generate
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function initBankSoal() {
+            if (userData?.plan !== 'premium') return;
+            await loadSoalList();
+            await loadATPForSoal();
+        }
+
+        async function loadSoalList() {
+            try {
+                const snapshot = await db.collection('users').doc(currentUser.uid)
+                    .collection('bank_soal').orderBy('createdAt', 'desc').get();
+
+                const container = document.getElementById('soalList');
+                let totalPG = 0, totalEssay = 0, totalIsian = 0;
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="text-center py-12 text-gray-500">
+                            <i class="fas fa-question-circle text-5xl mb-4 text-gray-300"></i>
+                            <p>Belum ada soal. Tambahkan soal untuk membangun bank soal.</p>
+                        </div>
+                    `;
+                    document.getElementById('totalSoal').textContent = '0';
+                    document.getElementById('soalPG').textContent = '0';
+                    document.getElementById('soalEssay').textContent = '0';
+                    document.getElementById('soalIsian').textContent = '0';
+                    return;
+                }
+
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const soal = doc.data();
+                    if (soal.tipe === 'pilgan') totalPG++;
+                    else if (soal.tipe === 'essay') totalEssay++;
+                    else totalIsian++;
+
+                    const levelColors = {
+                        mudah: 'bg-green-100 text-green-700',
+                        sedang: 'bg-yellow-100 text-yellow-700',
+                        sulit: 'bg-red-100 text-red-700'
+                    };
+
+                    return `
+                        <div class="border rounded-xl p-4 hover:border-primary-300 transition">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs ${levelColors[soal.kesulitan] || 'bg-gray-100 text-gray-700'} px-2 py-1 rounded-full">${soal.kesulitan || 'sedang'}</span>
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">${soal.tipe}</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">${soal.elemen}</span>
+                                </div>
+                                <div class="flex space-x-1">
+                                    <button onclick="editSoal('${doc.id}')" class="text-gray-400 hover:text-primary-600 p-1">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button onclick="deleteSoal('${doc.id}')" class="text-gray-400 hover:text-red-600 p-1">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-gray-900 mb-2">${soal.pertanyaan}</p>
+                            ${soal.teksArab ? `<p class="arabic-text text-xl text-blue-800 bg-blue-50 p-2 rounded mb-2">${soal.teksArab}</p>` : ''}
+                            ${soal.tipe === 'pilgan' && soal.opsi ? `
+                                <div class="grid grid-cols-2 gap-2 text-sm mt-3">
+                                    ${soal.opsi.map((opt, idx) => `
+                                        <div class="flex items-center space-x-2 ${soal.jawaban === idx ? 'text-green-600 font-medium' : 'text-gray-600'}">
+                                            <span class="w-6 h-6 rounded-full ${soal.jawaban === idx ? 'bg-green-100' : 'bg-gray-100'} flex items-center justify-center text-xs">${String.fromCharCode(65 + idx)}</span>
+                                            <span>${opt}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+
+                document.getElementById('totalSoal').textContent = snapshot.size;
+                document.getElementById('soalPG').textContent = totalPG;
+                document.getElementById('soalEssay').textContent = totalEssay;
+                document.getElementById('soalIsian').textContent = totalIsian;
+
+            } catch (error) {
+                console.error('Error loading soal:', error);
+            }
+        }
+
+        async function loadATPForSoal() {
+            try {
+                const snapshot = await db.collection('users').doc(currentUser.uid)
+                    .collection('atp').get();
+                
+                const select = document.getElementById('atpForSoal');
+                snapshot.forEach(doc => {
+                    const atp = doc.data();
+                    select.innerHTML += `<option value="${doc.id}">${atp.faseNama} - ${atp.elemenNama}</option>`;
+                });
+            } catch (error) {
+                console.error('Error loading ATP:', error);
+            }
+        }
+
+        function showAddSoalModal() {
+            const modal = document.getElementById('modalContainer');
+            modal.innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+                    <div class="bg-white rounded-2xl w-full max-w-2xl my-8">
+                        <div class="sticky top-0 bg-white border-b px-6 py-4 rounded-t-2xl flex items-center justify-between">
+                            <h3 class="text-xl font-bold text-gray-900">Tambah Soal Baru</h3>
+                            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        <form id="addSoalForm" class="p-6 space-y-5">
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Tipe Soal</label>
+                                    <select id="soalTipe" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white" onchange="toggleOpsiPilgan()">
+                                        <option value="pilgan">Pilihan Ganda</option>
+                                        <option value="essay">Essay</option>
+                                        <option value="isian">Isian Singkat</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Elemen</label>
+                                    <select id="soalElemen" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white">
+                                        <option value="Al-Qur'an dan Hadis">Al-Qur'an dan Hadis</option>
+                                        <option value="Akidah">Akidah</option>
+                                        <option value="Akhlak">Akhlak</option>
+                                        <option value="Fikih">Fikih</option>
+                                        <option value="Sejarah">Sejarah Peradaban Islam</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Tingkat Kesulitan</label>
+                                    <select id="soalKesulitan" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white">
+                                        <option value="mudah">Mudah (C1-C2)</option>
+                                        <option value="sedang">Sedang (C3-C4)</option>
+                                        <option value="sulit">Sulit (C5-C6)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Pertanyaan</label>
+                                <textarea id="soalPertanyaan" rows="3" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Tuliskan pertanyaan..."></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-quran mr-1"></i>Teks Arab (opsional)
+                                </label>
+                                <textarea id="soalArabic" rows="2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl arabic-text" dir="rtl" placeholder="أدخل النص العربي هنا..."></textarea>
+                            </div>
+
+                            <!-- Opsi Pilihan Ganda -->
+                            <div id="opsiPilganContainer">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Opsi Jawaban</label>
+                                <div class="space-y-3">
+                                    <div class="flex items-center space-x-3">
+                                        <input type="radio" name="jawabanBenar" value="0" class="w-5 h-5 text-primary-600">
+                                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center font-medium">A</span>
+                                        <input type="text" id="opsiA" class="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg" placeholder="Opsi A">
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <input type="radio" name="jawabanBenar" value="1" class="w-5 h-5 text-primary-600">
+                                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center font-medium">B</span>
+                                        <input type="text" id="opsiB" class="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg" placeholder="Opsi B">
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <input type="radio" name="jawabanBenar" value="2" class="w-5 h-5 text-primary-600">
+                                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center font-medium">C</span>
+                                        <input type="text" id="opsiC" class="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg" placeholder="Opsi C">
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <input type="radio" name="jawabanBenar" value="3" class="w-5 h-5 text-primary-600">
+                                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center font-medium">D</span>
+                                        <input type="text" id="opsiD" class="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg" placeholder="Opsi D">
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2"><i class="fas fa-info-circle mr-1"></i>Pilih radio button untuk jawaban yang benar</p>
+                            </div>
+
+                            <!-- Kunci Jawaban Essay/Isian -->
+                            <div id="kunciJawabanContainer" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Kunci Jawaban</label>
+                                <textarea id="kunciJawaban" rows="2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Tuliskan kunci jawaban..."></textarea>
+                            </div>
+
+                            <div class="flex justify-end space-x-3 pt-4 border-t">
+                                <button type="button" onclick="closeModal()" class="px-4 py-2 border-2 border-gray-200 rounded-xl text-gray-700 hover:bg-gray-50">
+                                    Batal
+                                </button>
+                                <button type="submit" class="btn-primary text-white px-6 py-2 rounded-xl">
+                                    <i class="fas fa-save mr-2"></i>Simpan Soal
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            // Form submit
+            document.getElementById('addSoalForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await saveSoal();
+            });
+        }
+
+        function toggleOpsiPilgan() {
+            const tipe = document.getElementById('soalTipe').value;
+            const opsiContainer = document.getElementById('opsiPilganContainer');
+            const kunciContainer = document.getElementById('kunciJawabanContainer');
+
+            if (tipe === 'pilgan') {
+                opsiContainer.classList.remove('hidden');
+                kunciContainer.classList.add('hidden');
+            } else {
+                opsiContainer.classList.add('hidden');
+                kunciContainer.classList.remove('hidden');
+            }
+        }
+
+        async function saveSoal() {
+            showLoading();
+
+            const tipe = document.getElementById('soalTipe').value;
+            let soalData = {
+                tipe,
+                elemen: document.getElementById('soalElemen').value,
+                kesulitan: document.getElementById('soalKesulitan').value,
+                pertanyaan: document.getElementById('soalPertanyaan').value,
+                teksArab: document.getElementById('soalArabic').value,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if (tipe === 'pilgan') {
+                soalData.opsi = [
+                    document.getElementById('opsiA').value,
+                    document.getElementById('opsiB').value,
+                    document.getElementById('opsiC').value,
+                    document.getElementById('opsiD').value
+                ];
+                const jawabanBenar = document.querySelector('input[name="jawabanBenar"]:checked');
+                soalData.jawaban = jawabanBenar ? parseInt(jawabanBenar.value) : 0;
+            } else {
+                soalData.kunciJawaban = document.getElementById('kunciJawaban').value;
+            }
+
+            try {
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('bank_soal').add(soalData);
+
+                hideLoading();
+                closeModal();
+                showToast('Soal berhasil disimpan!');
+                loadSoalList();
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal menyimpan: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteSoal(id) {
+            if (!confirm('Hapus soal ini?')) return;
+            
+            showLoading();
+            try {
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('bank_soal').doc(id).delete();
+                hideLoading();
+                showToast('Soal berhasil dihapus!');
+                loadSoalList();
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal menghapus: ' + error.message, 'error');
+            }
+        }
+
+        // ==========================================
+        // JURNAL PEMBELAJARAN - COMPLETE
+        // ==========================================
+        function getJurnalHTML() {
+            return checkPremiumAccess('Jurnal Pembelajaran') || `
+                <div class="space-y-6 animate-slide-in">
+                    <div class="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl p-6 text-white">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-book text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Jurnal Pembelajaran</h3>
+                                <p class="text-emerald-100 text-sm">Catat kegiatan pembelajaran harian. Data otomatis diambil dari jadwal dan modul ajar.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter -->
+                    <div class="card p-4">
+                        <div class="flex flex-wrap gap-4">
+                            <div class="flex-1 min-w-[200px]">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                                <select id="jurnalKelas" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl bg-white" onchange="loadJurnalByKelas()">
+                                    <option value="">Semua Kelas</option>
+                                </select>
+                            </div>
+                            <div class="flex-1 min-w-[200px]">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Bulan</label>
+                                <input type="month" id="jurnalBulan" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl" onchange="loadJurnalByKelas()">
+                            </div>
+                            <div class="flex items-end">
+                                <button onclick="showAddJurnalModal()" class="btn-primary text-white px-4 py-2 rounded-xl h-[42px]">
+                                    <i class="fas fa-plus mr-2"></i>Tambah Jurnal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Jurnal List -->
+                    <div class="card p-6">
+                        <div id="jurnalList" class="space-y-4">
+                            <div class="text-center py-12 text-gray-500">
+                                <i class="fas fa-book text-5xl mb-4 text-gray-300"></i>
+                                <p>Belum ada jurnal pembelajaran.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Add from Schedule -->
+                    <div class="card p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">
+                            <i class="fas fa-calendar-check text-blue-500 mr-2"></i>Jadwal Hari Ini
+                        </h3>
+                        <div id="jadwalHariIni" class="space-y-3">
+                            <!-- Will be populated -->
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function initJurnal() {
+            if (userData?.plan !== 'premium') return;
+            
+            // Set default month
+            const now = new Date();
+            document.getElementById('jurnalBulan').value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            
+            // Load kelas
+            const snapshot = await db.collection('users').doc(currentUser.uid)
+                .collection('kelas').orderBy('nama').get();
+            
+            const select = document.getElementById('jurnalKelas');
+            snapshot.forEach(doc => {
+                const kelas = doc.data();
+                select.innerHTML += `<option value="${doc.id}">${kelas.nama}</option>`;
+            });
+
+            await loadJurnalByKelas();
+            await loadJadwalHariIni();
+        }
+
+        async function loadJurnalByKelas() {
+            const kelasId = document.getElementById('jurnalKelas').value;
+            const bulan = document.getElementById('jurnalBulan').value;
+
+            try {
+                let query = db.collection('users').doc(currentUser.uid)
+                    .collection('jurnal').orderBy('tanggal', 'desc');
+
+                if (kelasId) {
+                    query = query.where('kelasId', '==', kelasId);
+                }
+
+                const snapshot = await query.limit(50).get();
+                const container = document.getElementById('jurnalList');
+
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="text-center py-12 text-gray-500">
+                            <i class="fas fa-book text-5xl mb-4 text-gray-300"></i>
+                            <p>Belum ada jurnal pembelajaran.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const hariNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const jurnal = doc.data();
+                    const tanggal = jurnal.tanggal?.toDate ? jurnal.tanggal.toDate() : new Date(jurnal.tanggal);
+                    const hari = hariNames[tanggal.getDay()];
+
+                    return `
+                        <div class="border rounded-xl p-4 hover:border-primary-300 transition">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex flex-col items-center justify-center">
+                                        <span class="text-xs">${hari.substring(0, 3)}</span>
+                                        <span class="font-bold">${tanggal.getDate()}</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900">${jurnal.namaKelas}</h4>
+                                        <p class="text-sm text-gray-500">Jam ke-${jurnal.jamKe} • ${jurnal.jamMulai || ''}</p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-1">
+                                    <button onclick="editJurnal('${doc.id}')" class="text-gray-400 hover:text-primary-600 p-1">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button onclick="deleteJurnal('${doc.id}')" class="text-gray-400 hover:text-red-600 p-1">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-3 mb-3">
+                                <p class="text-sm text-gray-700"><strong>Materi:</strong> ${jurnal.materi}</p>
+                                <p class="text-sm text-gray-600 mt-1"><strong>Kegiatan:</strong> ${jurnal.kegiatan}</p>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Hadir: ${jurnal.hadir || 0}</span>
+                                    <span class="text-red-600"><i class="fas fa-times-circle mr-1"></i>Tidak Hadir: ${jurnal.tidakHadir || 0}</span>
+                                </div>
+                                ${jurnal.catatan ? `<span class="text-gray-500"><i class="fas fa-sticky-note mr-1"></i>Ada catatan</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading jurnal:', error);
+            }
+        }
+
+        async function loadJadwalHariIni() {
+            const today = new Date().getDay();
+            const hariIndex = today === 0 ? 6 : today - 1; // Convert to Monday = 0
+
+            try {
+                const snapshot = await db.collection('users').doc(currentUser.uid)
+                    .collection('jadwal').where('hari', '==', hariIndex).get();
+
+                const container = document.getElementById('jadwalHariIni');
+
+                if (snapshot.empty) {
+                    container.innerHTML = `<p class="text-gray-500 text-sm">Tidak ada jadwal hari ini.</p>`;
+                    return;
+                }
+
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const jadwal = doc.data();
+                    return `
+                        <div class="flex items-center justify-between bg-blue-50 p-3 rounded-xl">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">${jadwal.namaKelas}</p>
+                                    <p class="text-sm text-gray-500">${jadwal.jamMulai} - ${jadwal.jamSelesai}</p>
+                                </div>
+                            </div>
+                            <button onclick="quickAddJurnal('${doc.id}', '${jadwal.namaKelas}', '${jadwal.kelasId}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm transition">
+                                <i class="fas fa-plus mr-1"></i>Isi Jurnal
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading jadwal:', error);
+            }
+        }
+
+        function showAddJurnalModal() {
+            const modal = document.getElementById('modalContainer');
+            modal.innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+                    <div class="bg-white rounded-2xl w-full max-w-xl my-8">
+                        <div class="sticky top-0 bg-white border-b px-6 py-4 rounded-t-2xl flex items-center justify-between">
+                            <h3 class="text-xl font-bold text-gray-900">Tambah Jurnal Pembelajaran</h3>
+                            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        <form id="addJurnalForm" class="p-6 space-y-5">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
+                                    <input type="date" id="jurnalTanggal" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" value="${new Date().toISOString().split('T')[0]}">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                                    <select id="jurnalKelasInput" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white">
+                                        <option value="">Pilih Kelas</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Jam Ke</label>
+                                    <input type="text" id="jurnalJamKe" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="1-2">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Hadir</label>
+                                    <input type="number" id="jurnalHadir" min="0" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="30">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Tidak Hadir</label>
+                                    <input type="number" id="jurnalTidakHadir" min="0" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="2">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Materi Pembelajaran</label>
+                                <input type="text" id="jurnalMateriInput" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Contoh: Rukun Iman">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Kegiatan Pembelajaran</label>
+                                <textarea id="jurnalKegiatan" rows="3" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Jelaskan kegiatan pembelajaran yang dilakukan..."></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Catatan (opsional)</label>
+                                <textarea id="jurnalCatatan" rows="2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Catatan tambahan, kendala, atau refleksi..."></textarea>
+                            </div>
+
+                            <div class="flex justify-end space-x-3 pt-4 border-t">
+                                <button type="button" onclick="closeModal()" class="px-4 py-2 border-2 border-gray-200 rounded-xl text-gray-700 hover:bg-gray-50">
+                                    Batal
+                                </button>
+                                <button type="submit" class="btn-primary text-white px-6 py-2 rounded-xl">
+                                    <i class="fas fa-save mr-2"></i>Simpan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            // Load kelas
+            db.collection('users').doc(currentUser.uid)
+                .collection('kelas').orderBy('nama').get()
+                .then(snapshot => {
+                    const select = document.getElementById('jurnalKelasInput');
+                    snapshot.forEach(doc => {
+                        const kelas = doc.data();
+                        select.innerHTML += `<option value="${doc.id}" data-nama="${kelas.nama}">${kelas.nama}</option>`;
+                    });
+                });
+
+            // Form submit
+            document.getElementById('addJurnalForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await saveJurnal();
+            });
+        }
+
+        async function saveJurnal() {
+            showLoading();
+
+            const kelasSelect = document.getElementById('jurnalKelasInput');
+            const kelasId = kelasSelect.value;
+            const namaKelas = kelasSelect.selectedOptions[0]?.dataset.nama || '';
+
+            try {
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('jurnal').add({
+                        tanggal: new Date(document.getElementById('jurnalTanggal').value),
+                        kelasId,
+                        namaKelas,
+                        jamKe: document.getElementById('jurnalJamKe').value,
+                        hadir: parseInt(document.getElementById('jurnalHadir').value) || 0,
+                        tidakHadir: parseInt(document.getElementById('jurnalTidakHadir').value) || 0,
+                        materi: document.getElementById('jurnalMateriInput').value,
+                        kegiatan: document.getElementById('jurnalKegiatan').value,
+                        catatan: document.getElementById('jurnalCatatan').value,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                hideLoading();
+                closeModal();
+                showToast('Jurnal berhasil disimpan!');
+                loadJurnalByKelas();
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal menyimpan: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteJurnal(id) {
+            if (!confirm('Hapus jurnal ini?')) return;
+            
+            showLoading();
+            try {
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('jurnal').doc(id).delete();
+                hideLoading();
+                showToast('Jurnal berhasil dihapus!');
+                loadJurnalByKelas();
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal menghapus: ' + error.message, 'error');
+            }
+        }
+
+        // ==========================================
+        // ABSENSI - COMPLETE
+        // ==========================================
+        function getAbsensiHTML() {
+            return `
+                <div class="space-y-6 animate-slide-in">
+                    <div class="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl p-6 text-white">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user-check text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Absensi Siswa</h3>
+                                <p class="text-blue-100 text-sm">Kelola kehadiran siswa per kelas dan per pertemuan.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter -->
+                    <div class="card p-4">
+                        <div class="flex flex-wrap gap-4">
+                            <div class="flex-1 min-w-[200px]">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                                <select id="absensiKelasSelect" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl bg-white" onchange="loadAbsensiKelas()">
+                                    <option value="">Pilih Kelas</option>
+                                </select>
+                            </div>
+                            <div class="flex-1 min-w-[200px]">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
+                                <input type="date" id="absensiTanggal" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl" value="${new Date().toISOString().split('T')[0]}" onchange="loadAbsensiKelas()">
+                            </div>
+                            <div class="flex items-end">
+                                <button onclick="saveAbsensi()" class="btn-primary text-white px-4 py-2 rounded-xl h-[42px]">
+                                    <i class="fas fa-save mr-2"></i>Simpan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Absensi Table -->
+                    <div class="card p-6">
+                        <div id="absensiContent" class="text-center py-12 text-gray-500">
+                            <i class="fas fa-user-check text-5xl mb-4 text-gray-300"></i>
+                            <p>Pilih kelas untuk melihat dan mengisi absensi</p>
+                        </div>
+                    </div>
+
+                    <!-- Rekap -->
+                    <div class="card p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Rekap Kehadiran</h3>
+                        <div id="rekapAbsensi" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="bg-green-50 p-4 rounded-xl text-center">
+                                <p class="text-3xl font-bold text-green-600" id="totalHadirAbsen">0</p>
+                                <p class="text-sm text-gray-600">Hadir</p>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-xl text-center">
+                                <p class="text-3xl font-bold text-yellow-600" id="totalIzinAbsen">0</p>
+                                <p class="text-sm text-gray-600">Izin</p>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-xl text-center">
+                                <p class="text-3xl font-bold text-blue-600" id="totalSakitAbsen">0</p>
+                                <p class="text-sm text-gray-600">Sakit</p>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-xl text-center">
+                                <p class="text-3xl font-bold text-red-600" id="totalAlphaAbsen">0</p>
+                                <p class="text-sm text-gray-600">Alpha</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function initAbsensi() {
+            const snapshot = await db.collection('users').doc(currentUser.uid)
+                .collection('kelas').orderBy('nama').get();
+            
+            const select = document.getElementById('absensiKelasSelect');
+            snapshot.forEach(doc => {
+                const kelas = doc.data();
+                select.innerHTML += `<option value="${doc.id}" data-nama="${kelas.nama}">${kelas.nama}</option>`;
+            });
+        }
+
+        async function loadAbsensiKelas() {
+            const kelasId = document.getElementById('absensiKelasSelect').value;
+            const tanggal = document.getElementById('absensiTanggal').value;
+            
+            if (!kelasId) {
+                document.getElementById('absensiContent').innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <i class="fas fa-user-check text-5xl mb-4 text-gray-300"></i>
+                        <p>Pilih kelas untuk melihat dan mengisi absensi</p>
+                    </div>
+                `;
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // Load siswa
+                const siswaSnap = await db.collection('users').doc(currentUser.uid)
+                    .collection('siswa').where('kelasId', '==', kelasId).orderBy('nama').get();
+
+                // Load existing absensi
+                const absensiSnap = await db.collection('users').doc(currentUser.uid)
+                    .collection('absensi').doc(`${kelasId}_${tanggal}`).get();
+                
+                const existingAbsensi = absensiSnap.exists ? absensiSnap.data().data || {} : {};
+
+                const container = document.getElementById('absensiContent');
+
+                if (siswaSnap.empty) {
+                    container.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-users text-4xl text-gray-300 mb-3"></i>
+                            <p class="text-gray-500 mb-4">Belum ada data siswa di kelas ini.</p>
+                            <button onclick="navigateTo('import')" class="text-primary-600 hover:underline">Import Data Siswa</button>
+                        </div>
+                    `;
+                    hideLoading();
+                    return;
+                }
+
+                container.innerHTML = `
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase w-12">No</th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Nama Siswa</th>
+                                    <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase w-20">Hadir</th>
+                                    <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase w-20">Izin</th>
+                                    <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase w-20">Sakit</th>
+                                    <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase w-20">Alpha</th>
+                                </tr>
+                            </thead>
+                            <tbody id="absensiTableBody">
+                                ${siswaSnap.docs.map((doc, idx) => {
+                                    const siswa = doc.data();
+                                    const status = existingAbsensi[doc.id] || 'H';
+                                    return `
+                                        <tr class="border-t" data-siswa-id="${doc.id}">
+                                            <td class="px-4 py-3 text-center">${idx + 1}</td>
+                                            <td class="px-4 py-3 font-medium">${siswa.nama}</td>
+                                            <td class="px-4 py-3 text-center">
+                                                <input type="radio" name="absen_${doc.id}" value="H" ${status === 'H' ? 'checked' : ''} class="w-5 h-5 text-green-600" onchange="updateRekapAbsensi()">
+                                            </td>
+                                            <td class="px-4 py-3 text-center">
+                                                <input type="radio" name="absen_${doc.id}" value="I" ${status === 'I' ? 'checked' : ''} class="w-5 h-5 text-yellow-600" onchange="updateRekapAbsensi()">
+                                            </td>
+                                            <td class="px-4 py-3 text-center">
+                                                <input type="radio" name="absen_${doc.id}" value="S" ${status === 'S' ? 'checked' : ''} class="w-5 h-5 text-blue-600" onchange="updateRekapAbsensi()">
+                                            </td>
+                                            <td class="px-4 py-3 text-center">
+                                                <input type="radio" name="absen_${doc.id}" value="A" ${status === 'A' ? 'checked' : ''} class="w-5 h-5 text-red-600" onchange="updateRekapAbsensi()">
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                hideLoading();
+                updateRekapAbsensi();
+
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal memuat data: ' + error.message, 'error');
+            }
+        }
+
+        function updateRekapAbsensi() {
+            let hadir = 0, izin = 0, sakit = 0, alpha = 0;
+
+            document.querySelectorAll('#absensiTableBody input[type="radio"]:checked').forEach(radio => {
+                switch(radio.value) {
+                    case 'H': hadir++; break;
+                    case 'I': izin++; break;
+                    case 'S': sakit++; break;
+                    case 'A': alpha++; break;
+                }
+            });
+
+            document.getElementById('totalHadirAbsen').textContent = hadir;
+            document.getElementById('totalIzinAbsen').textContent = izin;
+            document.getElementById('totalSakitAbsen').textContent = sakit;
+            document.getElementById('totalAlphaAbsen').textContent = alpha;
+        }
+
+        async function saveAbsensi() {
+            const kelasId = document.getElementById('absensiKelasSelect').value;
+            const tanggal = document.getElementById('absensiTanggal').value;
+            const namaKelas = document.getElementById('absensiKelasSelect').selectedOptions[0]?.dataset.nama || '';
+
+            if (!kelasId) {
+                showToast('Pilih kelas terlebih dahulu', 'error');
+                return;
+            }
+
+            showLoading();
+
+            const data = {};
+            document.querySelectorAll('#absensiTableBody tr').forEach(row => {
+                const siswaId = row.dataset.siswaId;
+                const checkedRadio = row.querySelector('input[type="radio"]:checked');
+                if (siswaId && checkedRadio) {
+                    data[siswaId] = checkedRadio.value;
+                }
+            });
+
+            try {
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('absensi').doc(`${kelasId}_${tanggal}`).set({
+                        kelasId,
+                        namaKelas,
+                        tanggal,
+                        data,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                hideLoading();
+                showToast('Absensi berhasil disimpan!');
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal menyimpan: ' + error.message, 'error');
+            }
+        }
+
+        // ==========================================
+        // DAFTAR NILAI - COMPLETE
+        // ==========================================
+        function getNilaiHTML() {
+            return `
+                <div class="space-y-6 animate-slide-in">
+                    <div class="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl p-6 text-white">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-star text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Daftar Nilai</h3>
+                                <p class="text-yellow-100 text-sm">Kelola nilai formatif dan sumatif siswa.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter -->
+                    <div class="card p-4">
+                        <div class="flex flex-wrap gap-4">
+                            <div class="flex-1 min-w-[150px]">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                                <select id="nilaiKelasSelect" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl bg-white" onchange="loadNilaiKelas()">
+                                    <option value="">Pilih Kelas</option>
+                                </select>
+                            </div>
+                            <div class="flex-1 min-w-[150px]">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Penilaian</label>
+                                <select id="nilaiJenisSelect" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl bg-white" onchange="loadNilaiKelas()">
+                                    <option value="formatif">Penilaian Formatif</option>
+                                    <option value="sumatif">Penilaian Sumatif</option>
+                                </select>
+                            </div>
+                            <div class="flex-1 min-w-[150px]">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Elemen</label>
+                                <select id="nilaiElemenSelect" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl bg-white" onchange="loadNilaiKelas()">
+                                    <option value="">Semua Elemen</option>
+                                    <option value="Al-Qur'an">Al-Qur'an dan Hadis</option>
+                                    <option value="Akidah">Akidah</option>
+                                    <option value="Akhlak">Akhlak</option>
+                                    <option value="Fikih">Fikih</option>
+                                    <option value="Sejarah">Sejarah</option>
+                                </select>
+                            </div>
+                            <div class="flex items-end space-x-2">
+                                <button onclick="showAddKolonNilaiModal()" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-200">
+                                    <i class="fas fa-plus mr-2"></i>Kolom
+                                </button>
+                                <button onclick="saveNilai()" class="btn-primary text-white px-4 py-2 rounded-xl">
+                                    <i class="fas fa-save mr-2"></i>Simpan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nilai Table -->
+                    <div class="card p-6">
+                        <div id="nilaiContent" class="text-center py-12 text-gray-500">
+                            <i class="fas fa-star text-5xl mb-4 text-gray-300"></i>
+                            <p>Pilih kelas untuk input dan melihat nilai</p>
+                        </div>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="card p-4">
+                            <h4 class="text-sm font-medium text-gray-500 mb-1">Rata-rata Kelas</h4>
+                            <p class="text-2xl font-bold text-primary-600" id="rataRataNilai">-</p>
+                        </div>
+                        <div class="card p-4">
+                            <h4 class="text-sm font-medium text-gray-500 mb-1">Nilai Tertinggi</h4>
+                            <p class="text-2xl font-bold text-green-600" id="nilaiTertinggi">-</p>
+                        </div>
+                        <div class="card p-4">
+                            <h4 class="text-sm font-medium text-gray-500 mb-1">Nilai Terendah</h4>
+                            <p class="text-2xl font-bold text-red-600" id="nilaiTerendah">-</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function initNilai() {
+            const snapshot = await db.collection('users').doc(currentUser.uid)
+                .collection('kelas').orderBy('nama').get();
+            
+            const select = document.getElementById('nilaiKelasSelect');
+            snapshot.forEach(doc => {
+                const kelas = doc.data();
+                select.innerHTML += `<option value="${doc.id}" data-nama="${kelas.nama}">${kelas.nama}</option>`;
+            });
+        }
+
+        async function loadNilaiKelas() {
+            const kelasId = document.getElementById('nilaiKelasSelect').value;
+            const jenis = document.getElementById('nilaiJenisSelect').value;
+            
+            if (!kelasId) {
+                document.getElementById('nilaiContent').innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <i class="fas fa-star text-5xl mb-4 text-gray-300"></i>
+                        <p>Pilih kelas untuk input dan melihat nilai</p>
+                    </div>
+                `;
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // Load siswa
+                const siswaSnap = await db.collection('users').doc(currentUser.uid)
+                    .collection('siswa').where('kelasId', '==', kelasId).orderBy('nama').get();
+
+                // Load existing nilai
+                const nilaiSnap = await db.collection('users').doc(currentUser.uid)
+                    .collection('nilai').doc(`${kelasId}_${jenis}`).get();
+                
+                const existingNilai = nilaiSnap.exists ? nilaiSnap.data() : { kolom: ['Tugas 1', 'Tugas 2', 'UH 1'], data: {} };
+
+                const container = document.getElementById('nilaiContent');
+
+                if (siswaSnap.empty) {
+                    container.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-users text-4xl text-gray-300 mb-3"></i>
+                            <p class="text-gray-500 mb-4">Belum ada data siswa di kelas ini.</p>
+                            <button onclick="navigateTo('import')" class="text-primary-600 hover:underline">Import Data Siswa</button>
+                        </div>
+                    `;
+                    hideLoading();
+                    return;
+                }
+
+                const kolom = existingNilai.kolom || ['Tugas 1', 'UH 1'];
+
+                container.innerHTML = `
+                    <div class="overflow-x-auto">
+                        <table class="w-full" id="nilaiTable">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase w-12">No</th>
+                                    <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase min-w-[150px]">Nama Siswa</th>
+                                    ${kolom.map((k, idx) => `
+                                        <th class="px-3 py-3 text-center text-xs font-semibold text-gray-500 uppercase w-20">
+                                            ${k}
+                                            <button onclick="removeKolomNilai(${idx})" class="ml-1 text-red-400 hover:text-red-600">
+                                                <i class="fas fa-times text-xs"></i>
+                                            </button>
+                                        </th>
+                                    `).join('')}
+                                    <th class="px-3 py-3 text-center text-xs font-semibold text-gray-500 uppercase w-20 bg-gray-100">Rata-rata</th>
+                                </tr>
+                            </thead>
+                            <tbody id="nilaiTableBody">
+                                ${siswaSnap.docs.map((doc, idx) => {
+                                    const siswa = doc.data();
+                                    const nilaiSiswa = existingNilai.data?.[doc.id] || {};
+                                    const nilaiArr = kolom.map(k => parseFloat(nilaiSiswa[k]) || 0);
+                                    const rata2 = nilaiArr.length > 0 ? (nilaiArr.reduce((a,b) => a+b, 0) / nilaiArr.length).toFixed(1) : 0;
+                                    
+                                    return `
+                                        <tr class="border-t" data-siswa-id="${doc.id}">
+                                            <td class="px-3 py-2 text-center text-sm">${idx + 1}</td>
+                                            <td class="px-3 py-2 font-medium text-sm">${siswa.nama}</td>
+                                            ${kolom.map(k => `
+                                                <td class="px-3 py-2 text-center">
+                                                    <input type="number" min="0" max="100" value="${nilaiSiswa[k] || ''}" 
+                                                           data-kolom="${k}"
+                                                           class="w-16 px-2 py-1 text-center border rounded-lg text-sm"
+                                                           onchange="calculateRataRata(this)">
+                                                </td>
+                                            `).join('')}
+                                            <td class="px-3 py-2 text-center font-bold bg-gray-50 rata-rata">${rata2}</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                // Store kolom info
+                window.currentKolomNilai = kolom;
+
+                hideLoading();
+                calculateStatistik();
+
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal memuat data: ' + error.message, 'error');
+            }
+        }
+
+        function calculateRataRata(input) {
+            const row = input.closest('tr');
+            const inputs = row.querySelectorAll('input[type="number"]');
+            let total = 0, count = 0;
+            
+            inputs.forEach(inp => {
+                const val = parseFloat(inp.value);
+                if (!isNaN(val)) {
+                    total += val;
+                    count++;
+                }
+            });
+
+            const rata2 = count > 0 ? (total / count).toFixed(1) : 0;
+            row.querySelector('.rata-rata').textContent = rata2;
+            
+            calculateStatistik();
+        }
+
+        function calculateStatistik() {
+            const rataRataElements = document.querySelectorAll('.rata-rata');
+            let total = 0, count = 0, max = 0, min = 100;
+
+            rataRataElements.forEach(el => {
+                const val = parseFloat(el.textContent);
+                if (!isNaN(val) && val > 0) {
+                    total += val;
+                    count++;
+                    if (val > max) max = val;
+                    if (val < min) min = val;
+                }
+            });
+
+            document.getElementById('rataRataNilai').textContent = count > 0 ? (total / count).toFixed(1) : '-';
+            document.getElementById('nilaiTertinggi').textContent = count > 0 ? max : '-';
+            document.getElementById('nilaiTerendah').textContent = count > 0 ? min : '-';
+        }
+
+        function showAddKolonNilaiModal() {
+            const nama = prompt('Masukkan nama kolom nilai (contoh: Tugas 2, UH 2, PTS):');
+            if (nama && nama.trim()) {
+                window.currentKolomNilai = window.currentKolomNilai || [];
+                window.currentKolomNilai.push(nama.trim());
+                loadNilaiKelas();
+            }
+        }
+
+        async function saveNilai() {
+            const kelasId = document.getElementById('nilaiKelasSelect').value;
+            const jenis = document.getElementById('nilaiJenisSelect').value;
+            const namaKelas = document.getElementById('nilaiKelasSelect').selectedOptions[0]?.dataset.nama || '';
+
+            if (!kelasId) {
+                showToast('Pilih kelas terlebih dahulu', 'error');
+                return;
+            }
+
+            showLoading();
+
+            const data = {};
+            document.querySelectorAll('#nilaiTableBody tr').forEach(row => {
+                const siswaId = row.dataset.siswaId;
+                const nilaiSiswa = {};
+                
+                row.querySelectorAll('input[type="number"]').forEach(input => {
+                    const kolom = input.dataset.kolom;
+                    const nilai = input.value;
+                    if (nilai) nilaiSiswa[kolom] = parseFloat(nilai);
+                });
+                
+                if (siswaId) data[siswaId] = nilaiSiswa;
+            });
+
+            try {
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('nilai').doc(`${kelasId}_${jenis}`).set({
+                        kelasId,
+                        namaKelas,
+                        jenis,
+                        kolom: window.currentKolomNilai || [],
+                        data,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                hideLoading();
+                showToast('Nilai berhasil disimpan!');
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal menyimpan: ' + error.message, 'error');
+            }
+        }
+
+        // ==========================================
+        // PRINT & EXPORT FUNCTIONS
+        // ==========================================
+        function printProta(id) {
+            showToast('Mempersiapkan cetak...', 'info');
+            // Implementation for print
+        }
+
+        function exportProtaPDF(id) {
+            showToast('Export PDF akan segera tersedia', 'info');
+        }
+
+        function printLKPD(id) {
+            previewLKPD(id);
+        }
+
+        // ==========================================
+        // ADMIN PANEL (SUPER ADMIN)
+        // ==========================================
+        function getAdminHTML() {
+            if (currentUser?.email !== SUPER_ADMIN_EMAIL) {
+                return `
+                    <div class="flex items-center justify-center min-h-[60vh]">
+                        <div class="text-center">
+                            <i class="fas fa-lock text-5xl text-gray-300 mb-4"></i>
+                            <h2 class="text-xl font-bold text-gray-900">Akses Ditolak</h2>
+                            <p class="text-gray-600">Halaman ini hanya untuk Super Admin.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="space-y-6 animate-slide-in">
+                    <div class="bg-gradient-to-r from-red-600 to-pink-600 rounded-xl p-6 text-white">
+                        <h2 class="text-2xl font-bold mb-2">Admin Panel</h2>
+                        <p class="text-red-100">Kelola pengguna dan langganan aplikasi.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-4 gap-4">
+                        <div class="card p-4">
+                            <p class="text-3xl font-bold text-gray-900" id="adminTotalUsers">0</p>
+                            <p class="text-sm text-gray-500">Total Pengguna</p>
+                        </div>
+                        <div class="card p-4">
+                            <p class="text-3xl font-bold text-green-600" id="adminFreeUsers">0</p>
+                            <p class="text-sm text-gray-500">Free Users</p>
+                        </div>
+                        <div class="card p-4">
+                            <p class="text-3xl font-bold text-yellow-600" id="adminPremiumUsers">0</p>
+                            <p class="text-sm text-gray-500">Premium Users</p>
+                        </div>
+                        <div class="card p-4">
+                            <p class="text-3xl font-bold text-blue-600" id="adminSchoolPlan">0</p>
+                            <p class="text-sm text-gray-500">Paket Sekolah</p>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Daftar Pengguna</h3>
+                        <div id="adminUserList" class="space-y-3">
+                            <!-- User list -->
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function initAdmin() {
+            if (currentUser?.email !== SUPER_ADMIN_EMAIL) return;
+
+            try {
+                const snapshot = await db.collection('users').orderBy('createdAt', 'desc').get();
+                
+                let total = 0, free = 0, premium = 0, school = 0;
+                
+                const container = document.getElementById('adminUserList');
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const user = doc.data();
+                    total++;
+                    if (user.plan === 'premium') premium++;
+                    else if (user.plan === 'school') school++;
+                    else free++;
+
+                    return `
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center font-bold">
+                                    ${(user.name || 'U').charAt(0).toUpperCase()}
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">${user.name || 'Unknown'}</p>
+                                    <p class="text-sm text-gray-500">${user.email}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-xs px-2 py-1 rounded-full ${user.plan === 'premium' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-700'}">
+                                    ${user.plan || 'free'}
+                                </span>
+                                <button onclick="upgradeUser('${doc.id}')" class="text-primary-600 hover:text-primary-700 text-sm">
+                                    Upgrade
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                document.getElementById('adminTotalUsers').textContent = total;
+                document.getElementById('adminFreeUsers').textContent = free;
+                document.getElementById('adminPremiumUsers').textContent = premium;
+                document.getElementById('adminSchoolPlan').textContent = school;
+
+            } catch (error) {
+                console.error('Error loading admin data:', error);
+            }
+        }
+
+        async function upgradeUser(userId) {
+            if (!confirm('Upgrade user ini ke Premium?')) return;
+
+            showLoading();
+            try {
+                await db.collection('users').doc(userId).update({
+                    plan: 'premium',
+                    upgradedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                hideLoading();
+                showToast('User berhasil di-upgrade!');
+                initAdmin();
+            } catch (error) {
+                hideLoading();
+                showToast('Gagal upgrade: ' + error.message, 'error');
+            }
+        }
+
+        // ==========================================
+        // SETTINGS & HELP
+        // ==========================================
+        function getSettingsHTML() {
+            return `
+                <div class="space-y-6 animate-slide-in">
+                    <div class="card p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-6">Pengaturan Akun</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Notifikasi Email</h4>
+                                    <p class="text-sm text-gray-500">Terima notifikasi via email</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Mode Gelap</h4>
+                                    <p class="text-sm text-gray-500">Tampilan dark mode</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Keamanan</h3>
+                        <button onclick="changePassword()" class="w-full p-4 bg-gray-50 rounded-xl text-left hover:bg-gray-100 transition">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-key text-gray-400"></i>
+                                    <span>Ubah Password</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="card p-6 border-red-200">
+                        <h3 class="text-lg font-bold text-red-600 mb-4">Zona Berbahaya</h3>
+                        <button onclick="deleteAccount()" class="w-full p-4 bg-red-50 rounded-xl text-left hover:bg-red-100 transition text-red-600">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-trash"></i>
+                                <span>Hapus Akun</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function changePassword() {
+            showToast('Fitur ubah password akan segera tersedia', 'info');
+        }
+
+        function deleteAccount() {
+            showToast('Hubungi admin untuk menghapus akun', 'info');
+        }
+
+        // Add settings and help to router
+        const originalLoadPageContent = loadPageContent;
+        loadPageContent = function(page) {
+            if (page === 'settings') {
+                document.getElementById('mainContent').innerHTML = getSettingsHTML();
+                return;
+            }
+            if (page === 'admin') {
+                document.getElementById('mainContent').innerHTML = getAdminHTML();
+                initAdmin();
+                return;
+            }
+            originalLoadPageContent(page);
+        };
     </script>
     <style>
         * { font-family: 'Plus Jakarta Sans', sans-serif; }
