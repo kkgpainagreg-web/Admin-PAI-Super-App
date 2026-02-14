@@ -1,6 +1,23 @@
 {
   "indexes": [
     {
+      "collectionGroup": "schedules",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "day", "order": "ASCENDING" },
+        { "fieldPath": "timeSlot", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "students",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "nama", "order": "ASCENDING" }
+      ]
+    },
+    {
       "collectionGroup": "calendars",
       "queryScope": "COLLECTION",
       "fields": [
@@ -19,23 +36,6 @@
       ]
     },
     {
-      "collectionGroup": "schedules",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "userId", "order": "ASCENDING" },
-        { "fieldPath": "day", "order": "ASCENDING" },
-        { "fieldPath": "timeSlot", "order": "ASCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "students",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "userId", "order": "ASCENDING" },
-        { "fieldPath": "nama", "order": "ASCENDING" }
-      ]
-    },
-    {
       "collectionGroup": "atp",
       "queryScope": "COLLECTION",
       "fields": [
@@ -51,6 +51,16 @@
       "fields": [
         { "fieldPath": "userId", "order": "ASCENDING" },
         { "fieldPath": "tahunAjaran", "order": "ASCENDING" },
+        { "fieldPath": "kelas", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "promes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "tahunAjaran", "order": "ASCENDING" },
+        { "fieldPath": "semester", "order": "ASCENDING" },
         { "fieldPath": "kelas", "order": "ASCENDING" }
       ]
     }
