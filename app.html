@@ -14,13 +14,9 @@
                     colors: {
                         primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857', 800: '#065f46', 900: '#064e3b' },
                         secondary: { 50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 800: '#075985', 900: '#0c4a6e' },
-                        accent: { 50: '#fdf4ff', 100: '#fae8ff', 200: '#f5d0fe', 300: '#f0abfc', 400: '#e879f9', 500: '#d946ef', 600: '#c026d3', 700: '#a21caf', 800: '#86198f', 900: '#701a75' },
-                        dark: { 800: '#1e293b', 900: '#0f172a' }
+                        accent: { 50: '#fdf4ff', 100: '#fae8ff', 200: '#f5d0fe', 300: '#f0abfc', 400: '#e879f9', 500: '#d946ef', 600: '#c026d3', 700: '#a21caf', 800: '#86198f', 900: '#701a75' }
                     },
-                    fontFamily: { 
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        arabic: ['Amiri', 'serif']
-                    }
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], arabic: ['Amiri', 'serif'] }
                 }
             }
         }
@@ -30,33 +26,22 @@
         .arabic-text { font-family: 'Amiri', serif; direction: rtl; text-align: right; font-size: 1.5em; line-height: 2; }
         .sidebar-link { transition: all 0.2s ease; }
         .sidebar-link:hover, .sidebar-link.active { background: linear-gradient(90deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%); border-left: 3px solid #10b981; }
-        .sidebar-link.active { background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, transparent 100%); }
-        .card { background: white; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.3s ease; }
-        .card:hover { box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        .btn-primary { background: linear-gradient(135deg, #059669 0%, #10b981 100%); transition: all 0.3s ease; }
+        .card { background: white; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .btn-primary { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
         .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
         .gradient-bg { background: linear-gradient(135deg, #059669 0%, #0ea5e9 100%); }
-        .stat-card { position: relative; overflow: hidden; }
-        .stat-card::before { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); }
         @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
         .animate-slide-in { animation: slideIn 0.3s ease forwards; }
-        .table-row:hover { background-color: #f8fafc; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
         .scrollbar-thin::-webkit-scrollbar { width: 6px; }
-        .scrollbar-thin::-webkit-scrollbar-track { background: #f1f5f9; }
         .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        @media print {
-            .no-print { display: none !important; }
-            .print-full { width: 100% !important; margin: 0 !important; padding: 20px !important; }
-        }
+        @media print { .no-print { display: none !important; } }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
-    <!-- App Container -->
     <div id="app" class="flex min-h-screen">
         <!-- Sidebar -->
         <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
-            <!-- Logo -->
             <div class="p-6 border-b border-gray-100">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center shadow-lg">
@@ -69,199 +54,133 @@
                 </div>
             </div>
 
-            <!-- Navigation -->
             <nav class="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-thin">
-                <!-- Dashboard -->
                 <a href="#dashboard" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 active" data-page="dashboard">
-                    <i class="fas fa-home w-5 text-center"></i>
-                    <span>Dashboard</span>
+                    <i class="fas fa-home w-5 text-center"></i><span>Dashboard</span>
                 </a>
 
-                <!-- Profil & Dasar -->
                 <div class="pt-4">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Profil & Dasar</p>
                     <a href="#profil" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="profil">
-                        <i class="fas fa-user w-5 text-center"></i>
-                        <span>Profil Guru</span>
+                        <i class="fas fa-user w-5 text-center"></i><span>Profil Guru</span>
                     </a>
                     <a href="#kalender" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="kalender">
-                        <i class="fas fa-calendar-alt w-5 text-center"></i>
-                        <span>Kalender Pendidikan</span>
+                        <i class="fas fa-calendar-alt w-5 text-center"></i><span>Kalender Pendidikan</span>
                     </a>
                     <a href="#jadwal" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="jadwal">
-                        <i class="fas fa-clock w-5 text-center"></i>
-                        <span>Jadwal Pelajaran</span>
+                        <i class="fas fa-clock w-5 text-center"></i><span>Jadwal Pelajaran</span>
                     </a>
                 </div>
 
-                <!-- Perencanaan -->
                 <div class="pt-4">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Perencanaan</p>
                     <a href="#atp" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="atp">
-                        <i class="fas fa-route w-5 text-center"></i>
-                        <span>ATP</span>
+                        <i class="fas fa-route w-5 text-center"></i><span>ATP</span>
                     </a>
                     <a href="#prota" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="prota">
-                        <i class="fas fa-calendar-check w-5 text-center"></i>
-                        <span>Prota</span>
+                        <i class="fas fa-calendar-check w-5 text-center"></i><span>Prota</span>
                     </a>
                     <a href="#promes" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="promes">
-                        <i class="fas fa-calendar-week w-5 text-center"></i>
-                        <span>Promes</span>
+                        <i class="fas fa-calendar-week w-5 text-center"></i><span>Promes</span>
                         <span class="premium-badge ml-auto text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">Pro</span>
                     </a>
                 </div>
 
-                <!-- Pembelajaran -->
                 <div class="pt-4">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Pembelajaran</p>
                     <a href="#modul-ajar" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="modul-ajar">
-                        <i class="fas fa-book-open w-5 text-center"></i>
-                        <span>Modul Ajar</span>
+                        <i class="fas fa-book-open w-5 text-center"></i><span>Modul Ajar</span>
                         <span class="premium-badge ml-auto text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">Pro</span>
                     </a>
                     <a href="#lkpd" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="lkpd">
-                        <i class="fas fa-file-alt w-5 text-center"></i>
-                        <span>LKPD</span>
+                        <i class="fas fa-file-alt w-5 text-center"></i><span>LKPD</span>
                         <span class="premium-badge ml-auto text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">Pro</span>
                     </a>
                     <a href="#bank-soal" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="bank-soal">
-                        <i class="fas fa-question-circle w-5 text-center"></i>
-                        <span>Bank Soal</span>
+                        <i class="fas fa-question-circle w-5 text-center"></i><span>Bank Soal</span>
                         <span class="premium-badge ml-auto text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">Pro</span>
                     </a>
                 </div>
 
-                <!-- Pelaksanaan -->
                 <div class="pt-4">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Pelaksanaan</p>
                     <a href="#jurnal" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="jurnal">
-                        <i class="fas fa-book w-5 text-center"></i>
-                        <span>Jurnal Pembelajaran</span>
+                        <i class="fas fa-book w-5 text-center"></i><span>Jurnal</span>
                         <span class="premium-badge ml-auto text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">Pro</span>
                     </a>
                     <a href="#absensi" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="absensi">
-                        <i class="fas fa-user-check w-5 text-center"></i>
-                        <span>Absensi</span>
+                        <i class="fas fa-user-check w-5 text-center"></i><span>Absensi</span>
                     </a>
                     <a href="#nilai" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="nilai">
-                        <i class="fas fa-star w-5 text-center"></i>
-                        <span>Daftar Nilai</span>
+                        <i class="fas fa-star w-5 text-center"></i><span>Daftar Nilai</span>
                     </a>
                 </div>
 
-                <!-- Tools -->
                 <div class="pt-4">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Tools</p>
                     <a href="#ai-assistant" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="ai-assistant">
-                        <i class="fas fa-robot w-5 text-center"></i>
-                        <span>AI Assistant</span>
-                        <span class="ml-auto text-xs bg-accent-100 text-accent-700 px-2 py-0.5 rounded-full">New</span>
+                        <i class="fas fa-robot w-5 text-center"></i><span>AI Assistant</span>
                     </a>
                     <a href="#import" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="import">
-                        <i class="fas fa-file-import w-5 text-center"></i>
-                        <span>Import Data</span>
+                        <i class="fas fa-file-import w-5 text-center"></i><span>Import Data</span>
                     </a>
                 </div>
 
-                <!-- Admin Only -->
                 <div id="adminMenu" class="pt-4 hidden">
                     <p class="px-4 text-xs font-semibold text-red-400 uppercase tracking-wider mb-2">Super Admin</p>
                     <a href="#admin" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="admin">
-                        <i class="fas fa-shield-alt w-5 text-center text-red-500"></i>
-                        <span>Admin Panel</span>
+                        <i class="fas fa-shield-alt w-5 text-center text-red-500"></i><span>Admin Panel</span>
                     </a>
                     <a href="#pricing-settings" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="pricing-settings">
-                        <i class="fas fa-tags w-5 text-center text-red-500"></i>
-                        <span>Pengaturan Harga</span>
+                        <i class="fas fa-tags w-5 text-center text-red-500"></i><span>Pengaturan Harga</span>
                     </a>
                     <a href="#payments" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700" data-page="payments">
-                        <i class="fas fa-credit-card w-5 text-center text-red-500"></i>
-                        <span>Kelola Pembayaran</span>
+                        <i class="fas fa-credit-card w-5 text-center text-red-500"></i><span>Kelola Pembayaran</span>
                     </a>
                 </div>
             </nav>
 
-            <!-- User Profile in Sidebar -->
             <div class="p-4 border-t border-gray-100">
                 <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl">
-                    <div id="sidebarUserPhoto" class="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold">
-                        <i class="fas fa-user"></i>
-                    </div>
+                    <div id="sidebarUserPhoto" class="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold">G</div>
                     <div class="flex-1 min-w-0">
                         <p id="sidebarUserName" class="text-sm font-semibold text-gray-900 truncate">Loading...</p>
-                        <p id="sidebarUserPlan" class="text-xs text-gray-500 flex items-center">
-                            <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
-                            Free Plan
-                        </p>
+                        <p id="sidebarUserPlan" class="text-xs text-gray-500">Free Plan</p>
                     </div>
-                    <button onclick="logout()" class="text-gray-400 hover:text-red-500 transition" title="Logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
+                    <button onclick="logout()" class="text-gray-400 hover:text-red-500"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </div>
         </aside>
 
-        <!-- Sidebar Overlay (Mobile) -->
         <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden" onclick="toggleSidebar()"></div>
 
-        <!-- Main Content -->
         <main class="flex-1 flex flex-col min-h-screen">
-            <!-- Top Header -->
             <header class="bg-white border-b border-gray-200 sticky top-0 z-20 no-print">
                 <div class="flex items-center justify-between px-4 lg:px-8 h-16">
-                    <!-- Mobile Menu Button -->
-                    <button onclick="toggleSidebar()" class="lg:hidden text-gray-600 hover:text-gray-900">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-
-                    <!-- Page Title -->
-                    <div class="hidden lg:block">
-                        <h2 id="pageTitle" class="text-xl font-bold text-gray-900">Dashboard</h2>
-                    </div>
-
-                    <!-- Right Actions -->
+                    <button onclick="toggleSidebar()" class="lg:hidden text-gray-600"><i class="fas fa-bars text-xl"></i></button>
+                    <h2 id="pageTitle" class="hidden lg:block text-xl font-bold text-gray-900">Dashboard</h2>
                     <div class="flex items-center space-x-4">
-                        <!-- Subscription Badge -->
                         <div id="subscriptionBadge" class="hidden sm:flex items-center space-x-2 bg-yellow-50 text-yellow-700 px-3 py-1.5 rounded-full text-sm font-medium cursor-pointer" onclick="navigateTo('subscription')">
-                            <i class="fas fa-crown"></i>
-                            <span>Upgrade</span>
+                            <i class="fas fa-crown"></i><span>Upgrade</span>
                         </div>
-
-                        <!-- Notifications -->
-                        <button class="relative text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-bell text-xl"></i>
-                            <span id="notifBadge" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center hidden">0</span>
-                        </button>
-
-                        <!-- User Dropdown -->
                         <div class="relative">
-                            <button onclick="toggleUserMenu()" class="flex items-center space-x-2">
-                                <div id="headerUserPhoto" class="w-9 h-9 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                                    <i class="fas fa-user"></i>
-                                </div>
+                            <button onclick="toggleUserMenu()" class="flex items-center">
+                                <div id="headerUserPhoto" class="w-9 h-9 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm font-bold">G</div>
                             </button>
-                            <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
-                                <div class="px-4 py-3 border-b border-gray-100">
+                            <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border py-2 z-50">
+                                <div class="px-4 py-3 border-b">
                                     <p id="menuUserName" class="font-semibold text-gray-900">Loading...</p>
-                                    <p id="menuUserEmail" class="text-sm text-gray-500">Loading...</p>
+                                    <p id="menuUserEmail" class="text-sm text-gray-500"></p>
                                 </div>
-                                <a href="#profil" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-50" onclick="navigateTo('profil')">
-                                    <i class="fas fa-user-cog w-5"></i>
-                                    <span>Profil Saya</span>
+                                <a href="#" onclick="navigateTo('profil')" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                    <i class="fas fa-user-cog w-5"></i><span>Profil</span>
                                 </a>
-                                <a href="#subscription" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-50" onclick="navigateTo('subscription')">
-                                    <i class="fas fa-crown w-5 text-yellow-500"></i>
-                                    <span>Langganan</span>
+                                <a href="#" onclick="navigateTo('subscription')" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                    <i class="fas fa-crown w-5 text-yellow-500"></i><span>Langganan</span>
                                 </a>
-                                <a href="#settings" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-50" onclick="navigateTo('settings')">
-                                    <i class="fas fa-cog w-5"></i>
-                                    <span>Pengaturan</span>
-                                </a>
-                                <div class="border-t border-gray-100 mt-2 pt-2">
+                                <div class="border-t mt-2 pt-2">
                                     <button onclick="logout()" class="flex items-center space-x-3 px-4 py-2 text-red-600 hover:bg-red-50 w-full">
-                                        <i class="fas fa-sign-out-alt w-5"></i>
-                                        <span>Keluar</span>
+                                        <i class="fas fa-sign-out-alt w-5"></i><span>Keluar</span>
                                     </button>
                                 </div>
                             </div>
@@ -269,45 +188,36 @@
                     </div>
                 </div>
             </header>
-
-            <!-- Dynamic Content Area -->
-            <div id="mainContent" class="flex-1 p-4 lg:p-8 overflow-y-auto">
-                <!-- Content will be loaded dynamically -->
-            </div>
+            <div id="mainContent" class="flex-1 p-4 lg:p-8 overflow-y-auto"></div>
         </main>
     </div>
 
-    <!-- Modal Container -->
     <div id="modalContainer"></div>
-
-    <!-- Toast Notification -->
+    
     <div id="toast" class="fixed bottom-6 right-6 z-[100] hidden">
-        <div id="toastContent" class="bg-gray-900 text-white px-6 py-4 rounded-xl shadow-lg flex items-center space-x-3 transform transition-all">
+        <div class="bg-gray-900 text-white px-6 py-4 rounded-xl shadow-lg flex items-center space-x-3">
             <i id="toastIcon" class="fas fa-check-circle text-xl text-green-400"></i>
             <span id="toastMessage">Notification</span>
         </div>
     </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="fixed inset-0 z-[100] hidden items-center justify-center bg-white/90 backdrop-blur-sm">
+    <div id="loadingOverlay" class="fixed inset-0 z-[100] hidden items-center justify-center bg-white/90">
         <div class="text-center">
             <div class="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
-            <p class="text-gray-600 font-medium">Memproses...</p>
+            <p class="text-gray-600">Memproses...</p>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
-    <!-- Application Scripts -->
     <script>
-        // ==========================================
-        // FIREBASE CONFIGURATION
-        // ==========================================
-        const firebaseConfig = {
+    // ==========================================
+    // FIREBASE & GLOBAL CONFIG
+    // ==========================================
+   const firebaseConfig = {
    apiKey: "AIzaSyDpiK4F4ilnDDNEwO0djGY-ClwgwBl1eFk",
   authDomain: "asap-1d653.firebaseapp.com",
   projectId: "asap-1d653",
@@ -316,1809 +226,733 @@
   appId: "1:143263188364:web:47b4c003972b3503e882a9",
 };
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const storage = firebase.storage();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
 
-        // ==========================================
-        // GLOBAL STATE
-        // ==========================================
-        let currentUser = null;
-        let userData = null;
-        let currentPage = 'dashboard';
-        let appSettings = null;
+    let currentUser = null;
+    let userData = null;
+    let currentPage = 'dashboard';
 
-        // Super Admin Email
-        const SUPER_ADMIN_EMAIL = 'afifaro@gmail.com';
+    const SUPER_ADMIN_EMAIL = 'afifaro@gmail.com';
 
-        // Default Pricing (can be overridden by admin)
-        let PRICING = {
-            free: {
-                name: 'Free',
-                price: 0,
-                priceYearly: 0,
-                features: ['Kalender Pendidikan', 'Jadwal Pelajaran', 'ATP Generator', 'Prota Generator']
-            },
-            premium: {
-                name: 'Premium',
-                price: 49000,
-                priceYearly: 490000,
-                features: ['Semua fitur Free', 'Promes Generator', 'Modul Ajar + LKPD', 'Bank Soal', 'Jurnal Pembelajaran', 'AI Assistant', 'Export PDF/Excel']
-            },
-            school: {
-                name: 'Paket Sekolah',
-                price: 299000,
-                priceYearly: 2990000,
-                maxUsers: 50,
-                features: ['Hingga 50 Guru', 'Semua fitur Premium', 'Dashboard Admin', 'Manajemen Pengguna', 'Laporan Sekolah', 'Support Prioritas', 'Training Online']
+    let PRICING = {
+        free: { name: 'Free', price: 0, priceYearly: 0, features: ['Kalender Pendidikan', 'Jadwal Pelajaran', 'ATP Generator', 'Prota Generator'] },
+        premium: { name: 'Premium', price: 49000, priceYearly: 490000, features: ['Semua fitur Free', 'Promes Generator', 'Modul Ajar + LKPD', 'Bank Soal', 'Jurnal Pembelajaran', 'AI Assistant', 'Export PDF'] },
+        school: { name: 'Paket Sekolah', price: 299000, priceYearly: 2990000, maxUsers: 50, features: ['Hingga 50 Guru', 'Semua fitur Premium', 'Dashboard Admin', 'Support Prioritas'] }
+    };
+
+    // CP PAI DATA
+    const CP_PAI_DATA = {
+        faseA: {
+            nama: "Fase A (Kelas 1-2 SD/MI)",
+            elemen: {
+                alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik mengenal huruf hijaiah, harakat, dan membaca surah-surah pendek.", tp: ["Mengenal huruf hijaiah dari Alif sampai Ya", "Membedakan huruf hijaiah yang mirip bentuknya", "Mengenal harakat fathah, kasrah, dan dhammah", "Membaca surah Al-Fatihah dengan benar", "Menghafal surah Al-Fatihah dan An-Nas"] },
+                akidah: { nama: "Akidah", cp: "Peserta didik mengenal rukun iman dan sifat-sifat Allah.", tp: ["Menyebutkan rukun iman yang enam", "Mengenal Allah sebagai Tuhan Yang Maha Esa", "Menyebutkan bukti keberadaan Allah", "Mengenal malaikat dan tugasnya"] },
+                akhlak: { nama: "Akhlak", cp: "Peserta didik menunjukkan akhlak terpuji dalam kehidupan sehari-hari.", tp: ["Membiasakan mengucap salam", "Berdoa sebelum dan sesudah makan", "Menunjukkan sikap jujur", "Menunjukkan sikap hormat kepada orang tua"] },
+                fikih: { nama: "Fikih", cp: "Peserta didik mengenal rukun Islam dan praktik ibadah sederhana.", tp: ["Menyebutkan rukun Islam yang lima", "Mengenal syahadat dan artinya", "Mengenal gerakan shalat", "Praktik wudhu dengan bimbingan"] },
+                sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik mengenal kisah para nabi.", tp: ["Menceritakan kisah Nabi Adam AS", "Menceritakan kisah Nabi Nuh AS", "Menceritakan kisah Nabi Ibrahim AS", "Menceritakan kisah Nabi Muhammad SAW"] }
             }
-        };
-
-        // ==========================================
-        // CP PAI DATA (KEPKA BSKAP 046/2025)
-        // ==========================================
-        const CP_PAI_DATA = {
-            faseA: {
-                nama: "Fase A (Kelas 1-2 SD/MI)",
-                elemen: {
-                    alquran_hadis: {
-                        nama: "Al-Qur'an dan Hadis",
-                        cp: "Peserta didik mengenal huruf hijaiah, harakat, dan membaca surah-surah pendek.",
-                        tp: [
-                            "Mengenal huruf hijaiah dari Alif sampai Ya",
-                            "Membedakan huruf hijaiah yang mirip bentuknya",
-                            "Mengenal harakat fathah, kasrah, dan dhammah",
-                            "Membaca surah Al-Fatihah dengan benar",
-                            "Membaca surah An-Nas dengan benar",
-                            "Menghafal surah Al-Fatihah",
-                            "Menghafal surah An-Nas"
-                        ]
-                    },
-                    akidah: {
-                        nama: "Akidah",
-                        cp: "Peserta didik mengenal rukun iman dan sifat-sifat Allah melalui pengamatan alam sekitar.",
-                        tp: [
-                            "Menyebutkan rukun iman yang enam",
-                            "Mengenal Allah sebagai Tuhan Yang Maha Esa",
-                            "Menyebutkan bukti-bukti keberadaan Allah",
-                            "Mengenal malaikat dan tugasnya",
-                            "Meyakini adanya kitab-kitab Allah"
-                        ]
-                    },
-                    akhlak: {
-                        nama: "Akhlak",
-                        cp: "Peserta didik menunjukkan akhlak terpuji dalam kehidupan sehari-hari.",
-                        tp: [
-                            "Membiasakan mengucap salam",
-                            "Membiasakan berdoa sebelum dan sesudah makan",
-                            "Menunjukkan sikap jujur dalam perkataan",
-                            "Menunjukkan sikap hormat kepada orang tua",
-                            "Menunjukkan sikap sayang kepada teman"
-                        ]
-                    },
-                    fikih: {
-                        nama: "Fikih",
-                        cp: "Peserta didik mengenal rukun Islam dan praktik ibadah sederhana.",
-                        tp: [
-                            "Menyebutkan rukun Islam yang lima",
-                            "Mengenal syahadat dan artinya",
-                            "Mengenal gerakan shalat",
-                            "Praktik wudhu dengan bimbingan",
-                            "Mengenal waktu-waktu shalat lima waktu"
-                        ]
-                    },
-                    sejarah: {
-                        nama: "Sejarah Peradaban Islam",
-                        cp: "Peserta didik mengenal kisah para nabi dan teladan yang dapat diambil.",
-                        tp: [
-                            "Menceritakan kisah Nabi Adam AS",
-                            "Menceritakan kisah Nabi Nuh AS",
-                            "Menceritakan kisah Nabi Ibrahim AS",
-                            "Menceritakan kisah Nabi Muhammad SAW masa kecil",
-                            "Mengambil teladan dari kisah para nabi"
-                        ]
-                    }
-                }
-            },
-            faseB: {
-                nama: "Fase B (Kelas 3-4 SD/MI)",
-                elemen: {
-                    alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik membaca Al-Qur'an dengan tajwid dasar dan menghafal surah-surah pendek.", tp: ["Membaca Al-Qur'an dengan makhraj yang benar", "Menerapkan hukum nun mati dan tanwin", "Menghafal surah Al-Kautsar beserta artinya", "Menghafal surah Al-Ikhlas beserta artinya", "Menghafal hadis tentang shalat"] },
-                    akidah: { nama: "Akidah", cp: "Peserta didik memahami sifat-sifat Allah dan mengimani hal-hal gaib.", tp: ["Menjelaskan sifat wajib Allah (13 sifat)", "Menyebutkan nama-nama malaikat beserta tugasnya", "Mengimani adanya hari akhir", "Meyakini qada dan qadar Allah"] },
-                    akhlak: { nama: "Akhlak", cp: "Peserta didik menunjukkan akhlak terpuji kepada orang tua dan guru.", tp: ["Menjelaskan adab kepada orang tua", "Mempraktikkan sikap patuh kepada orang tua", "Menjelaskan adab kepada guru", "Menunjukkan sikap hormat kepada guru"] },
-                    fikih: { nama: "Fikih", cp: "Peserta didik memahami dan mempraktikkan shalat dan puasa.", tp: ["Menjelaskan syarat dan rukun shalat", "Mempraktikkan shalat lima waktu dengan benar", "Mengenal shalat berjamaah", "Menjelaskan puasa Ramadhan"] },
-                    sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik mengenal sejarah dakwah Nabi di Makkah.", tp: ["Menceritakan masa muda Nabi Muhammad SAW", "Menjelaskan dakwah Nabi di Makkah", "Menceritakan perjuangan sahabat Nabi", "Mengenal peristiwa Isra Mi'raj"] }
-                }
-            },
-            faseC: {
-                nama: "Fase C (Kelas 5-6 SD/MI)",
-                elemen: {
-                    alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik membaca Al-Qur'an dengan lancar dan memahami kandungan surah.", tp: ["Membaca Al-Qur'an dengan lancar dan tartil", "Menerapkan hukum bacaan mad", "Menghafal surah Al-Qadr dan memahami artinya", "Menghafal surah At-Tin dan memahami artinya"] },
-                    akidah: { nama: "Akidah", cp: "Peserta didik memahami hari akhir dan hikmah mengimaninya.", tp: ["Menjelaskan tanda-tanda hari kiamat", "Mengimani adanya hari pembalasan", "Menjelaskan hikmah beriman kepada hari akhir"] },
-                    akhlak: { nama: "Akhlak", cp: "Peserta didik menunjukkan akhlak terpuji dalam kehidupan sosial.", tp: ["Menjelaskan sikap toleransi antar umat beragama", "Menunjukkan sikap menghargai perbedaan", "Membiasakan sikap tolong-menolong"] },
-                    fikih: { nama: "Fikih", cp: "Peserta didik memahami dan mempraktikkan zakat dan infak.", tp: ["Menjelaskan ketentuan zakat fitrah", "Menjelaskan ketentuan zakat mal", "Mempraktikkan pembayaran zakat"] },
-                    sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik mengenal sejarah dakwah Nabi di Madinah.", tp: ["Menjelaskan peristiwa hijrah ke Madinah", "Menceritakan pembentukan masyarakat Madinah", "Mengenal Piagam Madinah"] }
-                }
-            },
-            faseD: {
-                nama: "Fase D (Kelas 7-9 SMP/MTs)",
-                elemen: {
-                    alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik membaca dan memahami Al-Qur'an dengan tajwid lengkap.", tp: ["Menerapkan hukum tajwid secara lengkap", "Menganalisis kandungan ayat tentang toleransi", "Menghafal ayat-ayat pilihan dengan tartil"] },
-                    akidah: { nama: "Akidah", cp: "Peserta didik memahami rukun iman secara mendalam.", tp: ["Menganalisis dalil-dalil keberadaan Allah", "Menjelaskan tugas dan sifat malaikat", "Memahami kitab-kitab Allah dan fungsinya"] },
-                    akhlak: { nama: "Akhlak", cp: "Peserta didik menunjukkan akhlak mahmudah dan menghindari mazmumah.", tp: ["Menganalisis akhlak terpuji dan tercela", "Membiasakan sikap tawadhu dan istiqamah", "Menunjukkan etika digital yang baik"] },
-                    fikih: { nama: "Fikih", cp: "Peserta didik memahami sujud, haji, dan muamalah.", tp: ["Menjelaskan macam-macam sujud", "Mempraktikkan sujud sahwi, tilawah, dan syukur", "Memahami manasik haji dan umrah"] },
-                    sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik memahami peradaban Islam dari Umayyah hingga Mughal.", tp: ["Menjelaskan perkembangan Dinasti Umayyah", "Menganalisis kemajuan Dinasti Abbasiyah", "Mengenal tokoh-tokoh cendekiawan Muslim"] }
-                }
-            },
-            faseE: {
-                nama: "Fase E (Kelas 10 SMA/MA)",
-                elemen: {
-                    alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik mengkaji ayat dan hadis tentang kompetisi dalam kebaikan.", tp: ["Menganalisis QS. Al-Baqarah: 148 tentang fastabiqul khairat", "Memahami hadis tentang berlomba dalam kebaikan", "Mengimplementasikan semangat berkompetisi positif"] },
-                    akidah: { nama: "Akidah", cp: "Peserta didik memahami Syu'ab al-Iman (cabang-cabang keimanan).", tp: ["Menjelaskan konsep Syu'ab al-Iman", "Menganalisis hubungan iman, Islam, dan ihsan", "Menerapkan nilai-nilai keimanan"] },
-                    akhlak: { nama: "Akhlak", cp: "Peserta didik memiliki karakter mulia dalam berinteraksi.", tp: ["Menganalisis akhlak dalam pergaulan", "Memahami etika berkomunikasi", "Menerapkan akhlak dalam media sosial"] },
-                    fikih: { nama: "Fikih", cp: "Peserta didik memahami sumber dan kaidah hukum Islam.", tp: ["Menjelaskan sumber hukum Islam", "Memahami metode ijtihad", "Menganalisis kaidah-kaidah fikih"] },
-                    sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik memahami sejarah masuk dan berkembangnya Islam di Indonesia.", tp: ["Menganalisis teori masuknya Islam ke Nusantara", "Menjelaskan peran Walisongo dalam dakwah", "Memahami kerajaan-kerajaan Islam di Indonesia"] }
-                }
-            },
-            faseF: {
-                nama: "Fase F (Kelas 11-12 SMA/MA)",
-                elemen: {
-                    alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik mengkaji ayat dan hadis dengan pendekatan tematik.", tp: ["Menganalisis ayat tentang berpikir kritis", "Memahami hadis tentang mencari ilmu", "Mengintegrasikan nilai Al-Qur'an dalam kehidupan"] },
-                    akidah: { nama: "Akidah", cp: "Peserta didik memiliki pemahaman akidah yang kokoh dan kontekstual.", tp: ["Menganalisis problematika akidah kontemporer", "Memahami respons Islam terhadap ateisme", "Mengembangkan worldview Islam"] },
-                    akhlak: { nama: "Akhlak", cp: "Peserta didik memiliki akhlak yang matang dan etika profesional.", tp: ["Menganalisis etika digital dan cyber ethics", "Memahami akhlak dalam dunia kerja", "Mengembangkan soft skills Islami"] },
-                    fikih: { nama: "Fikih", cp: "Peserta didik memahami fikih mawaris dan munakahat.", tp: ["Menjelaskan ketentuan waris dalam Islam", "Menghitung pembagian waris", "Memahami hukum pernikahan dalam Islam"] },
-                    sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik memahami organisasi dan gerakan Islam dunia.", tp: ["Menganalisis organisasi Islam internasional", "Memahami gerakan pembaharuan Islam", "Merumuskan peran generasi muda Muslim"] }
-                }
+        },
+        faseB: {
+            nama: "Fase B (Kelas 3-4 SD/MI)",
+            elemen: {
+                alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik membaca Al-Qur'an dengan tajwid dasar.", tp: ["Membaca Al-Qur'an dengan makhraj yang benar", "Menerapkan hukum nun mati dan tanwin", "Menghafal surah Al-Kautsar", "Menghafal surah Al-Ikhlas"] },
+                akidah: { nama: "Akidah", cp: "Peserta didik memahami sifat-sifat Allah.", tp: ["Menjelaskan sifat wajib Allah", "Menyebutkan nama malaikat beserta tugasnya", "Mengimani adanya hari akhir"] },
+                akhlak: { nama: "Akhlak", cp: "Peserta didik menunjukkan akhlak terpuji kepada orang tua dan guru.", tp: ["Menjelaskan adab kepada orang tua", "Mempraktikkan sikap patuh", "Menunjukkan sikap hormat kepada guru"] },
+                fikih: { nama: "Fikih", cp: "Peserta didik memahami dan mempraktikkan shalat dan puasa.", tp: ["Menjelaskan syarat dan rukun shalat", "Mempraktikkan shalat lima waktu", "Menjelaskan puasa Ramadhan"] },
+                sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik mengenal sejarah dakwah Nabi di Makkah.", tp: ["Menceritakan masa muda Nabi Muhammad SAW", "Menjelaskan dakwah Nabi di Makkah", "Mengenal peristiwa Isra Mi'raj"] }
             }
-        };
-
-        // ==========================================
-        // UTILITY FUNCTIONS
-        // ==========================================
-        function showLoading() {
-            document.getElementById('loadingOverlay').classList.remove('hidden');
-            document.getElementById('loadingOverlay').classList.add('flex');
+        },
+        faseC: {
+            nama: "Fase C (Kelas 5-6 SD/MI)",
+            elemen: {
+                alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik membaca Al-Qur'an dengan lancar.", tp: ["Membaca Al-Qur'an dengan tartil", "Menerapkan hukum bacaan mad", "Menghafal surah Al-Qadr", "Menghafal surah At-Tin"] },
+                akidah: { nama: "Akidah", cp: "Peserta didik memahami hari akhir.", tp: ["Menjelaskan tanda-tanda kiamat", "Mengimani adanya hari pembalasan", "Menjelaskan hikmah beriman kepada hari akhir"] },
+                akhlak: { nama: "Akhlak", cp: "Peserta didik menunjukkan akhlak terpuji dalam kehidupan sosial.", tp: ["Menjelaskan sikap toleransi", "Menunjukkan sikap menghargai perbedaan", "Membiasakan tolong-menolong"] },
+                fikih: { nama: "Fikih", cp: "Peserta didik memahami zakat dan infak.", tp: ["Menjelaskan ketentuan zakat fitrah", "Menjelaskan ketentuan zakat mal", "Mempraktikkan pembayaran zakat"] },
+                sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik mengenal sejarah dakwah Nabi di Madinah.", tp: ["Menjelaskan peristiwa hijrah", "Menceritakan pembentukan masyarakat Madinah", "Mengenal Piagam Madinah"] }
+            }
+        },
+        faseD: {
+            nama: "Fase D (Kelas 7-9 SMP/MTs)",
+            elemen: {
+                alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik membaca dan memahami Al-Qur'an dengan tajwid lengkap.", tp: ["Menerapkan hukum tajwid secara lengkap", "Menganalisis kandungan ayat tentang toleransi", "Menghafal ayat-ayat pilihan"] },
+                akidah: { nama: "Akidah", cp: "Peserta didik memahami rukun iman secara mendalam.", tp: ["Menganalisis dalil keberadaan Allah", "Menjelaskan tugas dan sifat malaikat", "Memahami kitab-kitab Allah"] },
+                akhlak: { nama: "Akhlak", cp: "Peserta didik menunjukkan akhlak mahmudah.", tp: ["Menganalisis akhlak terpuji dan tercela", "Membiasakan sikap tawadhu", "Menunjukkan etika digital yang baik"] },
+                fikih: { nama: "Fikih", cp: "Peserta didik memahami sujud, haji, dan muamalah.", tp: ["Menjelaskan macam-macam sujud", "Mempraktikkan sujud sahwi dan tilawah", "Memahami manasik haji dan umrah"] },
+                sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik memahami peradaban Islam.", tp: ["Menjelaskan perkembangan Dinasti Umayyah", "Menganalisis kemajuan Dinasti Abbasiyah", "Mengenal tokoh cendekiawan Muslim"] }
+            }
+        },
+        faseE: {
+            nama: "Fase E (Kelas 10 SMA/MA)",
+            elemen: {
+                alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik mengkaji ayat tentang kompetisi dalam kebaikan.", tp: ["Menganalisis QS. Al-Baqarah: 148", "Memahami hadis tentang berlomba dalam kebaikan", "Mengimplementasikan semangat berkompetisi positif"] },
+                akidah: { nama: "Akidah", cp: "Peserta didik memahami Syu'ab al-Iman.", tp: ["Menjelaskan konsep Syu'ab al-Iman", "Menganalisis hubungan iman, Islam, dan ihsan", "Menerapkan nilai-nilai keimanan"] },
+                akhlak: { nama: "Akhlak", cp: "Peserta didik memiliki karakter mulia.", tp: ["Menganalisis akhlak dalam pergaulan", "Memahami etika berkomunikasi", "Menerapkan akhlak dalam media sosial"] },
+                fikih: { nama: "Fikih", cp: "Peserta didik memahami sumber hukum Islam.", tp: ["Menjelaskan sumber hukum Islam", "Memahami metode ijtihad", "Menganalisis kaidah-kaidah fikih"] },
+                sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik memahami sejarah Islam di Indonesia.", tp: ["Menganalisis teori masuknya Islam ke Nusantara", "Menjelaskan peran Walisongo", "Memahami kerajaan Islam di Indonesia"] }
+            }
+        },
+        faseF: {
+            nama: "Fase F (Kelas 11-12 SMA/MA)",
+            elemen: {
+                alquran_hadis: { nama: "Al-Qur'an dan Hadis", cp: "Peserta didik mengkaji ayat dengan pendekatan tematik.", tp: ["Menganalisis ayat tentang berpikir kritis", "Memahami hadis tentang mencari ilmu", "Mengintegrasikan nilai Al-Qur'an dalam kehidupan"] },
+                akidah: { nama: "Akidah", cp: "Peserta didik memiliki pemahaman akidah yang kokoh.", tp: ["Menganalisis problematika akidah kontemporer", "Memahami respons Islam terhadap ateisme", "Mengembangkan worldview Islam"] },
+                akhlak: { nama: "Akhlak", cp: "Peserta didik memiliki etika profesional.", tp: ["Menganalisis etika digital", "Memahami akhlak dalam dunia kerja", "Mengembangkan soft skills Islami"] },
+                fikih: { nama: "Fikih", cp: "Peserta didik memahami fikih mawaris.", tp: ["Menjelaskan ketentuan waris dalam Islam", "Menghitung pembagian waris", "Memahami hukum pernikahan"] },
+                sejarah: { nama: "Sejarah Peradaban Islam", cp: "Peserta didik memahami organisasi Islam dunia.", tp: ["Menganalisis organisasi Islam internasional", "Memahami gerakan pembaharuan Islam", "Merumuskan peran generasi muda Muslim"] }
+            }
         }
+    };
 
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.add('hidden');
-            document.getElementById('loadingOverlay').classList.remove('flex');
+    // ==========================================
+    // UTILITY FUNCTIONS
+    // ==========================================
+    function showLoading() {
+        document.getElementById('loadingOverlay').classList.remove('hidden');
+        document.getElementById('loadingOverlay').classList.add('flex');
+    }
+
+    function hideLoading() {
+        document.getElementById('loadingOverlay').classList.add('hidden');
+        document.getElementById('loadingOverlay').classList.remove('flex');
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        const icon = document.getElementById('toastIcon');
+        const msg = document.getElementById('toastMessage');
+        msg.textContent = message;
+        icon.className = type === 'success' ? 'fas fa-check-circle text-xl text-green-400' : 
+                        type === 'error' ? 'fas fa-exclamation-circle text-xl text-red-400' : 
+                        'fas fa-info-circle text-xl text-blue-400';
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        document.getElementById('sidebarOverlay').classList.toggle('hidden');
+    }
+
+    function toggleUserMenu() {
+        document.getElementById('userMenu').classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#userMenu') && !e.target.closest('[onclick="toggleUserMenu()"]')) {
+            document.getElementById('userMenu').classList.add('hidden');
         }
+    });
 
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const icon = document.getElementById('toastIcon');
-            const msg = document.getElementById('toastMessage');
-            
-            msg.textContent = message;
-            if (type === 'success') {
-                icon.className = 'fas fa-check-circle text-xl text-green-400';
-            } else if (type === 'error') {
-                icon.className = 'fas fa-exclamation-circle text-xl text-red-400';
+    function formatCurrency(num) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
+    }
+
+    function formatDate(date) {
+        if (!date) return '-';
+        const d = date.toDate ? date.toDate() : new Date(date);
+        return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function closeModal() {
+        document.getElementById('modalContainer').innerHTML = '';
+    }
+
+    function isSuperAdmin() {
+        return currentUser?.email === SUPER_ADMIN_EMAIL;
+    }
+
+    function isPremium() {
+        return userData?.plan === 'premium' || userData?.plan === 'school' || isSuperAdmin();
+    }
+
+    // ==========================================
+    // AUTHENTICATION
+    // ==========================================
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            currentUser = user;
+            await loadUserData();
+            await loadAppSettings();
+            updateUI();
+            initializeRouter();
+        } else {
+            window.location.href = 'index.html';
+        }
+    });
+
+    async function loadUserData() {
+        try {
+            const doc = await db.collection('users').doc(currentUser.uid).get();
+            if (doc.exists) {
+                userData = doc.data();
             } else {
-                icon.className = 'fas fa-info-circle text-xl text-blue-400';
-            }
-            
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 3000);
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-
-        function toggleUserMenu() {
-            document.getElementById('userMenu').classList.toggle('hidden');
-        }
-
-        // Close user menu when clicking outside
-        document.addEventListener('click', (e) => {
-            const menu = document.getElementById('userMenu');
-            if (!e.target.closest('#userMenu') && !e.target.closest('[onclick="toggleUserMenu()"]')) {
-                menu.classList.add('hidden');
-            }
-        });
-
-        function formatCurrency(num) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
-        }
-
-        function formatDate(date) {
-            if (!date) return '-';
-            const d = date.toDate ? date.toDate() : new Date(date);
-            return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-        }
-
-        // ==========================================
-        // AUTHENTICATION & USER MANAGEMENT
-        // ==========================================
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                currentUser = user;
-                await loadUserData();
-                await loadAppSettings();
-                updateUI();
-                initializeRouter();
-            } else {
-                window.location.href = 'index.html';
-            }
-        });
-
-        async function loadUserData() {
-            try {
-                const doc = await db.collection('users').doc(currentUser.uid).get();
-                if (doc.exists) {
-                    userData = doc.data();
-                } else {
-                    userData = {
-                        name: currentUser.displayName || 'Guru',
-                        email: currentUser.email,
-                        role: currentUser.email === SUPER_ADMIN_EMAIL ? 'admin' : 'guru',
-                        plan: currentUser.email === SUPER_ADMIN_EMAIL ? 'premium' : 'free',
-                        jenjang: '',
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-                    await db.collection('users').doc(currentUser.uid).set(userData);
-                }
-            } catch (error) {
-                console.error('Error loading user data:', error);
-            }
-        }
-
-        async function loadAppSettings() {
-            try {
-                const doc = await db.collection('settings').doc('pricing').get();
-                if (doc.exists) {
-                    PRICING = { ...PRICING, ...doc.data() };
-                }
-            } catch (error) {
-                console.log('Using default pricing');
-            }
-        }
-
-        function isSuperAdmin() {
-            return currentUser?.email === SUPER_ADMIN_EMAIL;
-        }
-
-        function isPremium() {
-            return userData?.plan === 'premium' || userData?.plan === 'school' || isSuperAdmin();
-        }
-
-        function updateUI() {
-            // Update sidebar user info
-            document.getElementById('sidebarUserName').textContent = userData?.name || 'Guru';
-            
-            const planText = isSuperAdmin() ? 'Super Admin' : 
-                            userData?.plan === 'premium' ? 'Premium' : 
-                            userData?.plan === 'school' ? 'Sekolah' : 'Free';
-            const planColor = isSuperAdmin() ? 'bg-red-500' : 
-                             userData?.plan === 'premium' ? 'bg-yellow-500' : 
-                             userData?.plan === 'school' ? 'bg-blue-500' : 'bg-green-500';
-            
-            document.getElementById('sidebarUserPlan').innerHTML = `
-                <span class="w-2 h-2 ${planColor} rounded-full mr-1"></span>
-                ${planText}
-            `;
-
-            // Update header user info
-            document.getElementById('menuUserName').textContent = userData?.name || 'Guru';
-            document.getElementById('menuUserEmail').textContent = currentUser?.email || '';
-
-            // Update avatar
-            if (currentUser?.photoURL) {
-                document.getElementById('sidebarUserPhoto').innerHTML = `<img src="${currentUser.photoURL}" class="w-full h-full rounded-full object-cover">`;
-                document.getElementById('headerUserPhoto').innerHTML = `<img src="${currentUser.photoURL}" class="w-full h-full rounded-full object-cover">`;
-            } else {
-                const initial = (userData?.name || 'G').charAt(0).toUpperCase();
-                document.getElementById('sidebarUserPhoto').innerHTML = initial;
-                document.getElementById('headerUserPhoto').innerHTML = initial;
-            }
-
-            // Show/hide admin menu
-            if (isSuperAdmin()) {
-                document.getElementById('adminMenu').classList.remove('hidden');
-            }
-
-            // Show/hide upgrade badge
-            if (!isPremium()) {
-                document.getElementById('subscriptionBadge').classList.remove('hidden');
-            } else {
-                document.getElementById('subscriptionBadge').classList.add('hidden');
-            }
-
-            // Hide premium badges for premium users
-            if (isPremium()) {
-                document.querySelectorAll('.premium-badge').forEach(el => el.classList.add('hidden'));
-            }
-        }
-
-        async function logout() {
-            try {
-                await auth.signOut();
-                window.location.href = 'index.html';
-            } catch (error) {
-                showToast('Gagal logout', 'error');
-            }
-        }
-
-        // ==========================================
-        // ROUTER
-        // ==========================================
-        function initializeRouter() {
-            window.addEventListener('hashchange', handleRouteChange);
-            
-            document.querySelectorAll('.sidebar-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const page = link.dataset.page;
-                    window.location.hash = page;
-                });
-            });
-
-            handleRouteChange();
-        }
-
-        function handleRouteChange() {
-            const hash = window.location.hash.slice(1) || 'dashboard';
-            navigateTo(hash);
-        }
-
-        function navigateTo(page) {
-            currentPage = page;
-            
-            document.querySelectorAll('.sidebar-link').forEach(link => {
-                link.classList.remove('active');
-                if (link.dataset.page === page) {
-                    link.classList.add('active');
-                }
-            });
-
-            const titles = {
-                'dashboard': 'Dashboard',
-                'profil': 'Profil Guru',
-                'kalender': 'Kalender Pendidikan',
-                'jadwal': 'Jadwal Pelajaran',
-                'atp': 'Alur Tujuan Pembelajaran (ATP)',
-                'prota': 'Program Tahunan (Prota)',
-                'promes': 'Program Semester (Promes)',
-                'modul-ajar': 'Modul Ajar',
-                'lkpd': 'LKPD',
-                'bank-soal': 'Bank Soal',
-                'jurnal': 'Jurnal Pembelajaran',
-                'absensi': 'Absensi Siswa',
-                'nilai': 'Daftar Nilai',
-                'ai-assistant': 'AI Assistant',
-                'import': 'Import Data',
-                'subscription': 'Langganan',
-                'admin': 'Admin Panel',
-                'pricing-settings': 'Pengaturan Harga',
-                'payments': 'Kelola Pembayaran',
-                'settings': 'Pengaturan'
-            };
-            document.getElementById('pageTitle').textContent = titles[page] || 'Dashboard';
-
-            loadPageContent(page);
-
-            if (window.innerWidth < 1024) {
-                document.getElementById('sidebar').classList.add('-translate-x-full');
-                document.getElementById('sidebarOverlay').classList.add('hidden');
-            }
-
-            window.location.hash = page;
-        }
-
-        // ==========================================
-        // PAGE CONTENT LOADER
-        // ==========================================
-        function loadPageContent(page) {
-            const content = document.getElementById('mainContent');
-            
-            switch(page) {
-                case 'dashboard':
-                    content.innerHTML = getDashboardHTML();
-                    initDashboard();
-                    break;
-                case 'profil':
-                    content.innerHTML = getProfilHTML();
-                    initProfil();
-                    break;
-                case 'kalender':
-                    content.innerHTML = getKalenderHTML();
-                    initKalender();
-                    break;
-                case 'jadwal':
-                    content.innerHTML = getJadwalHTML();
-                    initJadwal();
-                    break;
-                case 'atp':
-                    content.innerHTML = getATPHTML();
-                    initATP();
-                    break;
-                case 'prota':
-                    content.innerHTML = getProtaHTML();
-                    initProta();
-                    break;
-                case 'promes':
-                    content.innerHTML = getPromesHTML();
-                    initPromes();
-                    break;
-                case 'modul-ajar':
-                    content.innerHTML = getModulAjarHTML();
-                    initModulAjar();
-                    break;
-                case 'lkpd':
-                    content.innerHTML = getLKPDHTML();
-                    initLKPD();
-                    break;
-                case 'bank-soal':
-                    content.innerHTML = getBankSoalHTML();
-                    initBankSoal();
-                    break;
-                case 'jurnal':
-                    content.innerHTML = getJurnalHTML();
-                    initJurnal();
-                    break;
-                case 'absensi':
-                    content.innerHTML = getAbsensiHTML();
-                    initAbsensi();
-                    break;
-                case 'nilai':
-                    content.innerHTML = getNilaiHTML();
-                    initNilai();
-                    break;
-                case 'ai-assistant':
-                    content.innerHTML = getAIAssistantHTML();
-                    initAIAssistant();
-                    break;
-                case 'import':
-                    content.innerHTML = getImportHTML();
-                    initImport();
-                    break;
-                case 'subscription':
-                    content.innerHTML = getSubscriptionHTML();
-                    initSubscription();
-                    break;
-                case 'admin':
-                    content.innerHTML = getAdminHTML();
-                    initAdmin();
-                    break;
-                case 'pricing-settings':
-                    content.innerHTML = getPricingSettingsHTML();
-                    initPricingSettings();
-                    break;
-                case 'payments':
-                    content.innerHTML = getPaymentsHTML();
-                    initPayments();
-                    break;
-                case 'settings':
-                    content.innerHTML = getSettingsHTML();
-                    break;
-                default:
-                    content.innerHTML = getDashboardHTML();
-                    initDashboard();
-            }
-        }
-
-        // ==========================================
-        // PREMIUM ACCESS CHECK
-        // ==========================================
-        function checkPremiumAccess(featureName) {
-            if (isPremium()) return null;
-            
-            return `
-                <div class="flex items-center justify-center min-h-[60vh]">
-                    <div class="text-center max-w-md">
-                        <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-crown text-4xl text-yellow-500"></i>
-                        </div>
-                        <h2 class="text-2xl font-bold text-gray-900 mb-3">Fitur Premium</h2>
-                        <p class="text-gray-600 mb-6">
-                            <strong>${featureName}</strong> adalah fitur premium. Upgrade akun Anda untuk mengakses semua fitur lengkap.
-                        </p>
-                        <div class="space-y-3">
-                            <button onclick="navigateTo('subscription')" class="w-full btn-primary text-white px-8 py-3 rounded-xl font-semibold">
-                                <i class="fas fa-rocket mr-2"></i>Lihat Paket Langganan
-                            </button>
-                            <p class="text-sm text-gray-500">Mulai dari ${formatCurrency(PRICING.premium.price)}/bulan</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // ==========================================
-        // SUBSCRIPTION PAGE
-        // ==========================================
-        function getSubscriptionHTML() {
-            const currentPlan = userData?.plan || 'free';
-            const planExpiry = userData?.planExpiry ? formatDate(userData.planExpiry) : null;
-
-            return `
-                <div class="space-y-6 animate-slide-in">
-                    <!-- Current Plan -->
-                    <div class="card p-6">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4">Status Langganan Anda</h3>
-                        <div class="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl ${currentPlan === 'premium' ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200' : currentPlan === 'school' ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200' : 'bg-gray-50'}">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-14 h-14 ${currentPlan === 'premium' ? 'bg-yellow-500' : currentPlan === 'school' ? 'bg-blue-500' : 'bg-gray-400'} rounded-xl flex items-center justify-center">
-                                    <i class="fas ${currentPlan === 'free' ? 'fa-user' : 'fa-crown'} text-white text-xl"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-900 text-lg">${currentPlan === 'premium' ? 'Premium' : currentPlan === 'school' ? 'Paket Sekolah' : 'Free Plan'}</h4>
-                                    <p class="text-gray-600 text-sm">
-                                        ${planExpiry ? `Berlaku hingga: ${planExpiry}` : 'Gratis selamanya'}
-                                    </p>
-                                </div>
-                            </div>
-                            ${currentPlan === 'free' ? `
-                                <button onclick="scrollToPricing()" class="mt-4 md:mt-0 btn-primary text-white px-6 py-2 rounded-xl font-semibold">
-                                    <i class="fas fa-arrow-up mr-2"></i>Upgrade Sekarang
-                                </button>
-                            ` : ''}
-                        </div>
-                    </div>
-
-                    <!-- Pricing Plans -->
-                    <div id="pricingSection">
-                        <h3 class="text-2xl font-bold text-gray-900 text-center mb-2">Pilih Paket Langganan</h3>
-                        <p class="text-gray-600 text-center mb-8">Pilih paket yang sesuai dengan kebutuhan Anda</p>
-
-                        <!-- Billing Toggle -->
-                        <div class="flex items-center justify-center mb-8">
-                            <span class="text-gray-600 mr-3">Bulanan</span>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="yearlyToggle" class="sr-only peer" onchange="toggleBillingPeriod()">
-                                <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary-600"></div>
-                            </label>
-                            <span class="text-gray-600 ml-3">Tahunan</span>
-                            <span class="ml-2 bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">Hemat 17%</span>
-                        </div>
-
-                        <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                            <!-- Free Plan -->
-                            <div class="card p-6 border-2 ${currentPlan === 'free' ? 'border-primary-500' : 'border-gray-200'}">
-                                ${currentPlan === 'free' ? '<div class="absolute -top-3 left-1/2 transform -translate-x-1/2"><span class="bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-semibold">PAKET ANDA</span></div>' : ''}
-                                <div class="text-center mb-6">
-                                    <h4 class="text-xl font-bold text-gray-900 mb-2">Free</h4>
-                                    <div class="text-4xl font-bold text-gray-900">Rp 0</div>
-                                    <p class="text-gray-500 text-sm">selamanya</p>
-                                </div>
-                                <ul class="space-y-3 mb-6">
-                                    ${PRICING.free.features.map(f => `
-                                        <li class="flex items-center text-sm">
-                                            <i class="fas fa-check text-primary-500 mr-3"></i>
-                                            ${f}
-                                        </li>
-                                    `).join('')}
-                                    <li class="flex items-center text-sm text-gray-400">
-                                        <i class="fas fa-times mr-3"></i>
-                                        Promes Generator
-                                    </li>
-                                    <li class="flex items-center text-sm text-gray-400">
-                                        <i class="fas fa-times mr-3"></i>
-                                        Modul Ajar & LKPD
-                                    </li>
-                                </ul>
-                                <button class="w-full py-3 rounded-xl font-semibold ${currentPlan === 'free' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" ${currentPlan === 'free' ? 'disabled' : ''}>
-                                    ${currentPlan === 'free' ? 'Paket Aktif' : 'Gratis'}
-                                </button>
-                            </div>
-
-                            <!-- Premium Plan -->
-                            <div class="card p-6 border-2 border-primary-500 relative transform scale-105 shadow-xl">
-                                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                                    <span class="bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-semibold">POPULER</span>
-                                </div>
-                                <div class="text-center mb-6">
-                                    <h4 class="text-xl font-bold text-gray-900 mb-2">Premium</h4>
-                                    <div class="text-4xl font-bold text-primary-600">
-                                        <span id="premiumPrice">${formatCurrency(PRICING.premium.price)}</span>
-                                    </div>
-                                    <p class="text-gray-500 text-sm" id="premiumPeriod">/bulan</p>
-                                </div>
-                                <ul class="space-y-3 mb-6">
-                                    ${PRICING.premium.features.map(f => `
-                                        <li class="flex items-center text-sm">
-                                            <i class="fas fa-check text-primary-500 mr-3"></i>
-                                            ${f}
-                                        </li>
-                                    `).join('')}
-                                </ul>
-                                <button onclick="showPaymentModal('premium')" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
-                                    ${currentPlan === 'premium' ? 'Perpanjang' : 'Pilih Premium'}
-                                </button>
-                            </div>
-
-                            <!-- School Plan -->
-                            <div class="card p-6 border-2 ${currentPlan === 'school' ? 'border-blue-500' : 'border-gray-200'}">
-                                ${currentPlan === 'school' ? '<div class="absolute -top-3 left-1/2 transform -translate-x-1/2"><span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-semibold">PAKET ANDA</span></div>' : ''}
-                                <div class="text-center mb-6">
-                                    <h4 class="text-xl font-bold text-gray-900 mb-2">Paket Sekolah</h4>
-                                    <div class="text-4xl font-bold text-gray-900">
-                                        <span id="schoolPrice">${formatCurrency(PRICING.school.price)}</span>
-                                    </div>
-                                    <p class="text-gray-500 text-sm" id="schoolPeriod">/bulan</p>
-                                </div>
-                                <ul class="space-y-3 mb-6">
-                                    ${PRICING.school.features.map(f => `
-                                        <li class="flex items-center text-sm">
-                                            <i class="fas fa-check text-blue-500 mr-3"></i>
-                                            ${f}
-                                        </li>
-                                    `).join('')}
-                                </ul>
-                                <button onclick="showPaymentModal('school')" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold transition">
-                                    ${currentPlan === 'school' ? 'Perpanjang' : 'Hubungi Kami'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Payment History -->
-                    <div class="card p-6">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4">Riwayat Pembayaran</h3>
-                        <div id="paymentHistory" class="space-y-3">
-                            <p class="text-gray-500 text-center py-4">Belum ada riwayat pembayaran</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function initSubscription() {
-            loadPaymentHistory();
-        }
-
-        function toggleBillingPeriod() {
-            const isYearly = document.getElementById('yearlyToggle').checked;
-            
-            if (isYearly) {
-                document.getElementById('premiumPrice').textContent = formatCurrency(PRICING.premium.priceYearly);
-                document.getElementById('premiumPeriod').textContent = '/tahun';
-                document.getElementById('schoolPrice').textContent = formatCurrency(PRICING.school.priceYearly);
-                document.getElementById('schoolPeriod').textContent = '/tahun';
-            } else {
-                document.getElementById('premiumPrice').textContent = formatCurrency(PRICING.premium.price);
-                document.getElementById('premiumPeriod').textContent = '/bulan';
-                document.getElementById('schoolPrice').textContent = formatCurrency(PRICING.school.price);
-                document.getElementById('schoolPeriod').textContent = '/bulan';
-            }
-        }
-
-        function scrollToPricing() {
-            document.getElementById('pricingSection').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        async function loadPaymentHistory() {
-            try {
-                const snapshot = await db.collection('payments')
-                    .where('userId', '==', currentUser.uid)
-                    .orderBy('createdAt', 'desc')
-                    .limit(10)
-                    .get();
-
-                const container = document.getElementById('paymentHistory');
-                
-                if (snapshot.empty) {
-                    container.innerHTML = '<p class="text-gray-500 text-center py-4">Belum ada riwayat pembayaran</p>';
-                    return;
-                }
-
-                container.innerHTML = snapshot.docs.map(doc => {
-                    const payment = doc.data();
-                    const statusColors = {
-                        pending: 'bg-yellow-100 text-yellow-700',
-                        confirmed: 'bg-green-100 text-green-700',
-                        rejected: 'bg-red-100 text-red-700'
-                    };
-                    return `
-                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                            <div>
-                                <p class="font-medium text-gray-900">${payment.planName}</p>
-                                <p class="text-sm text-gray-500">${formatDate(payment.createdAt)}</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-bold text-gray-900">${formatCurrency(payment.amount)}</p>
-                                <span class="text-xs px-2 py-1 rounded-full ${statusColors[payment.status] || 'bg-gray-100'}">${payment.status}</span>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            } catch (error) {
-                console.error('Error loading payment history:', error);
-            }
-        }
-
-        // ==========================================
-        // PAYMENT MODAL & PROCESSING
-        // ==========================================
-        function showPaymentModal(planType) {
-            const isYearly = document.getElementById('yearlyToggle')?.checked || false;
-            const plan = PRICING[planType];
-            const amount = isYearly ? plan.priceYearly : plan.price;
-            const period = isYearly ? 'Tahunan' : 'Bulanan';
-
-            const modal = document.getElementById('modalContainer');
-            modal.innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
-                    <div class="bg-white rounded-2xl w-full max-w-lg my-8">
-                        <div class="p-6 border-b">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-xl font-bold text-gray-900">Pembayaran</h3>
-                                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
-                                    <i class="fas fa-times text-xl"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="p-6 space-y-6">
-                            <!-- Order Summary -->
-                            <div class="bg-gray-50 rounded-xl p-4">
-                                <h4 class="font-semibold text-gray-900 mb-3">Ringkasan Pesanan</h4>
-                                <div class="flex justify-between mb-2">
-                                    <span class="text-gray-600">${plan.name} (${period})</span>
-                                    <span class="font-medium">${formatCurrency(amount)}</span>
-                                </div>
-                                <div class="border-t pt-2 mt-2 flex justify-between">
-                                    <span class="font-bold">Total</span>
-                                    <span class="font-bold text-primary-600">${formatCurrency(amount)}</span>
-                                </div>
-                            </div>
-
-                            <!-- Payment Methods -->
-                            <div>
-                                <h4 class="font-semibold text-gray-900 mb-3">Metode Pembayaran</h4>
-                                <div class="space-y-3">
-                                    <label class="flex items-center p-4 border-2 rounded-xl cursor-pointer hover:border-primary-300 transition payment-method-option">
-                                        <input type="radio" name="paymentMethod" value="transfer" checked class="mr-3">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" class="h-6 mr-3">
-                                        <div class="flex-1">
-                                            <p class="font-medium">Transfer Bank</p>
-                                            <p class="text-sm text-gray-500">BCA, Mandiri, BRI, BNI</p>
-                                        </div>
-                                    </label>
-                                    <label class="flex items-center p-4 border-2 rounded-xl cursor-pointer hover:border-primary-300 transition payment-method-option">
-                                        <input type="radio" name="paymentMethod" value="ewallet" class="mr-3">
-                                        <i class="fas fa-wallet text-2xl text-green-500 mr-3"></i>
-                                        <div class="flex-1">
-                                            <p class="font-medium">E-Wallet</p>
-                                            <p class="text-sm text-gray-500">GoPay, OVO, DANA, ShopeePay</p>
-                                        </div>
-                                    </label>
-                                    <label class="flex items-center p-4 border-2 rounded-xl cursor-pointer hover:border-primary-300 transition payment-method-option">
-                                        <input type="radio" name="paymentMethod" value="qris" class="mr-3">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS" class="h-6 mr-3">
-                                        <div class="flex-1">
-                                            <p class="font-medium">QRIS</p>
-                                            <p class="text-sm text-gray-500">Scan QR dari aplikasi apapun</p>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Customer Info -->
-                            <div>
-                                <h4 class="font-semibold text-gray-900 mb-3">Informasi Pembeli</h4>
-                                <div class="space-y-3">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                                        <input type="text" id="paymentName" value="${userData?.name || ''}" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                        <input type="email" id="paymentEmail" value="${currentUser?.email || ''}" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl" readonly>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">No. WhatsApp</label>
-                                        <input type="tel" id="paymentPhone" value="${userData?.phone || ''}" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl" placeholder="08xxxxxxxxxx">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-6 border-t bg-gray-50 rounded-b-2xl">
-                            <button onclick="processPayment('${planType}', ${amount}, '${period}')" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
-                                <i class="fas fa-lock mr-2"></i>Bayar Sekarang
-                            </button>
-                            <p class="text-center text-xs text-gray-500 mt-3">
-                                <i class="fas fa-shield-alt mr-1"></i>Pembayaran aman dan terenkripsi
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Style selected payment method
-            document.querySelectorAll('.payment-method-option input').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    document.querySelectorAll('.payment-method-option').forEach(opt => {
-                        opt.classList.remove('border-primary-500', 'bg-primary-50');
-                    });
-                    if (this.checked) {
-                        this.closest('.payment-method-option').classList.add('border-primary-500', 'bg-primary-50');
-                    }
-                });
-            });
-            // Trigger initial state
-            document.querySelector('.payment-method-option input:checked')?.dispatchEvent(new Event('change'));
-        }
-
-        async function processPayment(planType, amount, period) {
-            const name = document.getElementById('paymentName').value;
-            const email = document.getElementById('paymentEmail').value;
-            const phone = document.getElementById('paymentPhone').value;
-            const method = document.querySelector('input[name="paymentMethod"]:checked')?.value;
-
-            if (!name || !phone) {
-                showToast('Lengkapi semua data', 'error');
-                return;
-            }
-
-            showLoading();
-
-            try {
-                // Create payment record
-                const paymentRef = await db.collection('payments').add({
-                    userId: currentUser.uid,
-                    userName: name,
-                    userEmail: email,
-                    userPhone: phone,
-                    planType: planType,
-                    planName: PRICING[planType].name + ' (' + period + ')',
-                    amount: amount,
-                    period: period,
-                    method: method,
-                    status: 'pending',
+                userData = {
+                    name: currentUser.displayName || 'Guru',
+                    email: currentUser.email,
+                    role: currentUser.email === SUPER_ADMIN_EMAIL ? 'admin' : 'guru',
+                    plan: currentUser.email === SUPER_ADMIN_EMAIL ? 'premium' : 'free',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                hideLoading();
-                closeModal();
-
-                // Show payment instructions
-                showPaymentInstructions(paymentRef.id, method, amount);
-
-            } catch (error) {
-                hideLoading();
-                showToast('Gagal memproses pembayaran: ' + error.message, 'error');
-            }
-        }
-
-        function showPaymentInstructions(paymentId, method, amount) {
-            const bankInfo = {
-                transfer: {
-                    bank: 'BCA',
-                    accountNumber: '1234567890',
-                    accountName: 'Admin Guru Super App'
-                }
-            };
-
-            const modal = document.getElementById('modalContainer');
-            modal.innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-                    <div class="bg-white rounded-2xl w-full max-w-lg p-6">
-                        <div class="text-center mb-6">
-                            <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-clock text-3xl text-yellow-500"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Menunggu Pembayaran</h3>
-                            <p class="text-gray-600">Silakan transfer sesuai instruksi berikut</p>
-                        </div>
-
-                        <div class="bg-gray-50 rounded-xl p-4 mb-6">
-                            <div class="text-center mb-4">
-                                <p class="text-sm text-gray-600">Total Pembayaran</p>
-                                <p class="text-3xl font-bold text-primary-600">${formatCurrency(amount)}</p>
-                            </div>
-                            
-                            ${method === 'transfer' ? `
-                                <div class="space-y-3">
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600">Bank</span>
-                                        <span class="font-medium">${bankInfo.transfer.bank}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600">No. Rekening</span>
-                                        <div class="flex items-center">
-                                            <span class="font-mono font-bold mr-2">${bankInfo.transfer.accountNumber}</span>
-                                            <button onclick="copyToClipboard('${bankInfo.transfer.accountNumber}')" class="text-primary-600 hover:text-primary-700">
-                                                <i class="fas fa-copy"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600">Atas Nama</span>
-                                        <span class="font-medium">${bankInfo.transfer.accountName}</span>
-                                    </div>
-                                </div>
-                            ` : method === 'qris' ? `
-                                <div class="text-center">
-                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PAYMENT-${paymentId}" alt="QRIS" class="mx-auto mb-2">
-                                    <p class="text-sm text-gray-500">Scan QR Code dengan aplikasi pembayaran Anda</p>
-                                </div>
-                            ` : `
-                                <div class="text-center py-4">
-                                    <p class="text-gray-600">Instruksi pembayaran akan dikirim ke WhatsApp Anda</p>
-                                </div>
-                            `}
-                        </div>
-
-                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
-                            <p class="text-sm text-blue-800">
-                                <i class="fas fa-info-circle mr-2"></i>
-                                ID Pembayaran: <strong>${paymentId}</strong><br>
-                                Setelah transfer, konfirmasi pembayaran Anda dengan mengirim bukti transfer.
-                            </p>
-                        </div>
-
-                        <div class="space-y-3">
-                            <button onclick="showUploadBuktiModal('${paymentId}')" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
-                                <i class="fas fa-upload mr-2"></i>Upload Bukti Transfer
-                            </button>
-                            <button onclick="closeModal(); navigateTo('subscription');" class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200">
-                                Kembali
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text);
-            showToast('Nomor rekening disalin!');
-        }
-
-        function showUploadBuktiModal(paymentId) {
-            const modal = document.getElementById('modalContainer');
-            modal.innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-                    <div class="bg-white rounded-2xl w-full max-w-md p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-4">Upload Bukti Transfer</h3>
-                        
-                        <div class="space-y-4">
-                            <div id="uploadArea" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-primary-500 transition cursor-pointer" onclick="document.getElementById('buktiFile').click()">
-                                <input type="file" id="buktiFile" accept="image/*" class="hidden" onchange="previewBukti(event)">
-                                <div id="uploadPlaceholder">
-                                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-300 mb-3"></i>
-                                    <p class="text-gray-600">Klik untuk upload gambar</p>
-                                    <p class="text-sm text-gray-400">JPG, PNG (max 5MB)</p>
-                                </div>
-                                <img id="buktiPreview" src="" alt="Preview" class="hidden max-h-48 mx-auto rounded-lg">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Catatan (opsional)</label>
-                                <textarea id="buktiCatatan" rows="2" class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl" placeholder="Catatan tambahan..."></textarea>
-                            </div>
-                        </div>
-
-                        <div class="flex space-x-3 mt-6">
-                            <button onclick="closeModal(); showPaymentInstructions('${paymentId}', 'transfer', 0);" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200">
-                                Kembali
-                            </button>
-                            <button onclick="submitBuktiTransfer('${paymentId}')" class="flex-1 btn-primary text-white py-3 rounded-xl font-semibold">
-                                Kirim
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function previewBukti(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('buktiPreview').src = e.target.result;
-                    document.getElementById('buktiPreview').classList.remove('hidden');
-                    document.getElementById('uploadPlaceholder').classList.add('hidden');
                 };
-                reader.readAsDataURL(file);
+                await db.collection('users').doc(currentUser.uid).set(userData);
             }
+        } catch (error) {
+            console.error('Error loading user data:', error);
+        }
+    }
+
+    async function loadAppSettings() {
+        try {
+            const doc = await db.collection('settings').doc('pricing').get();
+            if (doc.exists) {
+                PRICING = { ...PRICING, ...doc.data() };
+            }
+        } catch (error) {
+            console.log('Using default pricing');
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('sidebarUserName').textContent = userData?.name || 'Guru';
+        const planText = isSuperAdmin() ? 'Super Admin' : userData?.plan === 'premium' ? 'Premium' : userData?.plan === 'school' ? 'Sekolah' : 'Free';
+        const planColor = isSuperAdmin() ? 'bg-red-500' : userData?.plan === 'premium' ? 'bg-yellow-500' : 'bg-green-500';
+        document.getElementById('sidebarUserPlan').innerHTML = `<span class="w-2 h-2 ${planColor} rounded-full mr-1 inline-block"></span>${planText}`;
+
+        document.getElementById('menuUserName').textContent = userData?.name || 'Guru';
+        document.getElementById('menuUserEmail').textContent = currentUser?.email || '';
+
+        const initial = (userData?.name || 'G').charAt(0).toUpperCase();
+        if (currentUser?.photoURL) {
+            document.getElementById('sidebarUserPhoto').innerHTML = `<img src="${currentUser.photoURL}" class="w-full h-full rounded-full object-cover">`;
+            document.getElementById('headerUserPhoto').innerHTML = `<img src="${currentUser.photoURL}" class="w-full h-full rounded-full object-cover">`;
+        } else {
+            document.getElementById('sidebarUserPhoto').textContent = initial;
+            document.getElementById('headerUserPhoto').textContent = initial;
         }
 
-        async function submitBuktiTransfer(paymentId) {
-            const fileInput = document.getElementById('buktiFile');
-            const catatan = document.getElementById('buktiCatatan').value;
-
-            if (!fileInput.files[0]) {
-                showToast('Pilih file bukti transfer', 'error');
-                return;
-            }
-
-            showLoading();
-
-            try {
-                // Upload to storage
-                const file = fileInput.files[0];
-                const storageRef = storage.ref(`bukti_transfer/${paymentId}_${Date.now()}`);
-                await storageRef.put(file);
-                const downloadURL = await storageRef.getDownloadURL();
-
-                // Update payment record
-                await db.collection('payments').doc(paymentId).update({
-                    buktiTransfer: downloadURL,
-                    catatan: catatan,
-                    status: 'pending_verification',
-                    uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                hideLoading();
-                closeModal();
-                showToast('Bukti transfer berhasil dikirim! Mohon tunggu konfirmasi admin.', 'success');
-                navigateTo('subscription');
-
-            } catch (error) {
-                hideLoading();
-                showToast('Gagal upload: ' + error.message, 'error');
-            }
+        if (isSuperAdmin()) {
+            document.getElementById('adminMenu').classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('modalContainer').innerHTML = '';
+        if (!isPremium()) {
+            document.getElementById('subscriptionBadge').classList.remove('hidden');
+        } else {
+            document.getElementById('subscriptionBadge').classList.add('hidden');
+            document.querySelectorAll('.premium-badge').forEach(el => el.classList.add('hidden'));
         }
+    }
 
-        // ==========================================
-        // ADMIN: PRICING SETTINGS
-        // ==========================================
-        function getPricingSettingsHTML() {
-            if (!isSuperAdmin()) {
-                return `
-                    <div class="flex items-center justify-center min-h-[60vh]">
-                        <div class="text-center">
-                            <i class="fas fa-lock text-5xl text-gray-300 mb-4"></i>
-                            <h2 class="text-xl font-bold text-gray-900">Akses Ditolak</h2>
-                            <p class="text-gray-600">Halaman ini hanya untuk Super Admin.</p>
-                        </div>
+    async function logout() {
+        await auth.signOut();
+        window.location.href = 'index.html';
+    }
+
+    // ==========================================
+    // ROUTER
+    // ==========================================
+    function initializeRouter() {
+        window.addEventListener('hashchange', handleRouteChange);
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.hash = link.dataset.page;
+            });
+        });
+        handleRouteChange();
+    }
+
+    function handleRouteChange() {
+        const hash = window.location.hash.slice(1) || 'dashboard';
+        navigateTo(hash);
+    }
+
+    function navigateTo(page) {
+        currentPage = page;
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.classList.toggle('active', link.dataset.page === page);
+        });
+
+        const titles = {
+            'dashboard': 'Dashboard', 'profil': 'Profil Guru', 'kalender': 'Kalender Pendidikan',
+            'jadwal': 'Jadwal Pelajaran', 'atp': 'ATP', 'prota': 'Prota', 'promes': 'Promes',
+            'modul-ajar': 'Modul Ajar', 'lkpd': 'LKPD', 'bank-soal': 'Bank Soal',
+            'jurnal': 'Jurnal', 'absensi': 'Absensi', 'nilai': 'Nilai',
+            'ai-assistant': 'AI Assistant', 'import': 'Import Data', 'subscription': 'Langganan',
+            'admin': 'Admin Panel', 'pricing-settings': 'Pengaturan Harga', 'payments': 'Pembayaran'
+        };
+        document.getElementById('pageTitle').textContent = titles[page] || 'Dashboard';
+
+        loadPageContent(page);
+
+        if (window.innerWidth < 1024) {
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+        }
+    }
+
+    function checkPremiumAccess(featureName) {
+        if (isPremium()) return null;
+        return `
+            <div class="flex items-center justify-center min-h-[60vh]">
+                <div class="text-center max-w-md">
+                    <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-crown text-4xl text-yellow-500"></i>
                     </div>
-                `;
-            }
+                    <h2 class="text-2xl font-bold text-gray-900 mb-3">Fitur Premium</h2>
+                    <p class="text-gray-600 mb-6"><strong>${featureName}</strong> adalah fitur premium. Upgrade untuk akses penuh.</p>
+                    <button onclick="navigateTo('subscription')" class="btn-primary text-white px-8 py-3 rounded-xl font-semibold">
+                        <i class="fas fa-rocket mr-2"></i>Upgrade Sekarang
+                    </button>
+                </div>
+            </div>
+        `;
+    }
 
-            return `
-                <div class="space-y-6 animate-slide-in">
-                    <div class="bg-gradient-to-r from-red-600 to-pink-600 rounded-xl p-6 text-white">
-                        <h2 class="text-2xl font-bold mb-2">Pengaturan Harga</h2>
-                        <p class="text-red-100">Kelola harga paket langganan aplikasi.</p>
+    // ==========================================
+    // PAGE CONTENT LOADER
+    // ==========================================
+    function loadPageContent(page) {
+        const content = document.getElementById('mainContent');
+        
+        const pageHandlers = {
+            'dashboard': [getDashboardHTML, initDashboard],
+            'profil': [getProfilHTML, initProfil],
+            'kalender': [getKalenderHTML, initKalender],
+            'jadwal': [getJadwalHTML, initJadwal],
+            'atp': [getATPHTML, initATP],
+            'prota': [getProtaHTML, initProta],
+            'promes': [getPromesHTML, initPromes],
+            'modul-ajar': [getModulAjarHTML, initModulAjar],
+            'lkpd': [getLKPDHTML, initLKPD],
+            'bank-soal': [getBankSoalHTML, initBankSoal],
+            'jurnal': [getJurnalHTML, initJurnal],
+            'absensi': [getAbsensiHTML, initAbsensi],
+            'nilai': [getNilaiHTML, initNilai],
+            'ai-assistant': [getAIAssistantHTML, initAIAssistant],
+            'import': [getImportHTML, initImport],
+            'subscription': [getSubscriptionHTML, initSubscription],
+            'admin': [getAdminHTML, initAdmin],
+            'pricing-settings': [getPricingSettingsHTML, initPricingSettings],
+            'payments': [getPaymentsHTML, initPayments]
+        };
+
+        const handler = pageHandlers[page] || pageHandlers['dashboard'];
+        content.innerHTML = handler[0]();
+        if (handler[1]) handler[1]();
+    }
+
+    // ==========================================
+    // DASHBOARD PAGE
+    // ==========================================
+    function getDashboardHTML() {
+        return `
+            <div class="space-y-6 animate-slide-in">
+                <div class="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl p-6 lg:p-8 text-white">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                        <div>
+                            <h2 class="text-2xl lg:text-3xl font-bold mb-2">Assalamu'alaikum, ${userData?.name || 'Guru'}! 👋</h2>
+                            <p class="text-primary-100">Selamat datang di Admin Guru Super App.</p>
+                        </div>
+                        ${!isPremium() ? `
+                            <button onclick="navigateTo('subscription')" class="mt-4 lg:mt-0 bg-white text-primary-600 px-6 py-3 rounded-xl font-semibold hover:bg-primary-50 transition">
+                                <i class="fas fa-crown mr-2"></i>Upgrade Premium
+                            </button>
+                        ` : ''}
                     </div>
+                </div>
 
-                    <form id="pricingForm" class="space-y-6">
-                        <!-- Premium Pricing -->
-                        <div class="card p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                                <i class="fas fa-crown text-yellow-500 mr-2"></i>
-                                Paket Premium
-                            </h3>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Harga Bulanan (Rp)</label>
-                                    <input type="number" id="premiumMonthly" value="${PRICING.premium.price}" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Harga Tahunan (Rp)</label>
-                                    <input type="number" id="premiumYearly" value="${PRICING.premium.priceYearly}" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
-                                </div>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-gradient-to-br from-primary-500 to-primary-600 text-white p-5 rounded-2xl">
+                        <i class="fas fa-users text-2xl mb-3"></i>
+                        <p id="totalSiswa" class="text-3xl font-bold">0</p>
+                        <p class="text-primary-100 text-sm">Siswa</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-secondary-500 to-secondary-600 text-white p-5 rounded-2xl">
+                        <i class="fas fa-door-open text-2xl mb-3"></i>
+                        <p id="totalKelas" class="text-3xl font-bold">0</p>
+                        <p class="text-secondary-100 text-sm">Kelas</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-accent-500 to-accent-600 text-white p-5 rounded-2xl">
+                        <i class="fas fa-book text-2xl mb-3"></i>
+                        <p id="totalModul" class="text-3xl font-bold">0</p>
+                        <p class="text-accent-100 text-sm">Modul Ajar</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-5 rounded-2xl">
+                        <i class="fas fa-calendar-check text-2xl mb-3"></i>
+                        <p id="hariEfektif" class="text-3xl font-bold">0</p>
+                        <p class="text-orange-100 text-sm">Hari Efektif</p>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Aksi Cepat</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <button onclick="navigateTo('kalender')" class="p-4 bg-gray-50 hover:bg-primary-50 rounded-xl text-center transition">
+                            <div class="w-12 h-12 mx-auto mb-3 bg-primary-100 text-primary-600 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-calendar-alt text-xl"></i>
                             </div>
-                            <div class="mt-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Fitur (satu per baris)</label>
-                                <textarea id="premiumFeatures" rows="5" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">${PRICING.premium.features.join('\n')}</textarea>
+                            <p class="font-medium text-gray-700 text-sm">Atur Kalender</p>
+                        </button>
+                        <button onclick="navigateTo('jadwal')" class="p-4 bg-gray-50 hover:bg-secondary-50 rounded-xl text-center transition">
+                            <div class="w-12 h-12 mx-auto mb-3 bg-secondary-100 text-secondary-600 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-clock text-xl"></i>
+                            </div>
+                            <p class="font-medium text-gray-700 text-sm">Atur Jadwal</p>
+                        </button>
+                        <button onclick="navigateTo('atp')" class="p-4 bg-gray-50 hover:bg-accent-50 rounded-xl text-center transition">
+                            <div class="w-12 h-12 mx-auto mb-3 bg-accent-100 text-accent-600 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-route text-xl"></i>
+                            </div>
+                            <p class="font-medium text-gray-700 text-sm">Buat ATP</p>
+                        </button>
+                        <button onclick="navigateTo('ai-assistant')" class="p-4 bg-gray-50 hover:bg-orange-50 rounded-xl text-center transition">
+                            <div class="w-12 h-12 mx-auto mb-3 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-robot text-xl"></i>
+                            </div>
+                            <p class="font-medium text-gray-700 text-sm">AI Assistant</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    async function initDashboard() {
+        try {
+            const [siswaSnap, kelasSnap, modulSnap, kalenderSnap] = await Promise.all([
+                db.collection('users').doc(currentUser.uid).collection('siswa').get(),
+                db.collection('users').doc(currentUser.uid).collection('kelas').get(),
+                db.collection('users').doc(currentUser.uid).collection('modul_ajar').get(),
+                db.collection('users').doc(currentUser.uid).collection('kalender').doc('aktif').get()
+            ]);
+            document.getElementById('totalSiswa').textContent = siswaSnap.size;
+            document.getElementById('totalKelas').textContent = kelasSnap.size;
+            document.getElementById('totalModul').textContent = modulSnap.size;
+            if (kalenderSnap.exists) {
+                document.getElementById('hariEfektif').textContent = kalenderSnap.data().hariEfektif || 0;
+            }
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+        }
+    }
+
+    // ==========================================
+    // PROFIL PAGE
+    // ==========================================
+    function getProfilHTML() {
+        return `
+            <div class="space-y-6 animate-slide-in">
+                <div class="card p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6">Data Profil Guru</h3>
+                    <form id="profilForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+                                <input type="text" id="namaLengkap" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Nama Lengkap">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">NIP/NIK</label>
+                                <input type="text" id="nip" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Nomor Induk">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-gray-50" readonly>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">No. HP/WhatsApp</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="08xxxxxxxxxx">
                             </div>
                         </div>
 
-                        <!-- School Pricing -->
-                        <div class="card p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                                <i class="fas fa-school text-blue-500 mr-2"></i>
-                                Paket Sekolah
-                            </h3>
-                            <div class="grid md:grid-cols-3 gap-4">
+                        <div class="border-t pt-6">
+                            <h4 class="font-semibold text-gray-900 mb-4">Data Satuan Pendidikan</h4>
+                            <div class="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Harga Bulanan (Rp)</label>
-                                    <input type="number" id="schoolMonthly" value="${PRICING.school.price}" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Sekolah</label>
+                                    <input type="text" id="namaSekolah" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="SDN/MIN/MTs">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Harga Tahunan (Rp)</label>
-                                    <input type="number" id="schoolYearly" value="${PRICING.school.priceYearly}" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">NPSN</label>
+                                    <input type="text" id="npsn" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="NPSN">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Max. Guru</label>
-                                    <input type="number" id="schoolMaxUsers" value="${PRICING.school.maxUsers || 50}" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Fitur (satu per baris)</label>
-                                <textarea id="schoolFeatures" rows="5" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">${PRICING.school.features.join('\n')}</textarea>
-                            </div>
-                        </div>
-
-                        <!-- Bank Account Settings -->
-                        <div class="card p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                                <i class="fas fa-university text-green-500 mr-2"></i>
-                                Rekening Pembayaran
-                            </h3>
-                            <div class="grid md:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Bank</label>
-                                    <input type="text" id="bankName" value="BCA" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenjang</label>
+                                    <select id="jenjangPendidikan" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white">
+                                        <option value="">Pilih Jenjang</option>
+                                        <option value="sd">SD/MI</option>
+                                        <option value="smp">SMP/MTs</option>
+                                        <option value="sma">SMA/MA/SMK</option>
+                                    </select>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">No. Rekening</label>
-                                    <input type="text" id="bankAccount" value="1234567890" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Tahun Pelajaran</label>
+                                    <input type="text" id="tahunPelajaran" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="2024/2025">
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Atas Nama</label>
-                                    <input type="text" id="bankAccountName" value="Admin Guru Super App" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Sekolah</label>
+                                    <textarea id="alamatSekolah" rows="2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="Alamat lengkap"></textarea>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="flex justify-end">
-                            <button type="submit" class="btn-primary text-white px-8 py-3 rounded-xl font-semibold">
-                                <i class="fas fa-save mr-2"></i>Simpan Pengaturan
+                        <div class="border-t pt-6">
+                            <h4 class="font-semibold text-gray-900 mb-4">Data Kepala Sekolah</h4>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Kepala Sekolah</label>
+                                    <input type="text" id="namaKepsek" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">NIP Kepala Sekolah</label>
+                                    <input type="text" id="nipKepsek" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end pt-4">
+                            <button type="submit" class="btn-primary text-white px-6 py-3 rounded-xl font-semibold">
+                                <i class="fas fa-save mr-2"></i>Simpan Profil
                             </button>
                         </div>
                     </form>
                 </div>
-            `;
-        }
+            </div>
+        `;
+    }
 
-        async function initPricingSettings() {
-            if (!isSuperAdmin()) return;
-
-            // Load existing settings
-            try {
-                const doc = await db.collection('settings').doc('pricing').get();
-                if (doc.exists) {
-                    const data = doc.data();
-                    if (data.premium) {
-                        document.getElementById('premiumMonthly').value = data.premium.price || 49000;
-                        document.getElementById('premiumYearly').value = data.premium.priceYearly || 490000;
-                        document.getElementById('premiumFeatures').value = (data.premium.features || []).join('\n');
-                    }
-                    if (data.school) {
-                        document.getElementById('schoolMonthly').value = data.school.price || 299000;
-                        document.getElementById('schoolYearly').value = data.school.priceYearly || 2990000;
-                        document.getElementById('schoolMaxUsers').value = data.school.maxUsers || 50;
-                        document.getElementById('schoolFeatures').value = (data.school.features || []).join('\n');
-                    }
-                    if (data.bank) {
-                        document.getElementById('bankName').value = data.bank.name || 'BCA';
-                        document.getElementById('bankAccount').value = data.bank.account || '';
-                        document.getElementById('bankAccountName').value = data.bank.accountName || '';
-                    }
-                }
-            } catch (error) {
-                console.log('Using default pricing');
+    async function initProfil() {
+        try {
+            const doc = await db.collection('users').doc(currentUser.uid).get();
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('namaLengkap').value = data.name || '';
+                document.getElementById('nip').value = data.nip || '';
+                document.getElementById('email').value = currentUser.email || '';
+                document.getElementById('phone').value = data.phone || '';
+                document.getElementById('namaSekolah').value = data.satuan_pendidikan || '';
+                document.getElementById('npsn').value = data.npsn || '';
+                document.getElementById('jenjangPendidikan').value = data.jenjang || '';
+                document.getElementById('tahunPelajaran').value = data.tahun_pelajaran || '';
+                document.getElementById('alamatSekolah').value = data.alamat_sekolah || '';
+                document.getElementById('namaKepsek').value = data.kepala_sekolah || '';
+                document.getElementById('nipKepsek').value = data.nip_kepsek || '';
             }
-
-            // Form submit
-            document.getElementById('pricingForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await savePricingSettings();
-            });
+        } catch (error) {
+            console.error('Error loading profil:', error);
         }
 
-        async function savePricingSettings() {
+        document.getElementById('profilForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
             showLoading();
-
-            const pricingData = {
-                premium: {
-                    name: 'Premium',
-                    price: parseInt(document.getElementById('premiumMonthly').value),
-                    priceYearly: parseInt(document.getElementById('premiumYearly').value),
-                    features: document.getElementById('premiumFeatures').value.split('\n').filter(f => f.trim())
-                },
-                school: {
-                    name: 'Paket Sekolah',
-                    price: parseInt(document.getElementById('schoolMonthly').value),
-                    priceYearly: parseInt(document.getElementById('schoolYearly').value),
-                    maxUsers: parseInt(document.getElementById('schoolMaxUsers').value),
-                    features: document.getElementById('schoolFeatures').value.split('\n').filter(f => f.trim())
-                },
-                bank: {
-                    name: document.getElementById('bankName').value,
-                    account: document.getElementById('bankAccount').value,
-                    accountName: document.getElementById('bankAccountName').value
-                },
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                updatedBy: currentUser.email
-            };
-
             try {
-                await db.collection('settings').doc('pricing').set(pricingData, { merge: true });
-                
-                // Update local PRICING
-                PRICING = { ...PRICING, ...pricingData };
-
+                await db.collection('users').doc(currentUser.uid).update({
+                    name: document.getElementById('namaLengkap').value,
+                    nip: document.getElementById('nip').value,
+                    phone: document.getElementById('phone').value,
+                    satuan_pendidikan: document.getElementById('namaSekolah').value,
+                    npsn: document.getElementById('npsn').value,
+                    jenjang: document.getElementById('jenjangPendidikan').value,
+                    tahun_pelajaran: document.getElementById('tahunPelajaran').value,
+                    alamat_sekolah: document.getElementById('alamatSekolah').value,
+                    kepala_sekolah: document.getElementById('namaKepsek').value,
+                    nip_kepsek: document.getElementById('nipKepsek').value,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                await loadUserData();
+                updateUI();
                 hideLoading();
-                showToast('Pengaturan harga berhasil disimpan!');
+                showToast('Profil berhasil disimpan!');
             } catch (error) {
                 hideLoading();
                 showToast('Gagal menyimpan: ' + error.message, 'error');
             }
-        }
+        });
+    }
 
-        // ==========================================
-        // ADMIN: PAYMENT MANAGEMENT
-        // ==========================================
-        function getPaymentsHTML() {
-            if (!isSuperAdmin()) {
-                return `
-                    <div class="flex items-center justify-center min-h-[60vh]">
-                        <div class="text-center">
-                            <i class="fas fa-lock text-5xl text-gray-300 mb-4"></i>
-                            <h2 class="text-xl font-bold text-gray-900">Akses Ditolak</h2>
-                        </div>
-                    </div>
-                `;
-            }
-
-            return `
-                <div class="space-y-6 animate-slide-in">
-                    <div class="bg-gradient-to-r from-green-600 to-teal-600 rounded-xl p-6 text-white">
-                        <h2 class="text-2xl font-bold mb-2">Kelola Pembayaran</h2>
-                        <p class="text-green-100">Verifikasi dan kelola pembayaran pengguna.</p>
-                    </div>
-
-                    <!-- Stats -->
-                    <div class="grid md:grid-cols-4 gap-4">
-                        <div class="card p-4">
-                            <p class="text-3xl font-bold text-yellow-600" id="pendingPayments">0</p>
-                            <p class="text-sm text-gray-500">Menunggu Verifikasi</p>
-                        </div>
-                        <div class="card p-4">
-                            <p class="text-3xl font-bold text-green-600" id="confirmedPayments">0</p>
-                            <p class="text-sm text-gray-500">Dikonfirmasi</p>
-                        </div>
-                        <div class="card p-4">
-                            <p class="text-3xl font-bold text-blue-600" id="totalRevenue">Rp 0</p>
-                            <p class="text-sm text-gray-500">Total Pendapatan</p>
-                        </div>
-                        <div class="card p-4">
-                            <p class="text-3xl font-bold text-purple-600" id="monthlyRevenue">Rp 0</p>
-                            <p class="text-sm text-gray-500">Bulan Ini</p>
-                        </div>
-                    </div>
-
-                    <!-- Filter -->
-                    <div class="card p-4">
-                        <div class="flex flex-wrap gap-4">
-                            <select id="filterStatus" class="px-4 py-2 border-2 border-gray-200 rounded-xl bg-white" onchange="filterPayments()">
-                                <option value="">Semua Status</option>
-                                <option value="pending">Pending</option>
-                                <option value="pending_verification">Menunggu Verifikasi</option>
-                                <option value="confirmed">Dikonfirmasi</option>
-                                <option value="rejected">Ditolak</option>
-                            </select>
-                            <input type="text" id="searchPayment" class="flex-1 px-4 py-2 border-2 border-gray-200 rounded-xl" placeholder="Cari nama/email..." onkeyup="filterPayments()">
-                        </div>
-                    </div>
-
-                    <!-- Payment List -->
-                    <div class="card p-6">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4">Daftar Pembayaran</h3>
-                        <div id="paymentsList" class="space-y-4">
-                            <p class="text-gray-500 text-center py-8">Memuat data...</p>
-                        </div>
-                    </div>
+    // ==========================================
+    // KALENDER PAGE
+    // ==========================================
+    function getKalenderHTML() {
+        return `
+            <div class="space-y-6 animate-slide-in">
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                    <p class="text-blue-800 font-medium"><i class="fas fa-info-circle mr-2"></i>Kalender Pendidikan</p>
+                    <p class="text-blue-600 text-sm">Data kalender otomatis sinkron dengan Prota dan Promes.</p>
                 </div>
-            `;
-        }
 
-        async function initPayments() {
-            if (!isSuperAdmin()) return;
-            await loadAllPayments();
-        }
+                <div class="card p-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 md:mb-0">Pengaturan Kalender</h3>
+                        <div class="flex space-x-3">
+                            <select id="semesterSelect" class="px-4 py-2 border-2 border-gray-200 rounded-xl bg-white" onchange="loadKalenderSemester()">
+                                <option value="1">Semester 1 (Ganjil)</option>
+                                <option value="2">Semester 2 (Genap)</option>
+                            </select>
+                        </div>
+                    </div>
 
-        async function loadAllPayments() {
-            try {
-                const snapshot = await db.collection('payments')
-                    .orderBy('createdAt', 'desc')
-                    .limit(100)
-                    .get();
-
-                let pending = 0, confirmed = 0, totalRev = 0, monthlyRev = 0;
-                const now = new Date();
-                const thisMonth = now.getMonth();
-                const thisYear = now.getFullYear();
-
-                const container = document.getElementById('paymentsList');
-                
-                if (snapshot.empty) {
-                    container.innerHTML = '<p class="text-gray-500 text-center py-8">Belum ada pembayaran</p>';
-                    return;
-                }
-
-                container.innerHTML = snapshot.docs.map(doc => {
-                    const payment = doc.data();
-                    const createdAt = payment.createdAt?.toDate();
-
-                    // Calculate stats
-                    if (payment.status === 'pending' || payment.status === 'pending_verification') pending++;
-                    if (payment.status === 'confirmed') {
-                        confirmed++;
-                        totalRev += payment.amount || 0;
-                        if (createdAt && createdAt.getMonth() === thisMonth && createdAt.getFullYear() === thisYear) {
-                            monthlyRev += payment.amount || 0;
-                        }
-                    }
-
-                    const statusConfig = {
-                        pending: { bg: 'bg-gray-100 text-gray-700', label: 'Pending' },
-                        pending_verification: { bg: 'bg-yellow-100 text-yellow-700', label: 'Menunggu Verifikasi' },
-                        confirmed: { bg: 'bg-green-100 text-green-700', label: 'Dikonfirmasi' },
-                        rejected: { bg: 'bg-red-100 text-red-700', label: 'Ditolak' }
-                    };
-                    const statusInfo = statusConfig[payment.status] || statusConfig.pending;
-
-                    return `
-                        <div class="border rounded-xl p-4 hover:border-primary-300 transition payment-item" data-status="${payment.status}" data-name="${(payment.userName || '').toLowerCase()}" data-email="${(payment.userEmail || '').toLowerCase()}">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                                        ${payment.buktiTransfer ? 
-                                            `<img src="${payment.buktiTransfer}" class="w-full h-full object-cover rounded-xl cursor-pointer" onclick="viewImage('${payment.buktiTransfer}')">` : 
-                                            '<i class="fas fa-receipt text-gray-400"></i>'
-                                        }
-                                    </div>
-                                    <div>
-                                        <p class="font-medium text-gray-900">${payment.userName || 'Unknown'}</p>
-                                        <p class="text-sm text-gray-500">${payment.userEmail}</p>
-                                        <p class="text-xs text-gray-400">${formatDate(payment.createdAt)}</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-bold text-gray-900">${formatCurrency(payment.amount)}</p>
-                                    <p class="text-sm text-gray-500">${payment.planName}</p>
-                                    <span class="text-xs px-2 py-1 rounded-full ${statusInfo.bg}">${statusInfo.label}</span>
-                                </div>
-                                <div class="flex space-x-2">
-                                    ${payment.status === 'pending_verification' ? `
-                                        <button onclick="confirmPayment('${doc.id}')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition">
-                                            <i class="fas fa-check mr-1"></i>Konfirmasi
-                                        </button>
-                                        <button onclick="rejectPayment('${doc.id}')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition">
-                                            <i class="fas fa-times mr-1"></i>Tolak
-                                        </button>
-                                    ` : payment.status === 'pending' ? `
-                                        <button onclick="sendReminder('${payment.userPhone}')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition">
-                                            <i class="fab fa-whatsapp mr-1"></i>Ingatkan
-                                        </button>
-                                    ` : ''}
-                                </div>
+                    <form id="kalenderForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Mulai Semester</label>
+                                <input type="date" id="tanggalMulai" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Selesai Semester</label>
+                                <input type="date" id="tanggalSelesai" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
                             </div>
                         </div>
-                    `;
-                }).join('');
 
-                // Update stats
-                document.getElementById('pendingPayments').textContent = pending;
-                document.getElementById('confirmedPayments').textContent = confirmed;
-                document.getElementById('totalRevenue').textContent = formatCurrency(totalRev);
-                document.getElementById('monthlyRevenue').textContent = formatCurrency(monthlyRev);
-
-            } catch (error) {
-                console.error('Error loading payments:', error);
-                document.getElementById('paymentsList').innerHTML = '<p class="text-red-500 text-center py-8">Gagal memuat data</p>';
-            }
-        }
-
-        function filterPayments() {
-            const status = document.getElementById('filterStatus').value;
-            const search = document.getElementById('searchPayment').value.toLowerCase();
-
-            document.querySelectorAll('.payment-item').forEach(item => {
-                const itemStatus = item.dataset.status;
-                const itemName = item.dataset.name;
-                const itemEmail = item.dataset.email;
-
-                const matchStatus = !status || itemStatus === status;
-                const matchSearch = !search || itemName.includes(search) || itemEmail.includes(search);
-
-                item.style.display = matchStatus && matchSearch ? '' : 'none';
-            });
-        }
-
-        function viewImage(url) {
-            const modal = document.getElementById('modalContainer');
-            modal.innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80" onclick="closeModal()">
-                    <img src="${url}" class="max-w-full max-h-full rounded-lg">
-                </div>
-            `;
-        }
-
-        async function confirmPayment(paymentId) {
-            if (!confirm('Konfirmasi pembayaran ini? User akan mendapatkan akses Premium.')) return;
-
-            showLoading();
-
-            try {
-                // Get payment data
-                const paymentDoc = await db.collection('payments').doc(paymentId).get();
-                const payment = paymentDoc.data();
-
-                // Calculate expiry date
-                const now = new Date();
-                let expiryDate;
-                if (payment.period === 'Tahunan') {
-                    expiryDate = new Date(now.setFullYear(now.getFullYear() + 1));
-                } else {
-                    expiryDate = new Date(now.setMonth(now.getMonth() + 1));
-                }
-
-                // Update payment status
-                await db.collection('payments').doc(paymentId).update({
-                    status: 'confirmed',
-                    confirmedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    confirmedBy: currentUser.email
-                });
-
-                // Update user plan
-                await db.collection('users').doc(payment.userId).update({
-                    plan: payment.planType,
-                    planExpiry: expiryDate,
-                    upgradedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                hideLoading();
-                showToast('Pembayaran dikonfirmasi! User sekarang Premium.');
-                loadAllPayments();
-
-            } catch (error) {
-                hideLoading();
-                showToast('Gagal konfirmasi: ' + error.message, 'error');
-            }
-        }
-
-        async function rejectPayment(paymentId) {
-            const reason = prompt('Alasan penolakan:');
-            if (!reason) return;
-
-            showLoading();
-
-            try {
-                await db.collection('payments').doc(paymentId).update({
-                    status: 'rejected',
-                    rejectedReason: reason,
-                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    rejectedBy: currentUser.email
-                });
-
-                hideLoading();
-                showToast('Pembayaran ditolak.');
-                loadAllPayments();
-
-            } catch (error) {
-                hideLoading();
-                showToast('Gagal: ' + error.message, 'error');
-            }
-        }
-
-        function sendReminder(phone) {
-            if (!phone) {
-                showToast('Nomor telepon tidak tersedia', 'error');
-                return;
-            }
-            const message = encodeURIComponent('Halo! Kami mengingatkan bahwa pembayaran langganan Admin Guru Super App Anda masih pending. Silakan selesaikan pembayaran untuk mendapatkan akses Premium. Terima kasih!');
-            window.open(`https://wa.me/${phone.replace(/^0/, '62')}?text=${message}`, '_blank');
-        }
-
-        // ==========================================
-        // ADMIN PANEL
-        // ==========================================
-        function getAdminHTML() {
-            if (!isSuperAdmin()) {
-                return `
-                    <div class="flex items-center justify-center min-h-[60vh]">
-                        <div class="text-center">
-                            <i class="fas fa-lock text-5xl text-gray-300 mb-4"></i>
-                            <h2 class="text-xl font-bold text-gray-900">Akses Ditolak</h2>
+                        <div>
+                            <h4 class="font-semibold text-gray-900 mb-4">Hari Efektif per Bulan</h4>
+                            <div id="hariEfektifContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"></div>
                         </div>
-                    </div>
-                `;
-            }
 
-            return `
-                <div class="space-y-6 animate-slide-in">
-                    <div class="bg-gradient-to-r from-red-600 to-pink-600 rounded-xl p-6 text-white">
-                        <h2 class="text-2xl font-bold mb-2">Admin Panel</h2>
-                        <p class="text-red-100">Kelola pengguna dan langganan aplikasi.</p>
-                    </div>
-
-                    <div class="grid md:grid-cols-4 gap-4">
-                        <div class="card p-4">
-                            <p class="text-3xl font-bold text-gray-900" id="adminTotalUsers">0</p>
-                            <p class="text-sm text-gray-500">Total Pengguna</p>
-                        </div>
-                        <div class="card p-4">
-                            <p class="text-3xl font-bold text-green-600" id="adminFreeUsers">0</p>
-                            <p class="text-sm text-gray-500">Free Users</p>
-                        </div>
-                        <div class="card p-4">
-                            <p class="text-3xl font-bold text-yellow-600" id="adminPremiumUsers">0</p>
-                            <p class="text-sm text-gray-500">Premium Users</p>
-                        </div>
-                        <div class="card p-4">
-                            <p class="text-3xl font-bold text-blue-600" id="adminSchoolPlan">0</p>
-                            <p class="text-sm text-gray-500">Paket Sekolah</p>
-                        </div>
-                    </div>
-
-                    <div class="card p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-bold text-gray-900">Daftar Pengguna</h3>
-                            <input type="text" id="searchUser" class="px-4 py-2 border-2 border-gray-200 rounded-xl" placeholder="Cari nama/email..." onkeyup="searchUsers()">
-                        </div>
-                        <div id="adminUserList" class="space-y-3">
-                            <!-- User list -->
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function initAdmin() {
-            if (!isSuperAdmin()) return;
-
-            try {
-                const snapshot = await db.collection('users').orderBy('createdAt', 'desc').get();
-                
-                let total = 0, free = 0, premium = 0, school = 0;
-                
-                const container = document.getElementById('adminUserList');
-                container.innerHTML = snapshot.docs.map(doc => {
-                    const user = doc.data();
-                    total++;
-                    if (user.plan === 'premium') premium++;
-                    else if (user.plan === 'school') school++;
-                    else free++;
-
-                    const planBadge = {
-                        premium: 'bg-yellow-100 text-yellow-700',
-                        school: 'bg-blue-100 text-blue-700',
-                        free: 'bg-gray-100 text-gray-700'
-                    };
-
-                    return `
-                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl user-item" data-name="${(user.name || '').toLowerCase()}" data-email="${(user.email || '').toLowerCase()}">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center font-bold">
-                                    ${(user.name || 'U').charAt(0).toUpperCase()}
+                        <div class="border-t pt-6">
+                            <h4 class="font-semibold text-gray-900 mb-4">Pekan Ujian</h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">PTS</label>
+                                    <div class="flex space-x-2">
+                                        <input type="date" id="ptsMulai" class="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg">
+                                        <span class="flex items-center text-gray-400">s/d</span>
+                                        <input type="date" id="ptsSelesai" class="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg">
+                                    </div>
                                 </div>
                                 <div>
-                                    <p class="font-medium text-gray-900">${user.name || 'Unknown'}</p>
-                                    <p class="text-sm text-gray-500">${user.email}</p>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">PAS/PAT</label>
+                                    <div class="flex space-x-2">
+                                        <input type="date" id="pasMulai" class="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg">
+                                        <span class="flex items-center text-gray-400">s/d</span>
+                                        <input type="date" id="pasSelesai" class="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <span class="text-xs px-2 py-1 rounded-full ${planBadge[user.plan] || planBadge.free}">
-                                    ${user.plan || 'free'}
-                                </span>
-                                <select onchange="changeUserPlan('${doc.id}', this.value)" class="text-sm px-2 py-1 border rounded-lg bg-white">
-                                    <option value="free" ${user.plan === 'free' ? 'selected' : ''}>Free</option>
-                                    <option value="premium" ${user.plan === 'premium' ? 'selected' : ''}>Premium</option>
-                                    <option value="school" ${user.plan === 'school' ? 'selected' : ''}>School</option>
-                                </select>
                             </div>
                         </div>
-                    `;
-                }).join('');
 
-                document.getElementById('adminTotalUsers').textContent = total;
-                document.getElementById('adminFreeUsers').textContent = free;
-                document.getElementById('adminPremiumUsers').textContent = premium;
-                document.getElementById('adminSchoolPlan').textContent = school;
-
-            } catch (error) {
-                console.error('Error loading admin data:', error);
-            }
-        }
-
-        function searchUsers() {
-            const search = document.getElementById('searchUser').value.toLowerCase();
-            document.querySelectorAll('.user-item').forEach(item => {
-                const name = item.dataset.name;
-                const email = item.dataset.email;
-                item.style.display = name.includes(search) || email.includes(search) ? '' : 'none';
-            });
-        }
-
-        async function changeUserPlan(userId, newPlan) {
-            showLoading();
-            try {
-                const updateData = {
-                    plan: newPlan,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-
-                if (newPlan === 'premium' || newPlan === 'school') {
-                    const expiryDate = new Date();
-                    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-                    updateData.planExpiry = expiryDate;
-                }
-
-                await db.collection('users').doc(userId).update(updateData);
-                hideLoading();
-                showToast('Plan user berhasil diubah!');
-                initAdmin();
-            } catch (error) {
-                hideLoading();
-                showToast('Gagal: ' + error.message, 'error');
-            }
-        }
-
-        // ==========================================
-        // DASHBOARD
-        // ==========================================
-        function getDashboardHTML() {
-            return `
-                <div class="space-y-6 animate-slide-in">
-                    <!-- Welcome Banner -->
-                    <div class="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl p-6 lg:p-8 text-white">
-                        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                            <div>
-                                <h2 class="text-2xl lg:text-3xl font-bold mb-2">Assalamu'alaikum, ${userData?.name || 'Guru'}! 👋</h2>
-                                <p class="text-primary-100">Selamat datang di Admin Guru Super App.</p>
-                            </div>
-                            ${!isPremium() ? `
-                                <button onclick="navigateTo('subscription')" class="mt-4 lg:mt-0 bg-white text-primary-600 px-6 py-3 rounded-xl font-semibold hover:bg-primary-50 transition">
-                                    <i class="fas fa-crown mr-2"></i>Upgrade Premium
-                                </button>
-                            ` : ''}
-                        </div>
-                    </div>
-
-                    <!-- Stats -->
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="stat-card bg-gradient-to-br from-primary-500 to-primary-600 text-white p-5 rounded-2xl">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-users text-xl"></i>
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <h4 class="font-semibold text-gray-900 mb-3">Ringkasan</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <p id="totalHariEfektif" class="text-2xl font-bold text-primary-600">0</p>
+                                    <p class="text-xs text-gray-500">Hari Efektif</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <p id="totalMingguEfektif" class="text-2xl font-bold text-secondary-600">0</p>
+                                    <p class="text-xs text-gray-500">Minggu Efektif</p>
                                 </div>
                             </div>
-                            <p id="totalSiswa" class="text-3xl font-bold">0</p>
-                            <p class="text-primary-100 text-sm">Siswa</p>
                         </div>
-                        <div class="stat-card bg-gradient-to-br from-secondary-500 to-secondary-600 text-white p-5 rounded-2xl">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-door-open text-xl"></i>
-                                </div>
-                            </div>
-                            <p id="totalKelas" class="text-3xl font-bold">0</p>
-                            <p class="text-secondary-100 text-sm">Kelas</p>
-                        </div>
-                        <div class="stat-card bg-gradient-to-br from-accent-500 to-accent-600 text-white p-5 rounded-2xl">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-book text-xl"></i>
-                                </div>
-                            </div>
-                            <p id="totalModul" class="text-3xl font-bold">0</p>
-                            <p class="text-accent-100 text-sm">Modul Ajar</p>
-                        </div>
-                        <div class="stat-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-5 rounded-2xl">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-calendar-check text-xl"></i>
-                                </div>
-                            </div>
-                            <p id="hariEfektif" class="text-3xl font-bold">0</p>
-                            <p class="text-orange-100 text-sm">Hari Efektif</p>
-                        </div>
-                    </div>
 
-                    <!-- Quick Actions -->
-                    <div class="card p-6">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4">Aksi Cepat</h3>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <button onclick="navigateTo('kalender')" class="p-4 bg-gray-50 hover:bg-primary-50 rounded-xl text-center transition group">
-                                <div class="w-12 h-12 mx-auto mb-3 bg-primary-100 text-primary-600 rounded-xl flex items-center justify-center group-hover:bg-primary-500 group-hover:text-white transition">
-                                    <i class="fas fa-calendar-alt text-xl"></i>
-                                </div>
-                                <p class="font-medium text-gray-700 text-sm">Atur Kalender</p>
-                            </button>
-                            <button onclick="navigateTo('jadwal')" class="p-4 bg-gray-50 hover:bg-secondary-50 rounded-xl text-center transition group">
-                                <div class="w-12 h-12 mx-auto mb-3 bg-secondary-100 text-secondary-600 rounded-xl flex items-center justify-center group-hover:bg-secondary-500 group-hover:text-white transition">
-                                    <i class="fas fa-clock text-xl"></i>
-                                </div>
-                                <p class="font-medium text-gray-700 text-sm">Atur Jadwal</p>
-                            </button>
-                            <button onclick="navigateTo('atp')" class="p-4 bg-gray-50 hover:bg-accent-50 rounded-xl text-center transition group">
-                                <div class="w-12 h-12 mx-auto mb-3 bg-accent-100 text-accent-600 rounded-xl flex items-center justify-center group-hover:bg-accent-500 group-hover:text-white transition">
-                                    <i class="fas fa-route text-xl"></i>
-                                </div>
-                                <p class="font-medium text-gray-700 text-sm">Buat ATP</p>
-                            </button>
-                            <button onclick="navigateTo('ai-assistant')" class="p-4 bg-gray-50 hover:bg-orange-50 rounded-xl text-center transition group">
-                                <div class="w-12 h-12 mx-auto mb-3 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition">
-                                    <i class="fas fa-robot text-xl"></i>
-                                </div>
-                                <p class="font-medium text-gray-700 text-sm">AI Assistant</p>
+                        <div class="flex justify-end pt-4">
+                            <button type="submit" class="btn-primary text-white px-6 py-3 rounded-xl font-semibold">
+                                <i class="fas fa-save mr-2"></i>Simpan Kalender
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
-            `;
-        }
+            </div>
+        `;
+    }
 
-        async function initDashboard() {
-            try {
-                const [siswaSnap, kelasSnap, modulSnap, kalenderSnap] = await Promise.all([
-                    db.collection('users').doc(currentUser.uid).collection('siswa').get(),
-                    db.collection('users').doc(currentUser.uid).collection('kelas').get(),
-                    db.collection('users').doc(currentUser.uid).collection('modul_ajar').get(),
-                    db.collection('users').doc(currentUser.uid).collection('kalender').doc('aktif').get()
-                ]);
+    function initKalender() {
+        populateHariEfektifInputs();
+        loadKalenderSemester();
+        document.getElementById('kalenderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await saveKalender();
+        });
+    }
 
-                document.getElementById('totalSiswa').textContent = siswaSnap.size;
-                document.getElementById('totalKelas').textContent = kelasSnap.size;
-                document.getElementById('totalModul').textContent = modulSnap.size;
-                
-                if (kalenderSnap.exists) {
-                    document.getElementById('hariEfektif').textContent = kalenderSnap.data().hariEfektif || 0;
+    function populateHariEfektifInputs() {
+        const semester = document.getElementById('semesterSelect').value;
+        let months = semester === '1' ? 
+            [{name:'Juli',v:7},{name:'Agustus',v:8},{name:'September',v:9},{name:'Oktober',v:10},{name:'November',v:11},{name:'Desember',v:12}] :
+            [{name:'Januari',v:1},{name:'Februari',v:2},{name:'Maret',v:3},{name:'April',v:4},{name:'Mei',v:5},{name:'Juni',v:6}];
+
+        document.getElementById('hariEfektifContainer').innerHTML = months.map(m => `
+            <div class="bg-gray-50 p-3 rounded-lg">
+                <label class="block text-xs text-gray-500 mb-1">${m.name}</label>
+                <input type="number" id="hari_${m.v}" min="0" max="31" value="0" class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg text-center font-bold" onchange="calculateTotals()">
+            </div>
+        `).join('');
+    }
+
+    function calculateTotals() {
+        let total = 0;
+        document.querySelectorAll('#hariEfektifContainer input').forEach(input => {
+            total += parseInt(input.value) || 0;
+        });
+        document.getElementById('totalHariEfektif').textContent = total;
+        document.getElementById('totalMingguEfektif').textContent = Math.ceil(total / 6);
+    }
+
+    async function loadKalenderSemester() {
+        populateHariEfektifInputs();
+        const semester = document.getElementById('semesterSelect').value;
+        try {
+            const doc = await db.collection('users').doc(currentUser.uid).collection('kalender').doc(`2024_${semester}`).get();
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('tanggalMulai').value = data.tanggalMulai || '';
+                document.getElementById('tanggalSelesai').value = data.tanggalSelesai || '';
+                document.getElementById('ptsMulai').value = data.ptsMulai || '';
+                document.getElementById('ptsSelesai').value = data.ptsSelesai || '';
+                document.getElementById('pasMulai').value = data.pasMulai || '';
+                document.getElementById('pasSelesai').value = data.pasSelesai || '';
+                if (data.hariEfektif) {
+                    Object.keys(data.hariEfektif).forEach(key => {
+                        const input = document.getElementById(`hari_${key}`);
+                        if (input) input.value = data.hariEfektif[key];
+                    });
                 }
-            } catch (error) {
-                console.error('Error loading dashboard:', error);
+                calculateTotals();
             }
+        } catch (error) {
+            console.error('Error loading kalender:', error);
         }
+    }
 
-        // ==========================================
-        // PLACEHOLDER FUNCTIONS FOR OTHER PAGES
-        // ==========================================
-        function getProfilHTML() { return '<div class="card p-6"><h3 class="text-lg font-bold">Profil Guru</h3><p class="text-gray-500 mt-4">Halaman profil sedang dimuat...</p></div>'; }
-        function initProfil() {}
+    async function saveKalender() {
+        showLoading();
+        const semester = document.getElementById('semesterSelect').value;
+        const hariEfektif = {};
+        document.querySelectorAll('#hariEfektifContainer input').forEach(input => {
+            const bulan = input.id.replace('hari_', '');
+            hariEfektif[bulan] = parseInt(input.value) || 0;
+        });
+        let totalHariEfektif = Object.values(hariEfektif).reduce((a, b) => a + b, 0);
 
-        function getKalenderHTML() { return '<div class="card p-6"><h3 class="text-lg font-bold">Kalender Pendidikan</h3><p class="text-gray-500 mt-4">Halaman kalender sedang dimuat...</p></div>'; }
-        function initKalender() {}
+        try {
+            await db.collection('users').doc(currentUser.uid).collection('kalender').doc(`2024_${semester}`).set({
+                semester, tahun: '2024',
+                tanggalMulai: document.getElementById('tanggalMulai').value,
+                tanggalSelesai: document.getElementById('tanggalSelesai').value,
+                ptsMulai: document.getElementById('ptsMulai').value,
+                ptsSelesai: document.getElementById('ptsSelesai').value,
+                pasMulai: document.getElementById('pasMulai').value,
+                pasSelesai: document.getElementById('pasSelesai').value,
+                hariEfektif, totalHariEfektif,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
 
-        function getJadwalHTML() { return '<div class="card p-6"><h3 class="text-lg font-bold">Jadwal Pelajaran</h3><p class="text-gray-500 mt-4">Halaman jadwal sedang dimuat...</p></div>'; }
-        function initJadwal() {}
+            await db.collection('users').doc(currentUser.uid).collection('kalender').doc('aktif').set({
+                semester, tahun: '2024', hariEfektif: totalHariEfektif,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
 
-        function getATPHTML() { return '<div class="card p-6"><h3 class="text-lg font-bold">ATP</h3><p class="text-gray-500 mt-4">Halaman ATP sedang dimuat...</p></div>'; }
-        function initATP() {}
+            hideLoading();
+            showToast('Kalender berhasil disimpan!');
+        } catch (error) {
+            hideLoading();
+            showToast('Gagal menyimpan: ' + error.message, 'error');
+        }
+    }
 
-        function getProtaHTML() { return '<div class="card p-6"><h3 class="text-lg font-bold">Prota</h3><p class="text-gray-500 mt-4">Halaman Prota sedang dimuat...</p></div>'; }
-        function initProta() {}
-
-        function getPromesHTML() { return checkPremiumAccess('Promes') || '<div class="card p-6"><h3 class="text-lg font-bold">Promes</h3></div>'; }
-        function initPromes() {}
-
-        function getModulAjarHTML() { return checkPremiumAccess('Modul Ajar') || '<div class="card p-6"><h3 class="text-lg font-bold">Modul Ajar</h3></div>'; }
-        function initModulAjar() {}
-
-        function getLKPDHTML() { return checkPremiumAccess('LKPD') || '<div class="card p-6"><h3 class="text-lg font-bold">LKPD</h3></div>'; }
-        function initLKPD() {}
-
-        function getBankSoalHTML() { return checkPremiumAccess('Bank Soal') || '<div class="card p-6"><h3 class="text-lg font-bold">Bank Soal</h3></div>'; }
-        function initBankSoal() {}
-
-        function getJurnalHTML() { return checkPremiumAccess('Jurnal') || '<div class="card p-6"><h3 class="text-lg font-bold">Jurnal</h3></div>'; }
-        function initJurnal() {}
-
-        function getAbsensiHTML() { return '<div class="card p-6"><h3 class="text-lg font-bold">Absensi</h3></div>'; }
-        function initAbsensi() {}
-
-        function getNilaiHTML() { return '<div class="card p-6"><h3 class="text-lg font-bold">Nilai</h3></div>'; }
-        function initNilai() {}
-
-        function getAIAssistantHTML() { return '<div class="card p-6"><h3 class="text-lg font-bold">AI Assistant</h3></div>'; }
-        function initAIAssistant() {}
-
-        function getImportHTML() { return '<div class="card p-6"><h3 class="text-lg font-bold">Import Data</h3></div>'; }
-        function initImport() {}
-
-        function getSettingsHTML() { return '<div class="card p-6"><h3 class="text-lg font-bold">Pengaturan</h3></div>'; }
-
-        // Initialize app
-        console.log('Admin Guru Super App initialized');
+    // Karena file sangat panjang, saya akan melanjutkan di Part 2...
     </script>
 </body>
 </html>
