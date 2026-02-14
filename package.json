@@ -1,0 +1,24 @@
+{
+  "name": "admin-guru-super-app",
+  "version": "1.0.0",
+  "description": "Aplikasi Administrasi Guru PAI - Single Input Multi Output",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server --port=3000",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage"
+  },
+  "keywords": [
+    "guru",
+    "pai",
+    "administrasi",
+    "kurikulum-merdeka",
+    "firebase"
+  ],
+  "author": "Admin Guru Super App",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
