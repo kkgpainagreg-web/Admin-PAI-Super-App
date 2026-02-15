@@ -3,499 +3,536 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Guru Super App - Single Input Multi Output</title>
+    <title>ADMIN GURU SUPER APP - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
-                    },
                     colors: {
-                        primary: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            200: '#bbf7d0',
-                            300: '#86efac',
-                            400: '#4ade80',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
-                            900: '#14532d',
-                        },
-                        islamic: {
-                            gold: '#d4af37',
-                            green: '#006400',
-                            dark: '#1a1a2e',
-                        }
+                        primary: '#2563eb',
+                        secondary: '#1e40af',
+                        accent: '#3b82f6',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                        dark: '#1f2937',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
     <style>
-        * {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+        * { font-family: 'Inter', sans-serif; }
         .gradient-bg {
-            background: linear-gradient(135deg, #166534 0%, #15803d 50%, #22c55e 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        .glass-card {
+        .glass-effect {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
         }
-        .float-animation {
-            animation: float 3s ease-in-out infinite;
+        .floating {
+            animation: floating 3s ease-in-out infinite;
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
         }
-        .pulse-glow {
-            animation: pulse-glow 2s ease-in-out infinite;
+        .pulse-ring {
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
         }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.6); }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.5); opacity: 1; }
+            80%, 100% { transform: scale(1.5); opacity: 0; }
+        }
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Navbar -->
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
-                        <i class="fas fa-mosque text-white text-lg"></i>
+<body class="min-h-screen gradient-bg flex items-center justify-center p-4">
+    <!-- Decorative Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-10 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/4 w-48 h-48 bg-blue-300/10 rounded-full blur-2xl floating"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 w-full max-w-md">
+        <!-- Logo & Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-2xl mb-4 floating">
+                <i class="fas fa-chalkboard-teacher text-4xl text-primary"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-white mb-2">ADMIN GURU</h1>
+            <p class="text-white/80 text-lg">SUPER APP</p>
+            <p class="text-white/60 text-sm mt-2">Single Input – Multi Output</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="glass-effect rounded-3xl shadow-2xl p-8">
+            <!-- Tabs -->
+            <div class="flex mb-6 bg-gray-100 rounded-xl p-1">
+                <button id="tabLogin" onclick="switchTab('login')" class="flex-1 py-3 px-4 rounded-lg text-sm font-semibold transition-all bg-white shadow text-primary">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Masuk
+                </button>
+                <button id="tabRegister" onclick="switchTab('register')" class="flex-1 py-3 px-4 rounded-lg text-sm font-semibold transition-all text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-user-plus mr-2"></i>Daftar
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-envelope mr-2 text-primary"></i>Email
+                    </label>
+                    <input type="email" id="loginEmail" required
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                        placeholder="guru@sekolah.sch.id">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2 text-primary"></i>Password
+                    </label>
+                    <div class="relative">
+                        <input type="password" id="loginPassword" required
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                            placeholder="••••••••">
+                        <button type="button" onclick="togglePassword('loginPassword', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-eye"></i>
+                        </button>
                     </div>
-                    <span class="font-bold text-xl text-gray-800">Admin Guru <span class="text-primary-600">Super App</span></span>
                 </div>
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#fitur" class="text-gray-600 hover:text-primary-600 transition">Fitur</a>
-                    <a href="#harga" class="text-gray-600 hover:text-primary-600 transition">Harga</a>
-                    <a href="#panduan" class="text-gray-600 hover:text-primary-600 transition">Panduan</a>
-                    <a href="auth.html" class="px-5 py-2.5 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transition shadow-lg shadow-primary-200">
-                        Masuk / Daftar
-                    </a>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary">
+                        <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
+                    </label>
+                    <a href="#" onclick="showResetPassword()" class="text-sm text-primary hover:underline">Lupa password?</a>
                 </div>
-                <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-600">
-                    <i class="fas fa-bars text-xl"></i>
+                <button type="submit" id="loginBtn"
+                    class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-2">
+                    <span>Masuk</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="space-y-5 hidden">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user mr-2 text-primary"></i>Nama Lengkap
+                    </label>
+                    <input type="text" id="registerName" required
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                        placeholder="Nama lengkap Anda">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-envelope mr-2 text-primary"></i>Email
+                    </label>
+                    <input type="email" id="registerEmail" required
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                        placeholder="email@sekolah.sch.id">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2 text-primary"></i>Password
+                    </label>
+                    <div class="relative">
+                        <input type="password" id="registerPassword" required minlength="6"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                            placeholder="Minimal 6 karakter">
+                        <button type="button" onclick="togglePassword('registerPassword', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-check-circle mr-2 text-primary"></i>Konfirmasi Password
+                    </label>
+                    <input type="password" id="registerConfirmPassword" required
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                        placeholder="Ulangi password">
+                </div>
+                <button type="submit" id="registerBtn"
+                    class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-2">
+                    <span>Daftar Sekarang</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-4 bg-white text-gray-500">atau masuk dengan</span>
+                </div>
+            </div>
+
+            <!-- Google Sign In -->
+            <button onclick="signInWithGoogle()" 
+                class="w-full py-3 border-2 border-gray-200 rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center gap-3">
+                <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5">
+                <span class="font-medium text-gray-700">Google Account</span>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <p class="text-center text-white/70 text-sm mt-6">
+            © 2025 Admin Guru Super App | v1.0.0
+        </p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl p-4 flex items-center gap-3 max-w-sm">
+            <div id="toastIcon" class="w-10 h-10 rounded-full flex items-center justify-center"></div>
+            <div>
+                <p id="toastTitle" class="font-semibold text-gray-800"></p>
+                <p id="toastMessage" class="text-sm text-gray-600"></p>
+            </div>
+            <button onclick="hideToast()" class="ml-auto text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Reset Password Modal -->
+    <div id="resetModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-key mr-2 text-primary"></i>Reset Password
+            </h3>
+            <p class="text-gray-600 mb-4">Masukkan email Anda untuk menerima link reset password.</p>
+            <input type="email" id="resetEmail" 
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent mb-4"
+                placeholder="email@sekolah.sch.id">
+            <div class="flex gap-3">
+                <button onclick="hideResetModal()" class="flex-1 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50">
+                    Batal
+                </button>
+                <button onclick="sendResetEmail()" class="flex-1 py-3 bg-primary text-white rounded-xl font-medium hover:bg-secondary">
+                    Kirim Link
                 </button>
             </div>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
-            <div class="px-4 py-4 space-y-3">
-                <a href="#fitur" class="block py-2 text-gray-600">Fitur</a>
-                <a href="#harga" class="block py-2 text-gray-600">Harga</a>
-                <a href="#panduan" class="block py-2 text-gray-600">Panduan</a>
-                <a href="auth.html" class="block w-full py-3 bg-primary-600 text-white rounded-xl font-medium text-center">
-                    Masuk / Daftar
-                </a>
-            </div>
-        </div>
-    </nav>
+    </div>
 
-    <!-- Hero Section -->
-    <section class="gradient-bg min-h-screen flex items-center pt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="text-white">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full mb-6">
-                        <i class="fas fa-star text-yellow-300"></i>
-                        <span class="text-sm font-medium">Khusus Guru PAI & Budi Pekerti</span>
-                    </div>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-                        Single Input,<br>
-                        <span class="text-yellow-300">Multi Output</span>
-                    </h1>
-                    <p class="text-lg md:text-xl text-green-100 mb-8 leading-relaxed">
-                        Otomatisasi administrasi mengajar Anda. Input sekali, hasilkan ATP, Prota, Promes, Modul Ajar, 
-                        dan dokumen lainnya secara otomatis dan sinkron!
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="auth.html" class="px-8 py-4 bg-white text-primary-700 rounded-2xl font-bold text-lg hover:bg-gray-100 transition shadow-xl flex items-center justify-center gap-2">
-                            <i class="fas fa-rocket"></i>
-                            Mulai Gratis
-                        </a>
-                        <a href="#demo" class="px-8 py-4 border-2 border-white text-white rounded-2xl font-bold text-lg hover:bg-white/10 transition flex items-center justify-center gap-2">
-                            <i class="fas fa-play-circle"></i>
-                            Lihat Demo
-                        </a>
-                    </div>
-                    <div class="mt-10 flex items-center gap-6">
-                        <div class="flex -space-x-3">
-                            <div class="w-10 h-10 rounded-full bg-yellow-400 border-2 border-white flex items-center justify-center text-xs font-bold">G1</div>
-                            <div class="w-10 h-10 rounded-full bg-blue-400 border-2 border-white flex items-center justify-center text-xs font-bold">G2</div>
-                            <div class="w-10 h-10 rounded-full bg-pink-400 border-2 border-white flex items-center justify-center text-xs font-bold">G3</div>
-                            <div class="w-10 h-10 rounded-full bg-purple-400 border-2 border-white flex items-center justify-center text-xs font-bold">+99</div>
-                        </div>
-                        <p class="text-green-100 text-sm">Dipercaya <span class="font-bold text-white">500+ Guru</span> di Indonesia</p>
-                    </div>
-                </div>
-                <div class="relative hidden lg:block">
-                    <div class="glass-card rounded-3xl p-8 shadow-2xl float-animation">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="flex items-center gap-4 p-4 bg-primary-50 rounded-xl">
-                                <div class="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-calendar-alt text-white"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-gray-800">Kalender Pendidikan</p>
-                                    <p class="text-sm text-gray-500">Input hari efektif</p>
-                                </div>
-                                <i class="fas fa-check-circle text-primary-500 ml-auto"></i>
-                            </div>
-                            <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-xl">
-                                <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-clock text-white"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-gray-800">Jadwal Pelajaran</p>
-                                    <p class="text-sm text-gray-500">Anti bentrok otomatis</p>
-                                </div>
-                                <i class="fas fa-check-circle text-blue-500 ml-auto"></i>
-                            </div>
-                            <div class="flex items-center gap-4 p-4 bg-purple-50 rounded-xl">
-                                <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-book-open text-white"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-gray-800">ATP Generated!</p>
-                                    <p class="text-sm text-gray-500">Otomatis dari CP</p>
-                                </div>
-                                <i class="fas fa-magic text-purple-500 ml-auto"></i>
-                            </div>
-                            <div class="text-center pt-4">
-                                <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                                    <i class="fas fa-sync-alt mr-2"></i>
-                                    Semua Sinkron Otomatis
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Fitur Section -->
-    <section id="fitur" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-semibold">FITUR UNGGULAN</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-4 mb-4">Semua Yang Anda Butuhkan</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Dirancang khusus untuk memudahkan administrasi guru PAI dengan pendekatan yang intuitif</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Feature Cards -->
-                <div class="group p-8 bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl hover:shadow-xl transition-all duration-300 border border-green-100">
-                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                        <i class="fas fa-calendar-check text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Kalender Pendidikan</h3>
-                    <p class="text-gray-600 leading-relaxed">Kelola hari efektif, libur nasional, dan pekan ujian dengan mudah. Data otomatis tersinkron ke Prota dan Promes.</p>
-                </div>
-                
-                <div class="group p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl hover:shadow-xl transition-all duration-300 border border-blue-100">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                        <i class="fas fa-table text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Jadwal Anti Bentrok</h3>
-                    <p class="text-gray-600 leading-relaxed">Sistem validasi otomatis mencegah konflik jadwal. Guru tidak bisa mengajar di 2 kelas bersamaan.</p>
-                </div>
-                
-                <div class="group p-8 bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl hover:shadow-xl transition-all duration-300 border border-purple-100">
-                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                        <i class="fas fa-sitemap text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">ATP Otomatis</h3>
-                    <p class="text-gray-600 leading-relaxed">Alur Tujuan Pembelajaran dihasilkan otomatis dari Capaian Pembelajaran sesuai Kepka BSKAP 046/2025.</p>
-                </div>
-                
-                <div class="group p-8 bg-gradient-to-br from-orange-50 to-amber-50 rounded-3xl hover:shadow-xl transition-all duration-300 border border-orange-100">
-                    <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                        <i class="fas fa-book text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Prota & Promes</h3>
-                    <p class="text-gray-600 leading-relaxed">Program Tahunan dan Semester tersinkron otomatis dengan Kalender, Jadwal, dan ATP Anda.</p>
-                </div>
-                
-                <div class="group p-8 bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl hover:shadow-xl transition-all duration-300 border border-teal-100">
-                    <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                        <i class="fas fa-chalkboard-teacher text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Modul Ajar</h3>
-                    <p class="text-gray-600 leading-relaxed">Buat Modul Ajar lengkap dengan LKPD. Support teks Arab (RTL) untuk materi PAI.</p>
-                </div>
-                
-                <div class="group p-8 bg-gradient-to-br from-red-50 to-rose-50 rounded-3xl hover:shadow-xl transition-all duration-300 border border-red-100">
-                    <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                        <i class="fas fa-question-circle text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Bank Soal</h3>
-                    <p class="text-gray-600 leading-relaxed">Koleksi soal terintegrasi dengan ATP. Import massal via CSV dan support teks Arab.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">CARA KERJA</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-4 mb-4">Single Input, Multi Output</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Cukup input data dasar sekali, sistem menghasilkan semua dokumen secara otomatis</p>
-            </div>
-            <div class="grid lg:grid-cols-4 gap-8">
-                <div class="text-center">
-                    <div class="w-20 h-20 mx-auto bg-primary-100 rounded-full flex items-center justify-center mb-4 relative">
-                        <i class="fas fa-keyboard text-primary-600 text-3xl"></i>
-                        <span class="absolute -top-2 -right-2 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold">1</span>
-                    </div>
-                    <h3 class="font-bold text-gray-800 mb-2">Input Data Dasar</h3>
-                    <p class="text-gray-600 text-sm">Kalender, Jadwal, dan Tujuan Pembelajaran</p>
-                </div>
-                <div class="hidden lg:flex items-center justify-center">
-                    <i class="fas fa-arrow-right text-3xl text-gray-300"></i>
-                </div>
-                <div class="text-center">
-                    <div class="w-20 h-20 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-4 relative">
-                        <i class="fas fa-cogs text-blue-600 text-3xl"></i>
-                        <span class="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">2</span>
-                    </div>
-                    <h3 class="font-bold text-gray-800 mb-2">Proses Otomatis</h3>
-                    <p class="text-gray-600 text-sm">Sistem mengolah dan menyinkronkan data</p>
-                </div>
-                <div class="hidden lg:flex items-center justify-center">
-                    <i class="fas fa-arrow-right text-3xl text-gray-300"></i>
-                </div>
-                <div class="text-center lg:col-span-1">
-                    <div class="w-20 h-20 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-4 relative">
-                        <i class="fas fa-file-alt text-purple-600 text-3xl"></i>
-                        <span class="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold">3</span>
-                    </div>
-                    <h3 class="font-bold text-gray-800 mb-2">Multi Output</h3>
-                    <p class="text-gray-600 text-sm">ATP, Prota, Promes, Modul Ajar siap digunakan</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="harga" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-semibold">HARGA</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-4 mb-4">Pilih Paket Anda</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Mulai gratis atau upgrade untuk fitur lengkap</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <!-- Free Plan -->
-                <div class="p-8 bg-white rounded-3xl border-2 border-gray-200 hover:border-primary-300 transition">
-                    <div class="text-center mb-6">
-                        <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-medium">GRATIS</span>
-                        <h3 class="text-2xl font-bold text-gray-800 mt-4">Free</h3>
-                        <p class="text-4xl font-extrabold text-gray-800 mt-2">Rp 0</p>
-                        <p class="text-gray-500 text-sm">Selamanya</p>
-                    </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center gap-3 text-gray-600">
-                            <i class="fas fa-check text-green-500"></i>
-                            <span>Kalender Pendidikan</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-600">
-                            <i class="fas fa-check text-green-500"></i>
-                            <span>Jadwal Pelajaran</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-600">
-                            <i class="fas fa-check text-green-500"></i>
-                            <span>ATP Generator</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-600">
-                            <i class="fas fa-check text-green-500"></i>
-                            <span>Prota</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-400">
-                            <i class="fas fa-times"></i>
-                            <span>Promes</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-400">
-                            <i class="fas fa-times"></i>
-                            <span>Modul Ajar & LKPD</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-400">
-                            <i class="fas fa-times"></i>
-                            <span>Bank Soal</span>
-                        </li>
-                    </ul>
-                    <a href="auth.html" class="block w-full py-3 text-center border-2 border-primary-600 text-primary-600 rounded-xl font-semibold hover:bg-primary-50 transition">
-                        Daftar Gratis
-                    </a>
-                </div>
-
-                <!-- Premium Plan -->
-                <div class="p-8 bg-gradient-to-br from-primary-600 to-primary-700 rounded-3xl shadow-2xl shadow-primary-200 relative transform scale-105">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span class="px-4 py-1 bg-yellow-400 text-yellow-900 rounded-full text-sm font-bold">POPULER</span>
-                    </div>
-                    <div class="text-center mb-6">
-                        <span class="px-3 py-1 bg-white/20 text-white rounded-full text-sm font-medium">PREMIUM</span>
-                        <h3 class="text-2xl font-bold text-white mt-4">Perorangan</h3>
-                        <p class="text-4xl font-extrabold text-white mt-2">Rp 99K</p>
-                        <p class="text-green-200 text-sm">Per Tahun</p>
-                    </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center gap-3 text-white">
-                            <i class="fas fa-check text-yellow-300"></i>
-                            <span>Semua Fitur Free</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-white">
-                            <i class="fas fa-check text-yellow-300"></i>
-                            <span>Promes Lengkap</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-white">
-                            <i class="fas fa-check text-yellow-300"></i>
-                            <span>Modul Ajar + LKPD</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-white">
-                            <i class="fas fa-check text-yellow-300"></i>
-                            <span>Bank Soal Unlimited</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-white">
-                            <i class="fas fa-check text-yellow-300"></i>
-                            <span>Jurnal & Absensi</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-white">
-                            <i class="fas fa-check text-yellow-300"></i>
-                            <span>Daftar Nilai Lengkap</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-white">
-                            <i class="fas fa-check text-yellow-300"></i>
-                            <span>Export PDF/Excel</span>
-                        </li>
-                    </ul>
-                    <a href="auth.html?plan=premium" class="block w-full py-3 text-center bg-white text-primary-700 rounded-xl font-bold hover:bg-gray-100 transition">
-                        Langganan Sekarang
-                    </a>
-                </div>
-
-                <!-- School Plan -->
-                <div class="p-8 bg-white rounded-3xl border-2 border-gray-200 hover:border-blue-300 transition">
-                    <div class="text-center mb-6">
-                        <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium">SEKOLAH</span>
-                        <h3 class="text-2xl font-bold text-gray-800 mt-4">Paket Bulk</h3>
-                        <p class="text-4xl font-extrabold text-gray-800 mt-2">Rp 499K</p>
-                        <p class="text-gray-500 text-sm">Per Tahun / 10 Guru</p>
-                    </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center gap-3 text-gray-600">
-                            <i class="fas fa-check text-green-500"></i>
-                            <span>Semua Fitur Premium</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-600">
-                            <i class="fas fa-check text-green-500"></i>
-                            <span>10 Akun Guru</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-600">
-                            <i class="fas fa-check text-green-500"></i>
-                            <span>Dashboard Admin Sekolah</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-600">
-                            <i class="fas fa-check text-green-500"></i>
-                            <span>Data Terpusat</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-600">
-                            <i class="fas fa-check text-green-500"></i>
-                            <span>Priority Support</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-600">
-                            <i class="fas fa-check text-green-500"></i>
-                            <span>Training Online</span>
-                        </li>
-                    </ul>
-                    <a href="auth.html?plan=school" class="block w-full py-3 text-center border-2 border-blue-600 text-blue-600 rounded-xl font-semibold hover:bg-blue-50 transition">
-                        Hubungi Kami
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
-                            <i class="fas fa-mosque text-white"></i>
-                        </div>
-                        <span class="font-bold text-xl">Admin Guru</span>
-                    </div>
-                    <p class="text-gray-400 text-sm">Memudahkan administrasi guru PAI dengan teknologi modern.</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Fitur</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-white">Kalender</a></li>
-                        <li><a href="#" class="hover:text-white">Jadwal</a></li>
-                        <li><a href="#" class="hover:text-white">ATP Generator</a></li>
-                        <li><a href="#" class="hover:text-white">Modul Ajar</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Bantuan</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-white">Panduan</a></li>
-                        <li><a href="#" class="hover:text-white">FAQ</a></li>
-                        <li><a href="#" class="hover:text-white">Kontak</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Legal</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-                <p>&copy; 2025 Admin Guru Super App. Sesuai Kepka BSKAP No. 046/H/KR/2025</p>
-            </div>
-        </div>
-    </footer>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDpiK4F4ilnDDNEwO0djGY-ClwgwBl1eFk",
+            authDomain: "asap-1d653.firebaseapp.com",
+            projectId: "asap-1d653",
+            storageBucket: "asap-1d653.firebasestorage.app",
+            messagingSenderId: "143263188364",
+            appId: "1:143263188364:web:47b4c003972b3503e882a9",
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Super Admin Email
+        const SUPER_ADMIN_EMAIL = 'afifaro@gmail.com';
+
+        // Tab Switching
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                tabLogin.classList.add('bg-white', 'shadow', 'text-primary');
+                tabLogin.classList.remove('text-gray-500');
+                tabRegister.classList.remove('bg-white', 'shadow', 'text-primary');
+                tabRegister.classList.add('text-gray-500');
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+                tabRegister.classList.add('bg-white', 'shadow', 'text-primary');
+                tabRegister.classList.remove('text-gray-500');
+                tabLogin.classList.remove('bg-white', 'shadow', 'text-primary');
+                tabLogin.classList.add('text-gray-500');
+            }
+        }
+
+        // Toggle Password Visibility
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Show Toast
+        function showToast(type, title, message) {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+
+            const icons = {
+                success: '<i class="fas fa-check text-white"></i>',
+                error: '<i class="fas fa-times text-white"></i>',
+                warning: '<i class="fas fa-exclamation text-white"></i>',
+                info: '<i class="fas fa-info text-white"></i>'
+            };
+
+            const colors = {
+                success: 'bg-success',
+                error: 'bg-danger',
+                warning: 'bg-warning',
+                info: 'bg-primary'
+            };
+
+            toastIcon.className = `w-10 h-10 rounded-full flex items-center justify-center ${colors[type]}`;
+            toastIcon.innerHTML = icons[type];
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+
+            toast.classList.remove('hidden');
+            setTimeout(() => hideToast(), 5000);
+        }
+
+        function hideToast() {
+            document.getElementById('toast').classList.add('hidden');
+        }
+
+        // Loading State
+        function setLoading(buttonId, loading) {
+            const btn = document.getElementById(buttonId);
+            if (loading) {
+                btn.disabled = true;
+                btn.innerHTML = '<div class="loader"></div><span class="ml-2">Memproses...</span>';
+            } else {
+                btn.disabled = false;
+                if (buttonId === 'loginBtn') {
+                    btn.innerHTML = '<span>Masuk</span><i class="fas fa-arrow-right"></i>';
+                } else {
+                    btn.innerHTML = '<span>Daftar Sekarang</span><i class="fas fa-arrow-right"></i>';
+                }
+            }
+        }
+
+        // Login Form Submit
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            setLoading('loginBtn', true);
+
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                showToast('success', 'Berhasil!', 'Selamat datang kembali!');
+                
+                // Check if super admin
+                const isSuperAdmin = email === SUPER_ADMIN_EMAIL;
+                
+                // Store user data
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('isSuperAdmin', isSuperAdmin);
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } catch (error) {
+                let errorMessage = 'Terjadi kesalahan saat login.';
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'Email tidak terdaftar.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'Password salah.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Format email tidak valid.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Terlalu banyak percobaan. Coba lagi nanti.';
+                        break;
+                }
+                showToast('error', 'Login Gagal', errorMessage);
+            } finally {
+                setLoading('loginBtn', false);
+            }
         });
 
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                    mobileMenu.classList.add('hidden');
+        // Register Form Submit
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showToast('error', 'Gagal', 'Password tidak cocok!');
+                return;
+            }
+
+            setLoading('registerBtn', true);
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Update display name
+                await userCredential.user.updateProfile({ displayName: name });
+                
+                // Create user document in Firestore
+                await db.collection('users').doc(userCredential.user.uid).set({
+                    name: name,
+                    email: email,
+                    role: email === SUPER_ADMIN_EMAIL ? 'superadmin' : 'guru',
+                    subscription: 'free',
+                    subscriptionExpiry: null,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    profile: {
+                        satuan_pendidikan: '',
+                        nama_kepala_sekolah: '',
+                        nip: '',
+                        nuptk: '',
+                        mata_pelajaran: 'PAI & Budi Pekerti',
+                        jenjang: '',
+                        fase: ''
+                    }
+                });
+
+                showToast('success', 'Berhasil!', 'Akun berhasil dibuat. Silakan lengkapi profil Anda.');
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } catch (error) {
+                let errorMessage = 'Terjadi kesalahan saat mendaftar.';
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'Email sudah terdaftar.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Password terlalu lemah.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Format email tidak valid.';
+                        break;
                 }
-            });
+                showToast('error', 'Pendaftaran Gagal', errorMessage);
+            } finally {
+                setLoading('registerBtn', false);
+            }
+        });
+
+        // Google Sign In
+        async function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+                
+                // Check if user document exists
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                
+                if (!userDoc.exists) {
+                    // Create new user document
+                    await db.collection('users').doc(user.uid).set({
+                        name: user.displayName,
+                        email: user.email,
+                        role: user.email === SUPER_ADMIN_EMAIL ? 'superadmin' : 'guru',
+                        subscription: 'free',
+                        subscriptionExpiry: null,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        profile: {
+                            satuan_pendidikan: '',
+                            nama_kepala_sekolah: '',
+                            nip: '',
+                            nuptk: '',
+                            mata_pelajaran: 'PAI & Budi Pekerti',
+                            jenjang: '',
+                            fase: ''
+                        }
+                    });
+                }
+
+                showToast('success', 'Berhasil!', 'Selamat datang!');
+                localStorage.setItem('userEmail', user.email);
+                localStorage.setItem('isSuperAdmin', user.email === SUPER_ADMIN_EMAIL);
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } catch (error) {
+                showToast('error', 'Gagal', 'Tidak dapat masuk dengan Google.');
+                console.error(error);
+            }
+        }
+
+        // Reset Password
+        function showResetPassword() {
+            document.getElementById('resetModal').classList.remove('hidden');
+        }
+
+        function hideResetModal() {
+            document.getElementById('resetModal').classList.add('hidden');
+        }
+
+        async function sendResetEmail() {
+            const email = document.getElementById('resetEmail').value;
+            if (!email) {
+                showToast('warning', 'Perhatian', 'Masukkan email Anda.');
+                return;
+            }
+
+            try {
+                await auth.sendPasswordResetEmail(email);
+                showToast('success', 'Berhasil', 'Link reset password telah dikirim ke email Anda.');
+                hideResetModal();
+            } catch (error) {
+                showToast('error', 'Gagal', 'Email tidak terdaftar.');
+            }
+        }
+
+        // Check if already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'dashboard.html';
+            }
         });
     </script>
 </body>
