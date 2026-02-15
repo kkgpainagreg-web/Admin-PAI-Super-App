@@ -3737,6 +3737,58 @@ function getDimensiDescription(nama) {
                 console.error('Error loading classes:', error);
             }
         }
+function renderTujuanPembelajaran() {
+    const container = document.getElementById('tpList');
+    
+    if (tujuanPembelajaran.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-8 text-gray-400">
+                <i class="fas fa-bullseye text-4xl mb-2"></i>
+                <p>Belum ada Tujuan Pembelajaran untuk fase ini</p>
+                <button onclick="showAddTPModal()" class="mt-2 text-primary hover:underline">Tambah TP</button>
+            </div>
+        `;
+        return;
+    }
+
+    // Sort by urutan
+    const sortedTP = [...tujuanPembelajaran].sort((a, b) => (a.urutan || 0) - (b.urutan || 0));
+
+    container.innerHTML = sortedTP.map((tp, i) => `
+        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-all">
+            <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span class="font-bold text-green-600 text-sm">${tp.urutan || i + 1}</span>
+                </div>
+                <div class="flex-1">
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <span class="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded font-medium">${tp.elemen}</span>
+                        <span class="text-xs px-2 py-0.5 bg-purple-100 text-purple-700 rounded">${tp.alokasi} JP</span>
+                        <!-- Dimensi Tags -->
+                        ${(tp.dimensi || []).map(d => {
+                            const dimensi = DIMENSI_LULUSAN.find(dim => dim.nama === d);
+                            return `
+                                <span class="text-xs px-2 py-0.5 ${dimensi?.color || 'bg-gray-100 text-gray-600'} rounded flex items-center gap-1" title="${dimensi?.deskripsi || ''}">
+                                    <i class="fas ${dimensi?.icon || 'fa-circle'}"></i>
+                                    ${d}
+                                </span>
+                            `;
+                        }).join('')}
+                    </div>
+                    <p class="text-gray-800">${tp.deskripsi}</p>
+                </div>
+                <div class="flex gap-1">
+                    <button onclick="editTP('${tp.id}')" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button onclick="deleteTP('${tp.id}')" class="p-2 text-red-600 hover:bg-red-50 rounded-lg" title="Hapus">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
 
         // ==========================================
         // GUIDE FUNCTIONS
@@ -3749,7 +3801,41 @@ function getDimensiDescription(nama) {
             content.classList.toggle('hidden');
             chevron.classList.toggle('rotate-180');
         }
-
+// Tambahkan section ini di template guide
+<!-- Section 8 Dimensi -->
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <button onclick="toggleGuideSection(6)" class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-all">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-star text-emerald-600"></i>
+            </div>
+            <span class="font-semibold text-gray-800">8 Dimensi Profil Lulusan</span>
+        </div>
+        <i class="fas fa-chevron-down text-gray-400 guide-chevron-6 transition-transform"></i>
+    </button>
+    <div id="guideContent6" class="hidden px-6 pb-6">
+        <div class="pl-13 space-y-4">
+            <p class="text-gray-600">
+                Berdasarkan <strong>Kepka BSKAP No. 046/H/KR/2025</strong>, pembelajaran PAI terintegrasi dengan 8 Dimensi Profil Lulusan:
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                ${DIMENSI_LULUSAN.map(d => `
+                    <div class="p-3 ${d.color} rounded-lg">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas ${d.icon}"></i>
+                            <span class="font-semibold text-sm">${d.nama}</span>
+                        </div>
+                        <p class="text-xs opacity-80">${d.deskripsi}</p>
+                    </div>
+                `).join('')}
+            </div>
+            <p class="text-gray-600 text-sm mt-4">
+                Setiap Tujuan Pembelajaran (TP) harus dikaitkan dengan minimal satu dimensi profil lulusan 
+                untuk memastikan pembelajaran yang holistik dan terukur.
+            </p>
+        </div>
+    </div>
+</div>
         // ==========================================
         // AI ASSISTANT FUNCTIONS
         // ==========================================
@@ -4101,6 +4187,140 @@ Kelas: [SEBUTKAN KELAS]`
             showToast('info', 'Info', 'Fitur generate Promes akan menggunakan data dari Prota dan Jadwal');
             // Implementation would sync with prota and schedule data
         }
+function showAddTPModal() {
+    if (!selectedPhase) {
+        showToast('warning', 'Perhatian', 'Pilih fase terlebih dahulu');
+        return;
+    }
+    
+    const cpData = CP_PAI_DEFAULT[selectedPhase];
+    
+    const content = `
+        <form id="addTPForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Elemen CP</label>
+                <select id="tpElemen" required onchange="updateDimensiSuggestion()"
+                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary">
+                    ${cpData.elemen.map(el => `
+                        <option value="${el.nama}" data-dimensi="${el.dimensi.join(',')}">${el.id} - ${el.nama}</option>
+                    `).join('')}
+                </select>
+            </div>
+            
+            <!-- Dimensi Lulusan yang Dikembangkan -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Dimensi Lulusan yang Dikembangkan
+                    <span class="text-xs text-gray-400 ml-1">(pilih minimal 1)</span>
+                </label>
+                <div id="dimensiCheckboxes" class="grid grid-cols-2 gap-2">
+                    ${DIMENSI_LULUSAN.map(d => `
+                        <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="checkbox" name="dimensi" value="${d.nama}" class="w-4 h-4 text-primary rounded">
+                            <i class="fas ${d.icon} text-gray-400 text-sm"></i>
+                            <span class="text-sm text-gray-700">${d.nama}</span>
+                        </label>
+                    `).join('')}
+                </div>
+                <p id="dimensiSuggestion" class="text-xs text-blue-600 mt-2"></p>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Tujuan Pembelajaran</label>
+                <textarea id="tpDeskripsi" required rows="4"
+                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary"
+                    placeholder="Peserta didik mampu..."></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Alokasi Waktu (JP)</label>
+                    <input type="number" id="tpAlokasi" required min="1" value="2"
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Urutan</label>
+                    <input type="number" id="tpUrutan" required min="1" value="1"
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary">
+                </div>
+            </div>
+            <div class="flex gap-3 pt-4">
+                <button type="button" onclick="closeModal()" class="flex-1 py-3 border border-gray-200 rounded-xl font-medium hover:bg-gray-50">
+                    Batal
+                </button>
+                <button type="submit" class="flex-1 py-3 bg-primary text-white rounded-xl font-medium hover:bg-secondary">
+                    Simpan
+                </button>
+            </div>
+        </form>
+    `;
+    
+    showModal(content, { title: 'Tambah Tujuan Pembelajaran', size: 'max-w-xl' });
+    
+    // Initial dimensi suggestion
+    updateDimensiSuggestion();
+    
+    document.getElementById('addTPForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await saveTP();
+    });
+}
+
+function updateDimensiSuggestion() {
+    const select = document.getElementById('tpElemen');
+    const selectedOption = select.options[select.selectedIndex];
+    const dimensiStr = selectedOption.dataset.dimensi || '';
+    const dimensiArr = dimensiStr.split(',').filter(d => d);
+    
+    const suggestion = document.getElementById('dimensiSuggestion');
+    suggestion.innerHTML = dimensiArr.length > 0 
+        ? `<i class="fas fa-lightbulb mr-1"></i>Dimensi yang disarankan: <strong>${dimensiArr.join(', ')}</strong>`
+        : '';
+    
+    // Auto-check suggested dimensi
+    document.querySelectorAll('input[name="dimensi"]').forEach(cb => {
+        cb.checked = dimensiArr.includes(cb.value);
+    });
+}
+
+async function saveTP() {
+    if (!currentUser || !selectedPhase) return;
+    
+    const elemen = document.getElementById('tpElemen').value;
+    const deskripsi = document.getElementById('tpDeskripsi').value;
+    const alokasi = parseInt(document.getElementById('tpAlokasi').value);
+    const urutan = parseInt(document.getElementById('tpUrutan').value);
+    
+    // Get selected dimensi
+    const selectedDimensi = [];
+    document.querySelectorAll('input[name="dimensi"]:checked').forEach(cb => {
+        selectedDimensi.push(cb.value);
+    });
+    
+    if (selectedDimensi.length === 0) {
+        showToast('warning', 'Perhatian', 'Pilih minimal 1 dimensi lulusan');
+        return;
+    }
+
+    try {
+        await db.collection('users').doc(currentUser.uid)
+            .collection('tp').add({
+                fase: selectedPhase,
+                elemen,
+                deskripsi,
+                alokasi,
+                urutan,
+                dimensi: selectedDimensi,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        
+        closeModal();
+        showToast('success', 'Berhasil', 'Tujuan Pembelajaran berhasil ditambahkan');
+        loadTujuanPembelajaran(selectedPhase);
+    } catch (error) {
+        showToast('error', 'Gagal', 'Tidak dapat menyimpan TP');
+        console.error(error);
+    }
+}
 
         // ==========================================
         // LOGOUT FUNCTION
