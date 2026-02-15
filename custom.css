@@ -1,0 +1,240 @@
+/* Custom styles untuk Admin Guru Super App */
+
+/* RTL Support untuk teks Arab */
+.rtl-text {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Amiri', 'Traditional Arabic', serif;
+}
+
+/* Font Arabic */
+.font-arabic {
+    font-family: 'Amiri', 'Traditional Arabic', serif;
+}
+
+/* Animasi loading */
+@keyframes shimmer {
+    0% { background-position: -200px 0; }
+    100% { background-position: calc(200px + 100%) 0; }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .print-break {
+        page-break-before: always;
+    }
+    
+    body {
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+    
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    th, td {
+        border: 1px solid #000;
+        padding: 8px;
+    }
+}
+
+/* Focus styles untuk aksesibilitas */
+*:focus-visible {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+}
+
+/* Transisi halus */
+* {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* Card shadow on hover */
+.card-hover:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Input group styles */
+.input-group {
+    position: relative;
+}
+
+.input-group input {
+    padding-left: 2.5rem;
+}
+
+.input-group .icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+/* Badge styles */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+}
+
+.badge-success {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.badge-warning {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.badge-danger {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-info {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 0.75rem;
+    background-color: #1f2937;
+    color: white;
+    font-size: 0.75rem;
+    border-radius: 0.375rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 50;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Table responsive */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Form validation styles */
+input:invalid:not(:placeholder-shown),
+select:invalid:not(:placeholder-shown),
+textarea:invalid:not(:placeholder-shown) {
+    border-color: #ef4444;
+}
+
+input:valid:not(:placeholder-shown) {
+    border-color: #10b981;
+}
+
+/* Dropdown animation */
+.dropdown-menu {
+    transform-origin: top;
+    animation: dropdown 0.2s ease-out;
+}
+
+@keyframes dropdown {
+    from {
+        opacity: 0;
+        transform: scaleY(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+    .mobile-full {
+        width: 100% !important;
+    }
+    
+    .mobile-stack {
+        flex-direction: column !important;
+    }
+    
+    .mobile-hidden {
+        display: none !important;
+    }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    /* Uncomment to enable dark mode */
+    /*
+    :root {
+        color-scheme: dark;
+    }
+    
+    body {
+        background-color: #0f172a;
+        color: #e2e8f0;
+    }
+    
+    .bg-white {
+        background-color: #1e293b !important;
+    }
+    
+    .text-gray-800 {
+        color: #f1f5f9 !important;
+    }
+    
+    .border-gray-200 {
+        border-color: #334155 !important;
+    }
+    */
+}
